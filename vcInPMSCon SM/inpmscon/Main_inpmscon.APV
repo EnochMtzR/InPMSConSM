@@ -1,0 +1,905 @@
+[MODULE]
+NAME 'Main_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME Main
+[COMMON]
+DESCRIPTION 'Wizard Application for C:\Desarrollo\C10NT10\Inpmscon_sm\inpmscon.dct'
+FROM ABC Frame
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('loc : icono:'),USE(?icono:Prompt)
+! ENTRY(@s20),USE(icono)
+[REPORTCONTROLS]
+! STRING(@s20),USE(icono)
+loc:icono                STRING(20)
+!!> GUID('f4afdeb4-b918-47fc-8385-844ddf83845e'),PROMPT('loc : icono:'),HEADER('loc : icono'),PICTURE(@s20),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('loc : ncode:'),USE(?ncode:Prompt)
+! ENTRY(@n13),USE(ncode)
+[REPORTCONTROLS]
+! STRING(@n13),USE(ncode)
+loc:ncode                UNSIGNED
+!!> GUID('fd812c3e-e416-4e94-b3e8-791339918f9f'),PROMPT('loc : ncode:'),HEADER('loc : ncode'),PICTURE(@n13),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('last Status:'),USE(?lastStatus:Prompt)
+! ENTRY(@n13),USE(lastStatus),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n13),USE(lastStatus),RIGHT(1)
+lastStatus               UNSIGNED
+!!> GUID('8c49d087-1c00-4de3-89b8-76781262608e'),PROMPT('last Status:'),HEADER('last Status'),PICTURE(@n13),TYPEMODE(INS)
+[PROMPTS]
+%ButtonAction DEPEND %Control DEFAULT TIMES 15
+WHEN  ('') ('No Special Action')
+WHEN  ('?ConnectionParameters:ITEM') ('Call a Procedure')
+WHEN  ('?Copy') ('No Special Action')
+WHEN  ('?Cut') ('No Special Action')
+WHEN  ('?Exit') ('No Special Action')
+WHEN  ('?ITEM1') ('Call a Procedure')
+WHEN  ('?ITEM2') ('Call a Procedure')
+WHEN  ('?ITEM3') ('Call a Procedure')
+WHEN  ('?ITEM4') ('Call a Procedure')
+WHEN  ('?ITEM5') ('Call a Procedure')
+WHEN  ('?ITEM6') ('Call a Procedure')
+WHEN  ('?InstallService:Item') ('Call a Procedure')
+WHEN  ('?OTACardCodeITEM') ('Call a Procedure')
+WHEN  ('?Paste') ('No Special Action')
+WHEN  ('?PrintSetup') ('No Special Action')
+
+%ButtonRunName DEPEND %Control DEFAULT TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') ('')
+WHEN  ('?ITEM1') ('')
+WHEN  ('?ITEM2') ('')
+WHEN  ('?ITEM3') ('')
+WHEN  ('?ITEM4') ('')
+WHEN  ('?ITEM5') ('')
+WHEN  ('?ITEM6') ('')
+WHEN  ('?InstallService:Item') ('')
+WHEN  ('?OTACardCodeITEM') ('')
+
+%ButtonRunParameters DEPEND %Control DEFAULT TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') ('')
+WHEN  ('?ITEM1') ('')
+WHEN  ('?ITEM2') ('')
+WHEN  ('?ITEM3') ('')
+WHEN  ('?ITEM4') ('')
+WHEN  ('?ITEM5') ('')
+WHEN  ('?ITEM6') ('')
+WHEN  ('?InstallService:Item') ('')
+WHEN  ('?OTACardCodeITEM') ('')
+
+%ButtonProcedure DEPEND %Control PROCEDURE TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') (FormPMSCFG_Connection)
+WHEN  ('?ITEM1') (MonitorSM)
+WHEN  ('?ITEM2') (FormPMSCFG_Inhotel)
+WHEN  ('?ITEM3') (BrowsePMSREQ)
+WHEN  ('?ITEM4') (FormPMSCFG_MonitorSM)
+WHEN  ('?ITEM5') (BrowsePmsBit)
+WHEN  ('?ITEM6') (WindowTestXml)
+WHEN  ('?InstallService:Item') (WindowInstallService)
+WHEN  ('?OTACardCodeITEM') (BrowsePMSOCC)
+
+%ButtonThread DEPEND %Control LONG TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') (1)
+WHEN  ('?ITEM1') (1)
+WHEN  ('?ITEM2') (1)
+WHEN  ('?ITEM3') (1)
+WHEN  ('?ITEM4') (1)
+WHEN  ('?ITEM5') (1)
+WHEN  ('?ITEM6') (1)
+WHEN  ('?InstallService:Item') (1)
+WHEN  ('?OTACardCodeITEM') (1)
+
+%ButtonThreadStack DEPEND %Control DEFAULT TIMES 15
+WHEN  ('') ('25000')
+WHEN  ('?ConnectionParameters:ITEM') ('25000')
+WHEN  ('?Copy') ('25000')
+WHEN  ('?Cut') ('25000')
+WHEN  ('?Exit') ('25000')
+WHEN  ('?ITEM1') ('25000')
+WHEN  ('?ITEM2') ('25000')
+WHEN  ('?ITEM3') ('25000')
+WHEN  ('?ITEM4') ('25000')
+WHEN  ('?ITEM5') ('25000')
+WHEN  ('?ITEM6') ('25000')
+WHEN  ('?InstallService:Item') ('25000')
+WHEN  ('?OTACardCodeITEM') ('25000')
+WHEN  ('?Paste') ('25000')
+WHEN  ('?PrintSetup') ('25000')
+
+%ButtonParameters DEPEND %Control DEFAULT TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') ('')
+WHEN  ('?ITEM1') ('')
+WHEN  ('?ITEM2') ('')
+WHEN  ('?ITEM3') ('')
+WHEN  ('?ITEM4') ('')
+WHEN  ('?ITEM5') ('')
+WHEN  ('?ITEM6') ('')
+WHEN  ('?InstallService:Item') ('')
+WHEN  ('?OTACardCodeITEM') ('')
+
+%ButtonRequest DEPEND %Control DEFAULT TIMES 15
+WHEN  ('') ('None')
+WHEN  ('?ConnectionParameters:ITEM') ('None')
+WHEN  ('?Copy') ('None')
+WHEN  ('?Cut') ('None')
+WHEN  ('?Exit') ('None')
+WHEN  ('?ITEM1') ('None')
+WHEN  ('?ITEM2') ('None')
+WHEN  ('?ITEM3') ('None')
+WHEN  ('?ITEM4') ('None')
+WHEN  ('?ITEM5') ('None')
+WHEN  ('?ITEM6') ('None')
+WHEN  ('?InstallService:Item') ('None')
+WHEN  ('?OTACardCodeITEM') ('None')
+WHEN  ('?Paste') ('None')
+WHEN  ('?PrintSetup') ('None')
+
+%PreLookupKey DEPEND %Control KEY TIMES 0
+
+%PreLookupField DEPEND %Control COMPONENT TIMES 0
+
+%PreLookupProcedure DEPEND %Control PROCEDURE TIMES 0
+
+%PostLookupKey DEPEND %Control KEY TIMES 0
+
+%PostLookupField DEPEND %Control COMPONENT TIMES 0
+
+%PostLookupProcedure DEPEND %Control PROCEDURE TIMES 0
+
+%ForceWindowRefresh DEPEND %Control LONG TIMES 0
+
+%ClassItem UNIQUE DEFAULT  ('Default', 'WindowToolbar')
+%DefaultBaseClassType DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('WindowManager')
+WHEN  ('WindowToolbar') ('ToolbarClass')
+
+%ActualDefaultBaseClassType DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('')
+WHEN  ('WindowToolbar') ('')
+
+%ClassLines DEPEND %ClassItem MULTI DEFAULT TIMES 1
+WHEN  ('Default') ('Init {19}PROCEDURE(),BYTE,PROC,DERIVED', 'Kill {19}PROCEDURE(),BYTE,PROC,DERIVED', |
+  'TakeAccepted {11}PROCEDURE(),BYTE,PROC,DERIVED', 'TakeEvent {14}PROCEDURE(),BYTE,PROC,DERIVED', |
+  'TakeWindowEvent        PROCEDURE(),BYTE,PROC,DERIVED')
+
+%ReturnValue FIELD  ()
+%ProcedureOneInstance LONG  (0)
+%WindowOperationMode DEFAULT  ('Use WINDOW setting')
+%INISaveWindow LONG  (1)
+%ProcedureDisableEnhanceFocus LONG  (0)
+%ProcedureUseEnterInsteadTabOverride LONG  (0)
+%WindowUseEnterInsteadTab LONG  (1)
+%ProcedureUseEnterInsteadTabExcludeListCombo LONG  (0)
+%ProcedureUseEnterInsteadTabEnableNextTabStop LONG  (0)
+%ProcedureUseEnterInsteadTabExcludeG LONG  (1)
+%WindowUseEnterInsteadTabExclude MULTI DEFAULT  ()
+%GlobalObject DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('NO')
+WHEN  ('WindowToolbar') ('NO')
+
+%ThisObjectName DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('ThisWindow')
+WHEN  ('WindowToolbar') ('Toolbar')
+
+%UseDefaultABCBaseClass DEPEND %ClassItem LONG TIMES 2
+WHEN  ('Default') (1)
+WHEN  ('WindowToolbar') (1)
+
+%UseABCBaseClass DEPEND %ClassItem LONG TIMES 2
+WHEN  ('Default') (1)
+WHEN  ('WindowToolbar') (1)
+
+%ABCBaseClass DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('')
+WHEN  ('WindowToolbar') ('')
+
+%ExtBaseClass DEPEND %ClassItem DEFAULT TIMES 0
+
+%BaseClassIncludeFile DEPEND %ClassItem DEFAULT TIMES 0
+
+%DeriveFromBaseClass DEPEND %ClassItem LONG TIMES 2
+WHEN  ('Default') (0)
+WHEN  ('WindowToolbar') (0)
+
+%NewMethods DEPEND %ClassItem MULTI LONG TIMES 0
+
+%NewMethodName DEPEND %NewMethods DEFAULT TIMES 0
+
+%NewMethodPrototype DEPEND %NewMethods DEFAULT TIMES 0
+
+%NewClassPropertyItems DEPEND %ClassItem MULTI LONG TIMES 0
+
+%NewClassProperty DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataType DEPEND %NewClassPropertyItems DEFAULT TIMES 1
+WHEN  ('WindowToolbar')TIMES 0
+
+%NewClassOtherType DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataIsRef DEPEND %NewClassPropertyItems LONG TIMES 0
+
+%NewClassDataSize DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim1 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim2 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim3 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim4 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%ClassMethods DEPEND %ClassItem MULTI LONG TIMES 0
+
+%ClassMethodName DEPEND %ClassMethods DEFAULT TIMES 0
+
+%ClassMethodPrototype DEPEND %ClassMethods DEFAULT TIMES 0
+
+%ClassPropertyItems DEPEND %ClassItem MULTI LONG TIMES 0
+
+%ClassProperty DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataType DEPEND %ClassPropertyItems DEFAULT TIMES 1
+WHEN  ('WindowToolbar')TIMES 0
+
+%ClassOtherType DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataIsRef DEPEND %ClassPropertyItems LONG TIMES 0
+
+%ClassDataSize DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim1 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim2 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim3 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim4 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%WindowStyles MULTI LONG  ()
+%WindowStyleFontName DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontNameVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontNameIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleFontSize DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontSizeVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontSizeIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleFontStyle DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontStyleVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontStyleIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleFontColor DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontCharSet DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleForegroundNormal DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleForegroundNormalVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleForegroundNormalIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleBackgroundNormal DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleBackgroundNormalVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleBackgroundNormalIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleForegroundSelected DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleForegroundSelectedVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleForegroundSelectedIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleBackgroundSelected DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleBackgroundSelectedVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleBackgroundSelectedIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStylePicture DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStylePictureVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStylePictureIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleOtherListboxes MULTI DEFAULT  ()
+%ProcedureAutoBindFields MULTI LONG  ()
+%ProcedureAutoBindField DEPEND %ProcedureAutoBindFields DEFAULT TIMES 0
+
+%ProcedureAutoBindFieldTPL DEPEND %ProcedureAutoBindFields DEFAULT TIMES 0
+
+%ProcedureAutoBindProcedures MULTI LONG  ()
+%ProcedureAutoBindProcedure DEPEND %ProcedureAutoBindProcedures DEFAULT TIMES 0
+
+%ProcedureAutoBindProcedureTPL DEPEND %ProcedureAutoBindProcedures DEFAULT TIMES 0
+
+%ProcedureAutoBindFieldsIgnored MULTI LONG  ()
+%ProcedureAutoBindFieldIgnored DEPEND %ProcedureAutoBindFieldsIgnored DEFAULT TIMES 0
+
+%ProcedureAutoBindProceduresIgnored MULTI LONG  ()
+%ProcedureAutoBindProcedureIgnored DEPEND %ProcedureAutoBindProceduresIgnored DEFAULT TIMES 0
+
+%ProcedureAutoBindValidToAddField LONG  (0)
+%ProcedureUserBindFields MULTI LONG  ()
+%ProcedureUserBindField DEPEND %ProcedureUserBindFields FIELD TIMES 0
+
+%ProcedureAutoBindFieldIgnore DEPEND %ProcedureAutoBindFields LONG TIMES 0
+
+%ProcedureUserBindProcedures MULTI LONG  ()
+%ProcedureUserBindProcedure DEPEND %ProcedureUserBindProcedures PROCEDURE TIMES 0
+
+%ProcedureAutoBindProcedureIgnore DEPEND %ProcedureAutoBindProcedures LONG TIMES 0
+
+%ProcedureUserBindExpressions MULTI LONG  ()
+%ProcedureUserBindExpressionName DEPEND %ProcedureUserBindExpressions DEFAULT TIMES 0
+
+%ProcedureUserBindExpression DEPEND %ProcedureUserBindExpressions DEFAULT TIMES 0
+
+%PreserveVarsLoc MULTI LONG  ()
+%PreserveVarLoc DEPEND %PreserveVarsLoc DEFAULT TIMES 0
+
+%SplashProcedure PROCEDURE  ()
+%ExtUITabIcon DEPEND %Control DEFAULT TIMES 0
+
+%ExtUITabStyleOverrideGlobal DEPEND %Control LONG TIMES 0
+
+%ExtUITabStyle DEPEND %Control DEFAULT TIMES 10
+WHEN  ('') ('Default')
+WHEN  ('?ConnectionParameters:ITEM') ('Default')
+WHEN  ('?ITEM1') ('Default')
+WHEN  ('?ITEM2') ('Default')
+WHEN  ('?ITEM3') ('Default')
+WHEN  ('?ITEM4') ('Default')
+WHEN  ('?ITEM5') ('Default')
+WHEN  ('?ITEM6') ('Default')
+WHEN  ('?InstallService:Item') ('Default')
+WHEN  ('?OTACardCodeITEM') ('Default')
+
+%FieldGradientColorType DEPEND %Control DEFAULT TIMES 10
+WHEN  ('') ('Off')
+WHEN  ('?ConnectionParameters:ITEM') ('Off')
+WHEN  ('?ITEM1') ('Off')
+WHEN  ('?ITEM2') ('Off')
+WHEN  ('?ITEM3') ('Off')
+WHEN  ('?ITEM4') ('Off')
+WHEN  ('?ITEM5') ('Off')
+WHEN  ('?ITEM6') ('Off')
+WHEN  ('?InstallService:Item') ('Off')
+WHEN  ('?OTACardCodeITEM') ('Off')
+
+%FieldGradientColorTypeVariable DEPEND %Control DEFAULT TIMES 10
+WHEN  ('') ('')
+WHEN  ('?ConnectionParameters:ITEM') ('')
+WHEN  ('?ITEM1') ('')
+WHEN  ('?ITEM2') ('')
+WHEN  ('?ITEM3') ('')
+WHEN  ('?ITEM4') ('')
+WHEN  ('?ITEM5') ('')
+WHEN  ('?ITEM6') ('')
+WHEN  ('?InstallService:Item') ('')
+WHEN  ('?OTACardCodeITEM') ('')
+
+%FieldGradientColorTypeIsVariable DEPEND %Control LONG TIMES 10
+WHEN  ('') (0)
+WHEN  ('?ConnectionParameters:ITEM') (0)
+WHEN  ('?ITEM1') (0)
+WHEN  ('?ITEM2') (0)
+WHEN  ('?ITEM3') (0)
+WHEN  ('?ITEM4') (0)
+WHEN  ('?ITEM5') (0)
+WHEN  ('?ITEM6') (0)
+WHEN  ('?InstallService:Item') (0)
+WHEN  ('?OTACardCodeITEM') (0)
+
+%FieldGradientColorFrom DEPEND %Control LONG TIMES 10
+WHEN  ('') (-1)
+WHEN  ('?ConnectionParameters:ITEM') (-1)
+WHEN  ('?ITEM1') (-1)
+WHEN  ('?ITEM2') (-1)
+WHEN  ('?ITEM3') (-1)
+WHEN  ('?ITEM4') (-1)
+WHEN  ('?ITEM5') (-1)
+WHEN  ('?ITEM6') (-1)
+WHEN  ('?InstallService:Item') (-1)
+WHEN  ('?OTACardCodeITEM') (-1)
+
+%FieldGradientColorFromVariable DEPEND %Control DEFAULT TIMES 0
+
+%FieldGradientColorFromIsVariable DEPEND %Control LONG TIMES 10
+WHEN  ('') (0)
+WHEN  ('?ConnectionParameters:ITEM') (0)
+WHEN  ('?ITEM1') (0)
+WHEN  ('?ITEM2') (0)
+WHEN  ('?ITEM3') (0)
+WHEN  ('?ITEM4') (0)
+WHEN  ('?ITEM5') (0)
+WHEN  ('?ITEM6') (0)
+WHEN  ('?InstallService:Item') (0)
+WHEN  ('?OTACardCodeITEM') (0)
+
+%FieldGradientColorTo DEPEND %Control LONG TIMES 10
+WHEN  ('') (-1)
+WHEN  ('?ConnectionParameters:ITEM') (-1)
+WHEN  ('?ITEM1') (-1)
+WHEN  ('?ITEM2') (-1)
+WHEN  ('?ITEM3') (-1)
+WHEN  ('?ITEM4') (-1)
+WHEN  ('?ITEM5') (-1)
+WHEN  ('?ITEM6') (-1)
+WHEN  ('?InstallService:Item') (-1)
+WHEN  ('?OTACardCodeITEM') (-1)
+
+%FieldGradientColorToVariable DEPEND %Control DEFAULT TIMES 0
+
+%FieldGradientColorToIsVariable DEPEND %Control LONG TIMES 10
+WHEN  ('') (0)
+WHEN  ('?ConnectionParameters:ITEM') (0)
+WHEN  ('?ITEM1') (0)
+WHEN  ('?ITEM2') (0)
+WHEN  ('?ITEM3') (0)
+WHEN  ('?ITEM4') (0)
+WHEN  ('?ITEM5') (0)
+WHEN  ('?ITEM6') (0)
+WHEN  ('?InstallService:Item') (0)
+WHEN  ('?OTACardCodeITEM') (0)
+
+%ButtonReturnValueAssignment DEPEND %Control FIELD TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') ()
+WHEN  ('?ITEM1') ()
+WHEN  ('?ITEM2') ()
+WHEN  ('?ITEM3') ()
+WHEN  ('?ITEM4') ()
+WHEN  ('?ITEM5') ()
+WHEN  ('?ITEM6') ()
+WHEN  ('?InstallService:Item') ()
+WHEN  ('?OTACardCodeITEM') ()
+
+%ButtonReturnValueReferenceAssign DEPEND %Control LONG TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') (0)
+WHEN  ('?ITEM1') (0)
+WHEN  ('?ITEM2') (0)
+WHEN  ('?ITEM3') (0)
+WHEN  ('?ITEM4') (0)
+WHEN  ('?ITEM5') (0)
+WHEN  ('?ITEM6') (0)
+WHEN  ('?InstallService:Item') (0)
+WHEN  ('?OTACardCodeITEM') (0)
+
+%ButtonThreadParameters DEPEND %Control DEFAULT TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') ('')
+WHEN  ('?ITEM1') ('')
+WHEN  ('?ITEM2') ('')
+WHEN  ('?ITEM3') ('')
+WHEN  ('?ITEM4') ('')
+WHEN  ('?ITEM5') ('')
+WHEN  ('?ITEM6') ('')
+WHEN  ('?InstallService:Item') ('')
+WHEN  ('?OTACardCodeITEM') ('')
+
+%ButtonThreadReturnValueAssignment DEPEND %Control FIELD TIMES 9
+WHEN  ('?ConnectionParameters:ITEM') ()
+WHEN  ('?ITEM1') ()
+WHEN  ('?ITEM2') ()
+WHEN  ('?ITEM3') ()
+WHEN  ('?ITEM4') ()
+WHEN  ('?ITEM5') ()
+WHEN  ('?ITEM6') ()
+WHEN  ('?InstallService:Item') ()
+WHEN  ('?OTACardCodeITEM') ()
+
+%PreLookupProcedureParameters DEPEND %Control DEFAULT TIMES 0
+
+%PostLookupProcedureParameters DEPEND %Control DEFAULT TIMES 0
+
+%PostLookupDuringValidate DEPEND %Control LONG TIMES 10
+WHEN  ('') (1)
+WHEN  ('?ConnectionParameters:ITEM') (1)
+WHEN  ('?ITEM1') (1)
+WHEN  ('?ITEM2') (1)
+WHEN  ('?ITEM3') (1)
+WHEN  ('?ITEM4') (1)
+WHEN  ('?ITEM5') (1)
+WHEN  ('?ITEM6') (1)
+WHEN  ('?InstallService:Item') (1)
+WHEN  ('?OTACardCodeITEM') (1)
+
+%LookupAssign DEPEND %Control MULTI LONG TIMES 0
+
+%MoreTarget DEPEND %LookupAssign FIELD TIMES 0
+
+%MoreField DEPEND %LookupAssign DEFAULT TIMES 0
+
+%CheckedAssigns DEPEND %Control MULTI LONG TIMES 0
+
+%CheckedAssignVariable DEPEND %CheckedAssigns FIELD TIMES 0
+
+%CheckedAssignValue DEPEND %CheckedAssigns DEFAULT TIMES 0
+
+%CheckedHides DEPEND %Control MULTI LONG TIMES 0
+
+%CheckedControl DEPEND %CheckedHides DEFAULT TIMES 0
+
+%CheckedControlAction DEPEND %CheckedHides DEFAULT TIMES 10
+WHEN  ('')TIMES 0
+WHEN  ('?ConnectionParameters:ITEM')TIMES 0
+WHEN  ('?ITEM1')TIMES 0
+WHEN  ('?ITEM2')TIMES 0
+WHEN  ('?ITEM3')TIMES 0
+WHEN  ('?ITEM4')TIMES 0
+WHEN  ('?ITEM5')TIMES 0
+WHEN  ('?ITEM6')TIMES 0
+WHEN  ('?InstallService:Item')TIMES 0
+WHEN  ('?OTACardCodeITEM')TIMES 0
+
+%CheckedEnables DEPEND %Control MULTI LONG TIMES 0
+
+%CheckedControl1 DEPEND %CheckedEnables DEFAULT TIMES 0
+
+%CheckedControl1Action DEPEND %CheckedEnables DEFAULT TIMES 10
+WHEN  ('')TIMES 0
+WHEN  ('?ConnectionParameters:ITEM')TIMES 0
+WHEN  ('?ITEM1')TIMES 0
+WHEN  ('?ITEM2')TIMES 0
+WHEN  ('?ITEM3')TIMES 0
+WHEN  ('?ITEM4')TIMES 0
+WHEN  ('?ITEM5')TIMES 0
+WHEN  ('?ITEM6')TIMES 0
+WHEN  ('?InstallService:Item')TIMES 0
+WHEN  ('?OTACardCodeITEM')TIMES 0
+
+%UncheckedAssigns DEPEND %Control MULTI LONG TIMES 0
+
+%UncheckedAssignVariable DEPEND %UncheckedAssigns FIELD TIMES 0
+
+%UncheckedAssignValue DEPEND %UncheckedAssigns DEFAULT TIMES 0
+
+%UnCheckedHides DEPEND %Control MULTI LONG TIMES 0
+
+%UnCheckedControl DEPEND %UnCheckedHides DEFAULT TIMES 0
+
+%UnCheckedControlAction DEPEND %UnCheckedHides DEFAULT TIMES 10
+WHEN  ('')TIMES 0
+WHEN  ('?ConnectionParameters:ITEM')TIMES 0
+WHEN  ('?ITEM1')TIMES 0
+WHEN  ('?ITEM2')TIMES 0
+WHEN  ('?ITEM3')TIMES 0
+WHEN  ('?ITEM4')TIMES 0
+WHEN  ('?ITEM5')TIMES 0
+WHEN  ('?ITEM6')TIMES 0
+WHEN  ('?InstallService:Item')TIMES 0
+WHEN  ('?OTACardCodeITEM')TIMES 0
+
+%UnCheckedEnables DEPEND %Control MULTI LONG TIMES 0
+
+%UnCheckedControl1 DEPEND %UnCheckedEnables DEFAULT TIMES 0
+
+%UnCheckedControl1Action DEPEND %UnCheckedEnables DEFAULT TIMES 10
+WHEN  ('')TIMES 0
+WHEN  ('?ConnectionParameters:ITEM')TIMES 0
+WHEN  ('?ITEM1')TIMES 0
+WHEN  ('?ITEM2')TIMES 0
+WHEN  ('?ITEM3')TIMES 0
+WHEN  ('?ITEM4')TIMES 0
+WHEN  ('?ITEM5')TIMES 0
+WHEN  ('?ITEM6')TIMES 0
+WHEN  ('?InstallService:Item')TIMES 0
+WHEN  ('?OTACardCodeITEM')TIMES 0
+
+%CheckedDisables DEPEND %Control MULTI LONG TIMES 0
+
+%CheckedDisableControl DEPEND %CheckedDisables DEFAULT TIMES 0
+
+%CheckedDisableControlAction DEPEND %CheckedDisables DEFAULT TIMES 10
+WHEN  ('')TIMES 0
+WHEN  ('?ConnectionParameters:ITEM')TIMES 0
+WHEN  ('?ITEM1')TIMES 0
+WHEN  ('?ITEM2')TIMES 0
+WHEN  ('?ITEM3')TIMES 0
+WHEN  ('?ITEM4')TIMES 0
+WHEN  ('?ITEM5')TIMES 0
+WHEN  ('?ITEM6')TIMES 0
+WHEN  ('?InstallService:Item')TIMES 0
+WHEN  ('?OTACardCodeITEM')TIMES 0
+
+%UnCheckedDisables DEPEND %Control MULTI LONG TIMES 0
+
+%UnCheckedDisableControl DEPEND %UnCheckedDisables DEFAULT TIMES 0
+
+%UnCheckedDisableControlAction DEPEND %UnCheckedDisables DEFAULT TIMES 10
+WHEN  ('')TIMES 0
+WHEN  ('?ConnectionParameters:ITEM')TIMES 0
+WHEN  ('?ITEM1')TIMES 0
+WHEN  ('?ITEM2')TIMES 0
+WHEN  ('?ITEM3')TIMES 0
+WHEN  ('?ITEM4')TIMES 0
+WHEN  ('?ITEM5')TIMES 0
+WHEN  ('?ITEM6')TIMES 0
+WHEN  ('?InstallService:Item')TIMES 0
+WHEN  ('?OTACardCodeITEM')TIMES 0
+
+%ActiveImageEnable DEPEND %Control LONG TIMES 0
+
+%AIObjectName DEPEND %Control DEFAULT TIMES 10
+WHEN  ('') ('AIBtn0')
+WHEN  ('?ConnectionParameters:ITEM') ('AIBtn11')
+WHEN  ('?ITEM1') ('AIBtn11')
+WHEN  ('?ITEM2') ('AIBtn14')
+WHEN  ('?ITEM3') ('AIBtn16')
+WHEN  ('?ITEM4') ('AIBtn15')
+WHEN  ('?ITEM5') ('AIBtn12')
+WHEN  ('?ITEM6') ('AIBtn13')
+WHEN  ('?InstallService:Item') ('AIBtn18')
+WHEN  ('?OTACardCodeITEM') ('AIBtn17')
+
+%AIEnableMimicControl DEPEND %Control LONG TIMES 10
+WHEN  ('') (1)
+WHEN  ('?ConnectionParameters:ITEM') (1)
+WHEN  ('?ITEM1') (1)
+WHEN  ('?ITEM2') (1)
+WHEN  ('?ITEM3') (1)
+WHEN  ('?ITEM4') (1)
+WHEN  ('?ITEM5') (1)
+WHEN  ('?ITEM6') (1)
+WHEN  ('?InstallService:Item') (1)
+WHEN  ('?OTACardCodeITEM') (1)
+
+%AIMimicControl DEPEND %Control DEFAULT TIMES 10
+WHEN  ('') ('?Menubar')
+WHEN  ('?ConnectionParameters:ITEM') ('?Menubar')
+WHEN  ('?ITEM1') ('?Menubar')
+WHEN  ('?ITEM2') ('?Menubar')
+WHEN  ('?ITEM3') ('?Menubar')
+WHEN  ('?ITEM4') ('?Menubar')
+WHEN  ('?ITEM5') ('?Menubar')
+WHEN  ('?ITEM6') ('?Menubar')
+WHEN  ('?InstallService:Item') ('?Menubar')
+WHEN  ('?OTACardCodeITEM') ('?Menubar')
+
+%AIImgRound DEPEND %Control LONG TIMES 0
+
+%AIOverrideImg DEPEND %Control DEFAULT TIMES 0
+
+%AIOverrideImgVariable DEPEND %Control DEFAULT TIMES 0
+
+%AIOverrideImgIsVariable DEPEND %Control LONG TIMES 10
+WHEN  ('') (0)
+WHEN  ('?ConnectionParameters:ITEM') (0)
+WHEN  ('?ITEM1') (0)
+WHEN  ('?ITEM2') (0)
+WHEN  ('?ITEM3') (0)
+WHEN  ('?ITEM4') (0)
+WHEN  ('?ITEM5') (0)
+WHEN  ('?ITEM6') (0)
+WHEN  ('?InstallService:Item') (0)
+WHEN  ('?OTACardCodeITEM') (0)
+
+%AIDisableImg DEPEND %Control DEFAULT TIMES 0
+
+%AIDisableImgVariable DEPEND %Control DEFAULT TIMES 0
+
+%AIDisableImgIsVariable DEPEND %Control LONG TIMES 10
+WHEN  ('') (0)
+WHEN  ('?ConnectionParameters:ITEM') (0)
+WHEN  ('?ITEM1') (0)
+WHEN  ('?ITEM2') (0)
+WHEN  ('?ITEM3') (0)
+WHEN  ('?ITEM4') (0)
+WHEN  ('?ITEM5') (0)
+WHEN  ('?ITEM6') (0)
+WHEN  ('?InstallService:Item') (0)
+WHEN  ('?OTACardCodeITEM') (0)
+
+%AIHotImg DEPEND %Control DEFAULT TIMES 0
+
+%AIHotImgVariable DEPEND %Control DEFAULT TIMES 0
+
+%AIHotImgIsVariable DEPEND %Control LONG TIMES 10
+WHEN  ('') (0)
+WHEN  ('?ConnectionParameters:ITEM') (0)
+WHEN  ('?ITEM1') (0)
+WHEN  ('?ITEM2') (0)
+WHEN  ('?ITEM3') (0)
+WHEN  ('?ITEM4') (0)
+WHEN  ('?ITEM5') (0)
+WHEN  ('?ITEM6') (0)
+WHEN  ('?InstallService:Item') (0)
+WHEN  ('?OTACardCodeITEM') (0)
+
+%AIPressedImg DEPEND %Control DEFAULT TIMES 0
+
+%AIPressedImgVariable DEPEND %Control DEFAULT TIMES 0
+
+%AIPressedImgIsVariable DEPEND %Control LONG TIMES 10
+WHEN  ('') (0)
+WHEN  ('?ConnectionParameters:ITEM') (0)
+WHEN  ('?ITEM1') (0)
+WHEN  ('?ITEM2') (0)
+WHEN  ('?ITEM3') (0)
+WHEN  ('?ITEM4') (0)
+WHEN  ('?ITEM5') (0)
+WHEN  ('?ITEM6') (0)
+WHEN  ('?InstallService:Item') (0)
+WHEN  ('?OTACardCodeITEM') (0)
+
+[EMBED]
+EMBED %WindowEventHandling
+[INSTANCES]
+WHEN 'Notify'
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 5000
+PROPERTY:END
+IF NOTIFICATION(loc:ncode)
+    IF lastStatus <> loc:ncode
+        lastStatus = loc:ncode
+        CASE loc:ncode
+        OF 1
+            if NOT gSelfService.AmService
+                WinTaskbarChangeIcon(IconHandle, '~INPMSCON0.ico','Servicio de Intercambio PMS - Fuera de Línea')
+                ds_WinTaskBarBalloon(,'Servicio de Intercambio está fuera de línea.','Servicio de Intercambio',WE::NIIF_WARNING)
+            END
+        OF 2
+            if NOT gSelfService.AmService
+                WinTaskbarChangeIcon(IconHandle, '~INPMSCON1.ico','Servicio de Intercambio PMS - En Línea')
+                ds_WinTaskBarBalloon(,'Servicio de Intercambio está en Línea','Servicio de Intercambio',WE::NIIF_INFO)
+            END
+        OF 3
+            if NOT gSelfService.AmService
+                WinTaskbarChangeIcon(IconHandle, '~INPMSCON2.ico','Servicio de Intercambio PMS - No puede conectarse')
+                ds_WinTaskBarBalloon(,'Servicio de Intercambio tiene problemas para conectarse con el servidor de RoomCloud.','Servicio de Intercambio',WE::NIIF_WARNING)
+            END
+        END
+    END
+END
+[END]
+WHEN 'AlertKey'
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 5000
+PROPERTY:END
+IF KEYCODE() = CtrlAltP !-- Muestra menu tools
+    IF ?Tools:MENU{PROP:Hide} = TRUE
+        UNHIDE(?Tools:MENU)
+    ELSE
+        HIDE(?Tools:MENU)
+    END
+    DISPLAY()
+END
+[END]
+WHEN 'OpenWindow'
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 5000
+PROPERTY:END
+if gSelfService.AmService
+    !App is running as a service.
+    AppFrame{PROP:Text} = AppFrame{PROP:Text} &' - Modo: Servicio'
+    START(MonitorSM, 25000)
+    UpdatePMSBIT('Main/OpenWindow','Monitor iniciado en modo servicio.')
+else
+    !App is running as an EXE.
+    AppFrame{PROP:Text} = AppFrame{PROP:Text} &' - Modo: Aplicación'
+end
+[END]
+[END]
+EMBED %WindowManagerMethodCodeSection
+[INSTANCES]
+WHEN 'TakeEvent'
+[INSTANCES]
+WHEN '(),BYTE'
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 5001
+PROPERTY:END
+if NOT gSelfService.AmService
+    loc:icono = 'INPMSCON0.ico'
+END
+
+[END]
+[END]
+[END]
+[END]
+[ADDITION]
+NAME WinEvent TaskbarIcon
+[INSTANCE]
+INSTANCE 2
+[PROMPTS]
+%DisableWinEvent LONG  (1)
+%IconName DEFAULT  ('loc:icono')
+%IconTip DEFAULT  ('''Servicio de intercambio PMS - SiteMinder''')
+%weTargetName DEFAULT  ('')
+%IconHandle FIELD  (IconHandle)
+%ShowOldEmbeds LONG  (0)
+%WinShowHideClose LONG  (1)
+%WinHideOnStartUp LONG  (0)
+%WinNotOnToolbar LONG  (0)
+%WinNoTitlebarClose LONG  (1)
+%WinShowLeftClick LONG  (1)
+%PopupTextShow DEFAULT  ('''Mostrar''')
+%PopupTextHide DEFAULT  ('''Ocultar''')
+%PopupTextExit DEFAULT  ('''Cerrar''')
+%SetTimer DEFAULT  ('500')
+%EnableSetTimer LONG  (1)
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[WINDOW]
+AppFrame APPLICATION('Inpmscon v 2.0 - SiteMinder'),AT(,,525,318),FONT('MS Sans Serif',8,, |
+          FONT:regular,CHARSET:DEFAULT),RESIZE,ALRT(CtrlAltP),CENTER,ICON('Inpmscon.ico'), |
+          MAX,STATUS(-1,80,120,45),SYSTEM
+          MENUBAR,USE(?Menubar),#ORDINAL(1)
+            MENU('&Archivo'),USE(?FileMenu),#ORDINAL(2)
+              ITEM('&Configurar Impresora ...'),USE(?PrintSetup),MSG('Setup printer'),STD(STD:PrintSetup), |
+                #ORDINAL(3)
+              ITEM,USE(?SEPARATOR1),SEPARATOR,#ORDINAL(4)
+              ITEM('&Salir'),USE(?Exit),MSG('Exit this application'),STD(STD:Close),#ORDINAL(5)
+            END
+            MENU('&Editar'),USE(?EditMenu),#ORDINAL(6)
+              ITEM('Cor&tar'),USE(?Cut),MSG('Cut Selection To Clipboard'),STD(STD:Cut),#ORDINAL(7)
+              ITEM('&Copiar'),USE(?Copy),MSG('Copy Selection To Clipboard'),STD(STD:Copy), |
+                #ORDINAL(8)
+              ITEM('&Pegar'),USE(?Paste),MSG('Paste From Clipboard'),STD(STD:Paste),#ORDINAL(9)
+            END
+            MENU('Procesos'),USE(?ProcessMENU),#ORDINAL(10)
+              ITEM('Monitor de Intercambio SiteMander'),USE(?ITEM1),#ORDINAL(11)
+              ITEM('Bitácora'),USE(?ITEM5),#ORDINAL(12)
+            END
+            MENU('Configuración'),USE(?Configuración:MENU),#ORDINAL(13)
+              ITEM('Parámetros de Conexión'),USE(?ConnectionParameters:ITEM),#ORDINAL(14)
+              ITEM('Parámetros Inhotel'),USE(?ITEM2),#ORDINAL(15)
+              ITEM('Parámetros del Monitor SM'),USE(?ITEM4),#ORDINAL(16)
+              ITEM('Mapeo de Formas de Pago'),USE(?OTACardCodeITEM),#ORDINAL(17)
+              ITEM('Instalar Servicio'),USE(?InstallService:Item),#ORDINAL(18)
+            END
+            MENU('Tools'),USE(?Tools:MENU),#ORDINAL(19)
+              ITEM('Peticiones PMS'),USE(?ITEM3),#ORDINAL(20)
+              ITEM,USE(?SEPARATOR2),SEPARATOR,#ORDINAL(21)
+              ITEM('XMLRequest Test'),USE(?ITEM6),#ORDINAL(22)
+            END
+          END
+        END
+
+[END]

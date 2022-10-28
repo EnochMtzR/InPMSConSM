@@ -1,0 +1,139 @@
+[MODULE]
+NAME 'AddRecordsProfiles_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME AddRecordsProfiles
+PROTOTYPE '(string pNumRes),long'
+PARAMETERS '(string pNumRes)'
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('LERROR:'),USE(?LERROR:Prompt)
+! ENTRY(@n-14),USE(LERROR),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(LERROR),RIGHT(1)
+LERROR                   LONG
+!!> GUID('b86e5df1-33cb-45ff-b6d9-6dd3666543f8'),PROMPT('LERROR:'),HEADER('LERROR'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('message Text:'),USE(?messageText:Prompt)
+! ENTRY(@s120),USE(messageText)
+[REPORTCONTROLS]
+! STRING(@s120),USE(messageText)
+messageText              CSTRING(121)
+!!> GUID('489269af-58fc-4f2c-9212-f1b980678602'),PROMPT('message Text:'),HEADER('message Text'),PICTURE(@s120),TYPEMODE(INS)
+[FILES]
+[OTHERS]
+HMENSAJ
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    DO OpenFiles
+    LOOP iResGlobalInfo# = 1 TO RECORDS(QResGlobalInfo)
+        GET(QResGlobalInfo,iResGlobalInfo#)
+        IF NOT ERRORCODE()
+            IF NOT QResGlobalInfo.ProfileType THEN CYCLE.
+            CLEAR(messageText)
+            CASE QResGlobalInfo.ProfileType
+            OF '1' ;messageText = 'CUSTOMER'
+            OF '2' ;messageText = 'GDS'
+            OF '3' ;messageText = 'CORPORATION'
+            OF '4' ;messageText = 'TRAVELAGENT'
+            OF '5' ;messageText = 'WHOLESALER'
+            OF '21';messageText = 'ARRANGER'
+            ELSE;messageText = 'UNKNOW('&QResGlobalInfo.ProfileType&')'
+            END
+            IF QResGlobalInfo.GivenName OR QResGlobalInfo.MiddleName OR QResGlobalInfo.Surname
+                messageText = messageText & '<13,10>PersonName:'&CLIP(QResGlobalInfo.GivenName) &' ' & CLIP(QResGlobalInfo.MiddleName) &' '&CLIP(QResGlobalInfo.Surname)
+            END
+            IF QResGlobalInfo.CompanyName THEN messageText = messageText & '<13,10>Company:'&CLIP(QResGlobalInfo.CompanyName).
+            IF QResGlobalInfo.PhoneNumber[1] THEN messageText = messageText & '<13,10>PhoneNumber1:'&CLIP(QResGlobalInfo.PhoneNumber[1]).
+            IF QResGlobalInfo.PhoneNumber[2] THEN messageText = messageText & '<13,10>PhoneNumber2:'&CLIP(QResGlobalInfo.PhoneNumber[2]).
+            IF QResGlobalInfo.PhoneNumber[3] THEN messageText = messageText & '<13,10>PhoneNumber3:'&CLIP(QResGlobalInfo.PhoneNumber[3]).
+            clear(HMEN:Record)
+            HMEN:MENNUMRES = PNUMRES
+            HMEN:MENMENAVI = 'H'
+            HMEN:MENDESMJ1 = SUB(messageText,1,60)
+            HMEN:MENDESMJ2 = SUB(messageText,61,60)
+            HMEN:MENFECHA  = FORMAT(TODAY(),@d12)
+            HMEN:MENHORA   = FORMAT(CLOCK(),@T04)
+            IF Access:HMENSAJ.TryInsert() <> Level:Benign
+                GlobalErrors.SetErrors()
+                LERROR = GlobalErrors.GetErrorcode()
+                BREAK
+            END
+            IF QResGlobalInfo.AddressLine[1] OR QResGlobalInfo.CityName OR QResGlobalInfo.PostalCode OR QResGlobalInfo.StateProv OR QResGlobalInfo.CountryName
+                CLEAR(messageText)
+                messageText = '*Address:'
+                IF QResGlobalInfo.AddressLine[1] THEN messageText = messageText & '<13,10>' & CLIP(QResGlobalInfo.AddressLine[1]) & ' ' &CLIP(QResGlobalInfo.AddressLine[2]).
+                IF QResGlobalInfo.CityName THEN messageText = messageText & '<13,10>CityName:'&CLIP(QResGlobalInfo.CityName).
+                IF QResGlobalInfo.PostalCode THEN messageText = messageText & '<13,10>PostalCode:'&CLIP(QResGlobalInfo.PostalCode).
+                IF QResGlobalInfo.StateProv THEN messageText = messageText & '<13,10>StateProv:'&CLIP(QResGlobalInfo.StateProv).
+                IF QResGlobalInfo.CountryName THEN messageText = messageText & '<13,10>CoutryName:'&CLIP(QResGlobalInfo.CountryName).
+                clear(HMEN:Record)
+                HMEN:MENNUMRES = PNUMRES
+                HMEN:MENMENAVI = 'H'
+                HMEN:MENDESMJ1 = SUB(messageText,1,60)
+                HMEN:MENDESMJ2 = SUB(messageText,61,60)
+                HMEN:MENFECHA  = FORMAT(TODAY(),@d12)
+                HMEN:MENHORA   = FORMAT(CLOCK(),@T04)
+                IF Access:HMENSAJ.TryInsert() <> Level:Benign
+                    GlobalErrors.SetErrors()
+                    LERROR = GlobalErrors.GetErrorcode()
+                    BREAK
+                END
+            END
+        END
+    END
+    IF LERROR
+        ROLLBACK
+        UpdatePMSBIT('AddRecordsProfiles,Error('&DEFORMAT(LERROR)&')','Request: '&CLIP(QHotelReservation.ResStatus))
+        RETURN(PmsErrorCode26)
+    END
+    DO CloseFiles
+    RETURN 0
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

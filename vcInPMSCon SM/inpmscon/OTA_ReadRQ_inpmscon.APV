@@ -1,0 +1,157 @@
+[MODULE]
+NAME 'OTA_ReadRQ_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME OTA_ReadRQ
+[COMMON]
+FROM ABC Source
+[FILES]
+[OTHERS]
+pmsReq
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    DO OpenFiles
+    MonitorSMDisplay('Executing PULL ...')
+    IF InsertNewPmsReq() = Level:Benign
+        IF CreateRequest() = Level:Benign
+            InsertPmsXmlRq()
+            IF WebClient() = Level:Benign
+                InsertPmsXmlRs()
+                OTA_ResRetrieveRS() !--Procesa response
+            ELSE
+                MonitorSMDisplay('Webclient Error(view log).')
+            END
+        END
+    END
+    DO CloseFiles
+    POST(EVENT:StartTimerCHM,,glo:MonitorSMThread)
+[END]
+EMBED %DataSection
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 1300
+PROPERTY:END
+                    MAP
+InsertNewPmsReq         PROCEDURE,LONG
+CreateRequest           PROCEDURE,LONG
+                    END
+[END]
+EMBED %LocalProcedures
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+InsertNewPmsReq     PROCEDURE
+CODE
+    CLEAR(PRQ:Record)
+    IF Access:PMSREQ.TryPrimeAutoInc() = Level:Benign  !prime Client record
+        PRQ:date = TODAY()
+        PRQ:time = CLOCK()
+        PRQ:method = 'ReadRQ'
+        PRQ:Status = 1
+        IF Access:pmsReq.TryInsert() = Level:Benign
+            glo:numberRequest = PRQ:number
+            glo:methodRequest = PRQ:method
+            glo:EchoTokenRQ = XML:CreateEchoToken()
+            RETURN Level:Benign
+        ELSE
+            GlobalErrors.SetErrors()
+            UpdatePMSBIT('LoadPMSLOG',GlobalErrors.ThrowMessage(Msg:AddNewRecord, NAME(PMSREQ))&'<13,10>Error: '&GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+            MonitorSMDisplay('No fue posible agregar registro a PMSREQ(view log).')
+            RETURN Level:User
+        END
+    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+CreateRequest       PROCEDURE
+CODE
+    glo:xmlHeader = Get_XMLHeader()
+    IF NOT XML:CreateXMLString('1.0','UTF-8',FALSE,'')
+        XML:CreateParent('soap:Envelope')
+        XML:CreateAttribute('xmlns:soap','http://schemas.xmlsoap.org/soap/envelope/');XML:AddParent()
+        XML:AddStringText(glo:xmlHeader,2)
+        XML:CreateParent('soap:Body');XML:AddParent()
+        XML:CreateParent('OTA_ReadRQ ')
+        XML:CreateAttribute('xmlns','http://www.opentravel.org/OTA/2003/05')
+        XML:CreateAttribute('Version','1.0')
+        XML:CreateAttribute('TimeStamp',XML:ConvertToGMT())
+        XML:CreateAttribute('EchoToken',glo:EchoTokenRQ);XML:AddParent()
+        XML:CreateParent('POS');XML:AddParent()
+        XML:CreateParent('Source');XML:AddParent()
+        XML:CreateParent('RequestorID')
+        XML:CreateAttribute('Type','22')
+        XML:CreateAttribute('ID',CLIP(LEFT(GCredentials.requestorID)));XML:AddParent(TRUE)
+        XML:CloseParent('Source')
+        XML:CloseParent('POS')
+        XML:CreateParent('ReadRequests');XML:AddParent()
+        XML:CreateParent('HotelReadRequest')
+        XML:CreateAttribute('HotelCode',GCredentials.hotelCode);XML:AddParent()
+        XML:CreateParent('SelectionCriteria')
+        XML:CreateAttribute('SelectionType','Undelivered');XML:AddParent(TRUE)
+        XML:CloseParent('HotelReadRequest')
+        XML:CloseParent('ReadRequests')
+        XML:CloseParent('OTA_ReadRQ')
+        XML:CloseParent('soap:Body')
+        XML:CloseParent('soap:Envelope')
+        glo:XMLRequest = XML:CloseXMLString()
+        XML:Free()
+        RETURN Level:Benign
+    ELSE
+        RETURN Level:User
+    END
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[CALLS]
+Get_XMLHeader
+InsertPmsXmlRq
+InsertPmsXmlRs
+OTA_ResRetrieveRS
+WebClient
+[END]

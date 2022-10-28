@@ -1,0 +1,10 @@
+*.*
+!*.sln
+!*.cwproj
+!*.apv
+!up_vcSettings.ini
+!*.dct
+!*.EXP
+!*.ico
+!*.pem
+!.gitignore

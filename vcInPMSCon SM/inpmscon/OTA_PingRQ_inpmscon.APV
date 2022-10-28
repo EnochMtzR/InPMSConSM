@@ -1,0 +1,81 @@
+[MODULE]
+NAME 'OTA_PingRQ_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME OTA_PingRQ
+[COMMON]
+FROM ABC Source
+[PROMPTS]
+%GenerateOpenClose LONG  (0)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %LocalProcedures
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    glo:xmlHeader = Get_XMLHeader()
+    glo:EchoTokenRQ = XML:CreateEchoToken()
+    IF NOT XML:CreateXMLString('1.0','UTF-8',FALSE,'')
+        XML:CreateParent('soap:Envelope')
+        XML:CreateAttribute('xmlns:soap','http://schemas.xmlsoap.org/soap/envelope/');XML:AddParent()
+        XML:AddStringText(glo:xmlHeader,2)
+        XML:CreateParent('soap:Body');XML:AddParent()
+        XML:CreateParent('OTA_PingRQ ')
+        XML:CreateAttribute('xmlns','http://www.opentravel.org/OTA/2003/05')
+        XML:CreateAttribute('Version','1.0')
+        XML:CreateAttribute('TimeStamp',XML:ConvertToGMT())
+        XML:CreateAttribute('EchoToken',glo:EchoTokenRQ);XML:AddParent()
+        XML:AddElement('EchoData','Hello World')
+        XML:CloseParent('OTA_PingRQ')
+        XML:CloseParent('soap:Body')
+        XML:CloseParent('soap:Envelope')
+        glo:XMLRequest = XML:CloseXMLString()
+        IF WebClient() = Level:Benign
+            MonitorSMDisplay('Ping was successful (view log).')
+        ELSE
+            MonitorSMDisplay('Ping wiht Error (view log).')
+        END
+    END
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[CALLS]
+Get_XMLHeader
+WebClient
+[END]

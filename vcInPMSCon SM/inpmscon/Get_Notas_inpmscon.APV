@@ -1,0 +1,118 @@
+[MODULE]
+NAME 'Get_Notas_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME Get_Notas
+PROTOTYPE '(string pStayID),string'
+PARAMETERS '(string pStayID)'
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('notas Return:'),USE(?notasReturn:Prompt)
+! ENTRY(@s254),USE(notasReturn)
+[REPORTCONTROLS]
+! STRING(@s254),USE(notasReturn)
+notasReturn              CSTRING(255)
+!!> GUID('b828ae7f-a158-4f65-90d8-3963de7d57b1'),PROMPT('notas Return:'),HEADER('notas Return'),PICTURE(@s254),TYPEMODE(INS)
+[PROMPTS]
+%GenerateOpenClose LONG  (0)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    QRoomStays.StayId = pStayID
+    GET(QRoomStays,QRoomStays.StayId)
+    IF NOT ERRORCODE()
+        notasReturn = notasReturn & CLIP(QRoomStays.CommentText)
+        QResGuestRPH.StayID = pStayID
+        GET(QResGuestRPH,QResGuestRPH.StayID)
+        IF NOT ERRORCODE()
+            QResGuests.ResGuestRPH = QResGuestRPH.RPH
+            GET(QResGuests,QResGuests.ResGuestRPH)
+            IF NOT ERRORCODE()
+                IF QResGuests.CommentText
+                    IF NOT notasReturn
+                        notasReturn = CLIP(QResGuests.CommentText)
+                    ELSE
+                        notasReturn = notasReturn &'<13,10>'& CLIP(QResGuests.CommentText)
+                    END
+                END
+            END
+        END
+    END
+    GET(QResGlobalInfo,1)
+    IF NOT ERRORCODE()
+        IF QResGlobalInfo.ResGlobalInfoCommentsCommentText[1]
+            IF NOT notasReturn
+                notasReturn = CLIP(QResGlobalInfo.ResGlobalInfoCommentsCommentText[1])
+            ELSE
+                notasReturn = notasReturn &'<13,10>'&  CLIP(QResGlobalInfo.ResGlobalInfoCommentsCommentText[1])
+            END
+        END
+        IF QResGlobalInfo.ResGlobalInfoCommentsCommentText[2]
+            IF NOT notasReturn
+                notasReturn = CLIP(QResGlobalInfo.ResGlobalInfoCommentsCommentText[2])
+            ELSE
+                notasReturn = notasReturn &'<13,10>'&  CLIP(QResGlobalInfo.ResGlobalInfoCommentsCommentText[2])
+            END
+        END
+        IF QResGlobalInfo.ResGlobalInfoCommentsCommentText[3]
+            IF NOT notasReturn
+                notasReturn = CLIP(QResGlobalInfo.ResGlobalInfoCommentsCommentText[3])
+            ELSE
+                notasReturn = notasReturn &'<13,10>'&  CLIP(QResGlobalInfo.ResGlobalInfoCommentsCommentText[3])
+            END
+        END
+    END
+    IF RECORDS(QRatePlans)
+        IF NOT notasReturn
+            HRES:SRESNOTAS3[57:60] = '*RP*'
+        ELSE
+            notasReturn = notasReturn &'<13,10>*RatePlan*'
+        END
+    END
+
+    RETURN notasReturn
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

@@ -1,0 +1,747 @@
+[PROGRAM]
+[COMMON]
+FROM ABC ABC
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('glo : Monitor SMT hread:'),USE(?glo:MonitorSMThread:Prompt)
+! ENTRY(@n13),USE(glo:MonitorSMThread),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n13),USE(glo:MonitorSMThread),RIGHT(1)
+glo:MonitorSMThread      UNSIGNED
+!!> GUID('9ee845ba-2979-4cd9-8236-a521df377d76'),PROMPT('glo : Monitor SMT hread:'),HEADER('glo : Monitor SMT hread'),PICTURE(@n13),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('glo : Exchange Log:'),USE(?glo:ExchangeLog:Prompt)
+! ENTRY(@s255),USE(glo:ExchangeLog)
+[REPORTCONTROLS]
+! STRING(@s255),USE(glo:ExchangeLog)
+glo:ExchangeLog          CSTRING(540001)
+!!> GUID('ac323304-42a4-403d-91b7-88a83f1f65ca'),PROMPT('glo : Exchange Log:'),HEADER('glo : Exchange Log'),PICTURE(@s255),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('GLO : LOGDISP:'),USE(?LOGDISP:Prompt)
+! ENTRY(@s255),USE(LOGDISP)
+[REPORTCONTROLS]
+! STRING(@s255),USE(LOGDISP)
+GLO:LOGDISP              STRING(255)
+!!> GUID('9628d5e3-d019-419e-885f-a53e90bd5546'),PROMPT('GLO : LOGDISP:'),HEADER('GLO : LOGDISP'),PICTURE(@s255),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('GLO : error Trap:'),USE(?GLO:errorTrap:Prompt)
+! ENTRY(@n-14),USE(GLO:errorTrap),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(GLO:errorTrap),RIGHT(1)
+GLO:errorTrap            LONG
+!!> GUID('5185397a-cffe-4aac-ac94-588b604d3a2a'),PROMPT('GLO : error Trap:'),HEADER('GLO : error Trap'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('Glo : Xml Error:'),USE(?Glo:XmlError:Prompt)
+! ENTRY(@n-14),USE(Glo:XmlError),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(Glo:XmlError),RIGHT(1)
+Glo:XmlError             LONG
+!!> GUID('ce436334-9c88-456e-b95a-e9ec0bce7717'),PROMPT('Glo : Xml Error:'),HEADER('Glo : Xml Error'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[LONGDESC]
+!Almacena el Log del Error
+[SCREENCONTROLS]
+! PROMPT('GLO : LOGERR:'),USE(?LOGERR:Prompt)
+! ENTRY(@s128),USE(LOGERR)
+[REPORTCONTROLS]
+! STRING(@s128),USE(LOGERR)
+GLO:LOGERR               STRING(128)
+!!> GUID('202b804d-4d93-46fd-b738-3b9afd7f7969'),PROMPT('GLO : LOGERR:'),HEADER('GLO : LOGERR'),PICTURE(@s128),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Ginhotel:'),USE(?Ginhotel:Prompt)
+! ENTRY(@s20),USE(Ginhotel)
+[REPORTCONTROLS]
+! STRING(@s20),USE(Ginhotel)
+Ginhotel                 GROUP(inhotelGroup),PRE(GIN)
+!!> GUID('e48e8163-0895-4b20-8d03-3d7c9d830dd5'),PROMPT('Ginhotel:'),HEADER('Ginhotel'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('f5e28894-27e9-47ff-a5be-ef7517013f0e')
+[SCREENCONTROLS]
+! PROMPT('Gconnection:'),USE(?Gconnection:Prompt)
+! ENTRY(@s20),USE(Gconnection)
+[REPORTCONTROLS]
+! STRING(@s20),USE(Gconnection)
+Gconnection              GROUP(connectionGroup),PRE(GCO)
+!!> GUID('d1159aae-7ac3-42df-aab2-737832d728a9'),PROMPT('Gconnection:'),HEADER('Gconnection'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('2b5f0689-9f7a-4b98-bfbc-f92f8045b646')
+[SCREENCONTROLS]
+! PROMPT('Gcredentials:'),USE(?Gcredentials:Prompt)
+! ENTRY(@s20),USE(Gcredentials)
+[REPORTCONTROLS]
+! STRING(@s20),USE(Gcredentials)
+Gcredentials             GROUP(credentialsGroup),PRE(GCR)
+!!> GUID('b0300a1b-3afa-406e-a30f-3c524008e8e3'),PROMPT('Gcredentials:'),HEADER('Gcredentials'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('d20394e6-03b5-4037-8134-c7349a6b43c9')
+[SCREENCONTROLS]
+! PROMPT('Gmonitor SM:'),USE(?GmonitorSM:Prompt)
+! ENTRY(@s20),USE(GmonitorSM)
+[REPORTCONTROLS]
+! STRING(@s20),USE(GmonitorSM)
+GmonitorSM               GROUP(monitorSMGroup),PRE(GMO)
+!!> GUID('5ffb76e2-2f9c-4b1c-b3b4-1e547e4ea2f3'),PROMPT('Gmonitor SM:'),HEADER('Gmonitor SM'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('16a43c89-68f9-4e0b-8b00-f7b1d8f447cf')
+[SCREENCONTROLS]
+! PROMPT('QL og Disp:'),USE(?QLogDisp:Prompt)
+! ENTRY(@s20),USE(QLogDisp)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QLogDisp)
+QLogDisp                 QUEUE(LogDispQueue),PRE(QLD)
+!!> GUID('4b733441-c3f3-4814-ab39-3fca8f9793e5'),PROMPT('QL og Disp:'),HEADER('QL og Disp'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('acfd49e6-b06f-4173-ab18-96ec81bc2a1c')
+[SCREENCONTROLS]
+! PROMPT('QH otel Reservation:'),USE(?QHotelReservation:Prompt)
+! ENTRY(@s20),USE(QHotelReservation)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QHotelReservation)
+QHotelReservation        QUEUE(HotelReservationQueue),PRE(QHR),THREAD
+!!> GUID('bc261a3b-ece7-427c-82aa-8dab09a6ba42'),PROMPT('QH otel Reservation:'),HEADER('QH otel Reservation'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('87a52c7d-1bcd-4750-bec7-dee9d5e96b09')
+[SCREENCONTROLS]
+! PROMPT('QU nique ID:'),USE(?QUniqueID:Prompt)
+! ENTRY(@s20),USE(QUniqueID)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QUniqueID)
+QUniqueID                QUEUE(UniqueIDQueue),PRE(QUI),THREAD
+!!> GUID('54851355-cfe1-407e-bdb0-56463b42bde8'),PROMPT('QU nique ID:'),HEADER('QU nique ID'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('60a9531b-9fb8-42b5-b355-4503a16060e6')
+[SCREENCONTROLS]
+! PROMPT('QS ource:'),USE(?QSource:Prompt)
+! ENTRY(@s20),USE(QSource)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QSource)
+QSource                  QUEUE(SourceQueue),PRE(QSR),THREAD
+!!> GUID('d54cccfb-bd2a-4c5e-8878-2f554f18c1f7'),PROMPT('QS ource:'),HEADER('QS ource'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('b5ee75ec-5ebd-4341-9615-5b1250d9c93c')
+[SCREENCONTROLS]
+! PROMPT('QR oom Stays:'),USE(?QRoomStays:Prompt)
+! ENTRY(@s20),USE(QRoomStays)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QRoomStays)
+QRoomStays               QUEUE(RoomStayQueue),PRE(QRS),THREAD
+!!> GUID('11d133c2-15f3-482e-afb3-6a29c503a494'),PROMPT('QR oom Stays:'),HEADER('QR oom Stays'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('f75d781e-6e6e-45ad-a838-34335bc80151')
+[SCREENCONTROLS]
+! PROMPT('QG uest Counts:'),USE(?QGuestCounts:Prompt)
+! ENTRY(@s20),USE(QGuestCounts)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QGuestCounts)
+QGuestCounts             QUEUE(GuestCountsQueue),PRE(QGC),THREAD
+!!> GUID('154e5fcc-37e7-4515-bbde-5accf2b5ec92'),PROMPT('QG uest Counts:'),HEADER('QG uest Counts'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('51d09462-0c39-40b3-9fd1-d55c0fc608a3')
+[SCREENCONTROLS]
+! PROMPT('QR oom Rates:'),USE(?QRoomRates:Prompt)
+! ENTRY(@s20),USE(QRoomRates)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QRoomRates)
+QRoomRates               QUEUE(RoomRateQueue),PRE(QRR),THREAD
+!!> GUID('7b23ff3a-2b02-45ef-b2df-e5cc42f5de64'),PROMPT('QR oom Rates:'),HEADER('QR oom Rates'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('7a1d80ee-5641-4df9-a867-ae4abc9e214a')
+[SCREENCONTROLS]
+! PROMPT('QR es Guest RPH:'),USE(?QResGuestRPH:Prompt)
+! ENTRY(@s20),USE(QResGuestRPH)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QResGuestRPH)
+QResGuestRPH             QUEUE(ResGuestRPHQueue),PRE(RGR)
+!!> GUID('99d29f85-5556-4600-a97b-da95bcfa3a0c'),PROMPT('QR es Guest RPH:'),HEADER('QR es Guest RPH'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('9a14f39d-8310-4e29-be29-d05588b1866f')
+[SCREENCONTROLS]
+! PROMPT('QS ervice RPH:'),USE(?QServiceRPH:Prompt)
+! ENTRY(@s20),USE(QServiceRPH)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QServiceRPH)
+QServiceRPH              QUEUE(ServiceRPHQueue),PRE(QSR)
+!!> GUID('8febd4f0-2f58-4849-8f18-f3d0082a9ef8'),PROMPT('QS ervice RPH:'),HEADER('QS ervice RPH'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('54bb36fe-dc69-4fa4-b9c6-134656ff715d')
+[SCREENCONTROLS]
+! PROMPT('QR ate Plans:'),USE(?QRatePlans:Prompt)
+! ENTRY(@s20),USE(QRatePlans)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QRatePlans)
+QRatePlans               QUEUE(RatePlansQueue),PRE(QRP)
+!!> GUID('cd74b08a-d056-4d61-835c-fda47fd9b1c5'),PROMPT('QR ate Plans:'),HEADER('QR ate Plans'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('f846aba0-2ee4-4e4c-8c06-649f91cc5c00')
+[SCREENCONTROLS]
+! PROMPT('QR es Guests:'),USE(?QResGuests:Prompt)
+! ENTRY(@s20),USE(QResGuests)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QResGuests)
+QResGuests               QUEUE(ResGuestQueue),PRE(QRG),THREAD
+!!> GUID('4f854ce7-75d4-4f48-a8a0-af9487e41761'),PROMPT('QR es Guests:'),HEADER('QR es Guests'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('252b964d-857c-4ca7-80fb-a54c4f8fe499')
+[SCREENCONTROLS]
+! PROMPT('QG uarantee:'),USE(?QGuarantee:Prompt)
+! ENTRY(@s20),USE(QGuarantee)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QGuarantee)
+QGuarantee               QUEUE(GuaranteeQueue),PRE(QGTE)
+!!> GUID('0f78fbbf-bda6-4cf1-a766-76108fefc175'),PROMPT('QG uarantee:'),HEADER('QG uarantee'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('7865ef75-8a47-4911-925f-f8484ea07c56')
+[SCREENCONTROLS]
+! PROMPT('QR es Global Info:'),USE(?QResGlobalInfo:Prompt)
+! ENTRY(@s20),USE(QResGlobalInfo)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QResGlobalInfo)
+QResGlobalInfo           QUEUE(ResGlobalInfoQueue),PRE(QRGI)
+!!> GUID('166f3de3-d81f-42f1-a668-88fe1c15c46c'),PROMPT('QR es Global Info:'),HEADER('QR es Global Info'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('11d966e2-193a-4442-9ee2-9c06bf3d2920')
+[SCREENCONTROLS]
+! PROMPT('QS ervices:'),USE(?QServices:Prompt)
+! ENTRY(@s20),USE(QServices)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QServices)
+QServices                QUEUE(ServicesQueue),PRE(QS)
+!!> GUID('7c887a4e-e8b8-49fa-9bec-7cda6a9c0ed8'),PROMPT('QS ervices:'),HEADER('QS ervices'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('77f0d9a9-af1d-4655-b3a3-c15ecabf2619')
+[SCREENCONTROLS]
+! PROMPT('QN otif Report Success:'),USE(?QNotifReportSuccess:Prompt)
+! ENTRY(@s20),USE(QNotifReportSuccess)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QNotifReportSuccess)
+QNotifReportSuccess      QUEUE(NotifReportSuccessQueue),PRE(QNRS),THREAD
+!!> GUID('13efd612-b4fe-4d8a-8b3c-faaee5d03727'),PROMPT('QN otif Report Success:'),HEADER('QN otif Report Success'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('8ad55f26-d6eb-423e-94a7-16d5c1fde6ca')
+[SCREENCONTROLS]
+! PROMPT('QN otif Report Success:'),USE(?QNotifReportError:Prompt)
+! ENTRY(@s20),USE(QNotifReportError)
+[REPORTCONTROLS]
+! STRING(@s20),USE(QNotifReportError)
+QNotifReportError        QUEUE(NotifReportErrorQueue),PRE(QNRE),THREAD
+!!> GUID('d8e050e2-36ab-4643-bcd8-cefa3b09b6b6'),PROMPT('QN otif Report Success:'),HEADER('QN otif Report Success'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('f626cdc6-e6b5-42b0-a124-80d891f31d8b')
+[SCREENCONTROLS]
+! PROMPT('SIS : fecsis:'),USE(?SIS:fecsis:Prompt)
+! ENTRY(@s8),USE(SIS:fecsis)
+[REPORTCONTROLS]
+! STRING(@s8),USE(SIS:fecsis)
+SIS:fecsis               STRING(8)
+!!> GUID('10ba27a6-4993-4d3c-9378-22250bb0f0f9'),PROMPT('SIS : fecsis:'),HEADER('SIS : fecsis'),PICTURE(@s8),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('SIS : CODREN:'),USE(?SIS:CODREN:Prompt)
+! ENTRY(@s3),USE(SIS:CODREN)
+[REPORTCONTROLS]
+! STRING(@s3),USE(SIS:CODREN)
+SIS:CODREN               STRING(3)
+!!> GUID('70c28132-cc02-41d2-8963-d64ca5210acd'),PROMPT('SIS : CODREN:'),HEADER('SIS : CODREN'),PICTURE(@s3),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('SIS : CODPLA:'),USE(?SIS:CODPLA:Prompt)
+! ENTRY(@s3),USE(SIS:CODPLA)
+[REPORTCONTROLS]
+! STRING(@s3),USE(SIS:CODPLA)
+SIS:CODPLA               STRING(3)
+!!> GUID('59e64c0d-771f-4621-abbf-182b915d2e99'),PROMPT('SIS : CODPLA:'),HEADER('SIS : CODPLA'),PICTURE(@s3),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('SIS : CODGEO:'),USE(?SIS:CODGEO:Prompt)
+! ENTRY(@s6),USE(SIS:CODGEO)
+[REPORTCONTROLS]
+! STRING(@s6),USE(SIS:CODGEO)
+SIS:CODGEO               STRING(6)
+!!> GUID('7233fb45-18d5-4d3c-9250-be0fb8765fdf'),PROMPT('SIS : CODGEO:'),HEADER('SIS : CODGEO'),PICTURE(@s6),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('SIS : PORTAX:'),USE(?SIS:PORTAX:Prompt)
+! ENTRY(@n10.2),USE(SIS:PORTAX),DECIMAL(14)
+[REPORTCONTROLS]
+! STRING(@n10.2),USE(SIS:PORTAX),DECIMAL(14)
+SIS:PORTAX               REAL
+!!> GUID('43490dfa-a3fd-45a6-93c5-4a00c50a1f1d'),PROMPT('SIS : PORTAX:'),HEADER('SIS : PORTAX'),PICTURE(@n10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,14)
+[SCREENCONTROLS]
+! PROMPT('SIS : TAXPLA:'),USE(?SIS:TAXPLA:Prompt)
+! ENTRY(@n10.2),USE(SIS:TAXPLA),DECIMAL(14)
+[REPORTCONTROLS]
+! STRING(@n10.2),USE(SIS:TAXPLA),DECIMAL(14)
+SIS:TAXPLA               REAL
+!!> GUID('01840db7-514f-4433-8b36-3e19ed660ce1'),PROMPT('SIS : TAXPLA:'),HEADER('SIS : TAXPLA'),PICTURE(@n10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,14)
+[SCREENCONTROLS]
+! PROMPT('SIS : METAPL:'),USE(?SIS:METAPL:Prompt)
+! ENTRY(@s1),USE(SIS:METAPL)
+[REPORTCONTROLS]
+! STRING(@s1),USE(SIS:METAPL)
+SIS:METAPL               STRING(1)
+!!> GUID('3993afea-fe27-47d7-8970-14e995f83126'),PROMPT('SIS : METAPL:'),HEADER('SIS : METAPL'),PICTURE(@s1),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('SIS : CLAHOS:'),USE(?SIS:CLAHOS:Prompt)
+! ENTRY(@s6),USE(SIS:CLAHOS)
+[REPORTCONTROLS]
+! STRING(@s6),USE(SIS:CLAHOS)
+SIS:CLAHOS               STRING(6)
+!!> GUID('776b0c86-dd74-41ae-ace0-10e2355db101'),PROMPT('SIS : CLAHOS:'),HEADER('SIS : CLAHOS'),PICTURE(@s6),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('giresall:'),USE(?giresall:Prompt)
+! ENTRY(@s1),USE(giresall)
+[REPORTCONTROLS]
+! STRING(@s1),USE(giresall)
+giresall                 STRING(1)
+!!> GUID('ff1c4e14-d541-4566-ae5a-dca50105261b'),PROMPT('giresall:'),HEADER('giresall'),PICTURE(@s1),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Icon Handle:'),USE(?IconHandle:Prompt)
+! ENTRY(@n-14),USE(IconHandle),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(IconHandle),RIGHT(1)
+IconHandle               LONG
+!!> GUID('2b1cd8ca-c99b-42cb-a3ba-e3d7764d5785'),PROMPT('Icon Handle:'),HEADER('Icon Handle'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[EMBED]
+EMBED %GlobalData
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 2001
+PROPERTY:END
+!--Definition FileLog
+FileLog             FILE,DRIVER('ASCII','/ENDOFRECORD=2,13,10'),CREATE,NAME(GLO:LOGDISP),PRE(LOGD),THREAD
+RECORD                  RECORD
+LINEA                       STRING(3000)
+                        END
+                    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+!--Equates Notify
+NOTIFY:DisplayLOG   EQUATE(1)   !--Le indica al monitor que refresque el cuadro de texto
+
+!--Casos LOG/PMSREQ
+AvailabilityNotify  EQUATE('INV')           !--Notificación de inventario
+StopSellArrival     EQUATE('CFA')           !--Cierre de venta a la llegada
+OpenSellArrival     EQUATE('AFA')           !--Apertura de venta a la llegada
+StopSellArrivalAndDeparture EQUATE('CFB')   !--Cierre de venta a la llegada y a la salida
+OpenSellArrivalAndDeparture EQUATE('AFB')   !--Apertura de venta a la llegada y a la salida
+StopSellDeparture   EQUATE('CFD')           !--Cierre de venta a la salida
+OpenSellDeparture   EQUATE('AFD')           !--Apertuta de venta a la salida
+StopSell            EQUATE('CFE')           !--Cierre de venta
+OpenSell            EQUATE('AFE')           !--Apertura de venta
+RateNew             EQUATE('TNW')           !--Tarifa nueva
+RateModify          EQUATE('TMD')           !--Tarifa cambio
+RateOverlay         EQUATE('TOV')           !--Tarifa en proceso de inicialización
+
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+!--Event Monitor SM
+EVENT:StartTimerPMS EQUATE(401H)
+EVENT:StartTimerCHM EQUATE(402H)
+EVENT:SendAvailability      EQUATE(403H)
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+!--Variables globales
+glo:numberRequest   LIKE(PRQ:number),THREAD,STATIC
+glo:methodRequest   LIKE(PRQ:method),THREAD,STATIC
+glo:EchoTokenRQ     CSTRING(101),THREAD,STATIC
+glo:EchoTokenRS     CSTRING(101),THREAD,STATIC
+glo:xmlHeader       CSTRING(8001),THREAD,STATIC
+glo:XMLRequest      CSTRING(MaxCstringSize),THREAD,STATIC
+glo:XMLResponse     CSTRING(MaxCstringSize),THREAD,STATIC
+glo:XMLDataTest1    CSTRING(MaxCstringSize)
+glo:XMLDataTest2    CSTRING(MaxCstringSize)
+st                  StringTheory
+QInventory          QUEUE(inventoryQueue),THREAD,STATIC
+                    END
+QAvailability       QUEUE(availabilityQueue),THREAD,STATIC
+                    END
+
+
+
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+!--Errores internos
+PmsErrorCode01             EQUATE(-1)
+PmsErrorCode02             EQUATE(-2)
+PmsErrorCode03             EQUATE(-3)
+PmsErrorCode04             EQUATE(-4)
+PmsErrorCode05             EQUATE(-5)
+PmsErrorCode06             EQUATE(-6)
+PmsErrorCode07             EQUATE(-7)
+PmsErrorCode08             EQUATE(-8)
+PmsErrorCode09             EQUATE(-9)
+PmsErrorCode10            EQUATE(-10)
+PmsErrorCode11            EQUATE(-11)
+PmsErrorCode12            EQUATE(-12)
+PmsErrorCode13            EQUATE(-13)
+PmsErrorCode14            EQUATE(-14)
+PmsErrorCode15            EQUATE(-15)
+PmsErrorCode16            EQUATE(-16)
+PmsErrorCode17            EQUATE(-17)
+PmsErrorCode18            EQUATE(-18)
+PmsErrorCode19            EQUATE(-19)
+PmsErrorCode20            EQUATE(-20)
+PmsErrorCode21            EQUATE(-21)
+PmsErrorCode22            EQUATE(-22)
+PmsErrorCode23            EQUATE(-23)
+PmsErrorCode24            EQUATE(-24)
+PmsErrorCode25            EQUATE(-25)
+PmsErrorCode26            EQUATE(-26)
+PmsErrorCode27            EQUATE(-27)
+PmsErrorCode28            EQUATE(-28)
+PmsErrorCode29            EQUATE(-29)
+PmsErrorCode30            EQUATE(-30)
+PmsErrorCode31            EQUATE(-31)
+PmsErrorCode32            EQUATE(-32)
+PmsErrorCode33            EQUATE(-33)
+PmsErrorCode34            EQUATE(-34) !Error al actualizar hpdtarres
+PmsErrorCode35            EQUATE(-35) !Error reservación ya pasó
+PmsErrorDescription01             EQUATE('IMPOSIIIIBLEEEE!!!!')
+PmsErrorDescription02              EQUATE('Room code does not exist.')
+PmsErrorDescription03              EQUATE('Rate code does not exist.')
+PmsErrorDescription04              EQUATE('Could not insert guest salutation.')
+PmsErrorDescription05              EQUATE('Card code does not exist.')
+PmsErrorDescription06              EQUATE('Card code was not provided.')
+PmsErrorDescription07              EQUATE('On "Book" error on internal database.')
+PmsErrorDescription08              EQUATE('On "Modify" error on internal database.')
+PmsErrorDescription09              EQUATE('Could not cancel as requested, PMS Id does not exist.')
+PmsErrorDescription10              EQUATE('Error on internal database, could not assign ID.')
+PmsErrorDescription11              EQUATE('Reservation could not be inserted on databse.')
+PmsErrorDescription12              EQUATE('Reservation cannnot be modified as it does not exist.')
+PmsErrorDescription13              EQUATE('Error on internal database, could not update registry.')
+PmsErrorDescription14              EQUATE('Could not delete guest names when modifying reservation.')
+PmsErrorDescription15              EQUATE('Could not delete services when modifying reservation.')
+PmsErrorDescription16              EQUATE('Could not delete messages when modifying reservation.')
+PmsErrorDescription17              EQUATE('Could not delete rooms definitions on Groups when modifying reservation.')
+PmsErrorDescription18              EQUATE('Could not delete rate fees on groups when modifying reservation.')
+PmsErrorDescription19              EQUATE('Error on internal database, could not cancel reservation with UUID.')
+PmsErrorDescription20              EQUATE('Request type not recognized.')
+PmsErrorDescription21              EQUATE('Could not insert guest names.')
+PmsErrorDescription22              EQUATE('Failed Insertion or Modification of multi-room reservation.')
+PmsErrorDescription23              EQUATE('Failed Insertion or Modification, could not add services.')
+PmsErrorDescription24              EQUATE('Failed Insertion or Modification, could not add rate exceptions or reservation notes.')
+PmsErrorDescription25              EQUATE('Could not insert payment type details.')
+PmsErrorDescription26              EQUATE('Could not insert billing and other profiles details.')
+PmsErrorDescription27              EQUATE('Error on internal database, could not cancel reservation with PMS ID.')
+PmsErrorDescription28              EQUATE('Cannot modify a reservation that is already canceled.')
+PmsErrorDescription29              EQUATE('Could not set the date as it is closed.')
+PmsErrorDescription30              EQUATE('No rooms available for selected dates.')
+PmsErrorDescription31              EQUATE('No roomType available for selected dates.')
+PmsErrorDescription32              EQUATE('Failed Insertion or Modification, could not add rate plans.')
+PmsErrorDescription33              EQUATE('Error on internal database, Could not delete block definition. when canceling reservation.')
+PmsErrorDescription34              EQUATE('Could not insert rate definitions on v19.0')
+PmsErrorDescription35              EQUATE('Reservation is in the past.')
+[END]
+EMBED %GlobalMap
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+INCLUDE('CWUTIL.INC'),ONCE
+MODULE('')
+    errno(),*SIGNED,NAME('__errno__')   !prototype built-in error flag
+END
+[END]
+EMBED %BeforeGlobalDataUser
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+!--Groups Types
+inhotelGroup        GROUP,TYPE
+path                    CSTRING(255)
+pathBackup              CSTRING(255)
+marketSegment           STRING(6)
+userPMS                 STRING(2)
+Version                 BYTE
+                    END
+
+connectionGroup     GROUP,TYPE
+postURL                 CSTRING(255)
+HTTPVersion             CSTRING(255)
+Accept_                 CSTRING(255)
+ContentType             CSTRING(255)
+AsyncOpenTimeOut        LONG(1200)
+InActiveTimeout         LONG(3000)
+CertificateFile         CSTRING(255)
+PrivateKeyFile          CSTRING(255)
+DontVerifyRemoteCertificateCommonName   LONG
+DontVerifyRemoteCertificateWithCARoot   LONG
+CARootFile              CSTRING(255)
+SSLMethod               STRING(8)
+SSLCipher               STRING(255)
+                    END
+credentialsGroup    GROUP,TYPE
+requestorID             STRING(20)
+username                STRING(60)
+password                STRING(60)
+hotelCode               STRING(20)
+                    END
+monitorSMGroup      GROUP,TYPE
+lapsePMS                LONG
+lapseCHM                LONG
+                    END
+
+
+!--Este grupo se utiliza para llenar QAvailability
+!availabilityGroup   GROUP,TYPE
+!bookingLimit            STRING(10)
+!dateStart               STRING(10)
+!dateEnd                 STRING(10)
+!invTypeCode             STRING(10)
+!                    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+!--Queues types
+TiposDeCuartoQueue  QUEUE,TYPE
+codigo                  STRING(10)
+cantidad                LONG
+                    END
+inventoryQueue      QUEUE,TYPE
+roomType                STRING(10)
+date                    STRING(10)
+ttlGtz                  LONG
+ttlNGtz                 LONG
+ttlFS                   LONG
+ttlDisp                 LONG
+                    END
+availabilityQueue   QUEUE,TYPE
+bookingLimit            LONG,NAME('BookingLimit')
+dateStart               STRING(10),NAME('Start')
+dateEnd                 STRING(10),NAME('End')
+invTypeCode             STRING(10),NAME('InvTypeCode')
+                    END
+LogDispQueue        QUEUE,TYPE
+tipo                    STRING(6)
+fecha                   STRING(8)
+tgrz                    LONG
+tngrz                   LONG
+tfs                     LONG
+                    END
+!--Guarantee
+GuaranteeCardCode   EQUATE(1)
+GuaranteeCardNumber EQUATE(2)
+GuaranteeExpireDate EQUATE(3)
+
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+!--Queues Types HotelReservation
+HotelReservationQueue       QUEUE,TYPE
+CreateDateTime                  STRING(25)
+LastModifyDateTime              STRING(20)
+ResStatus                       STRING(10)
+                            END
+UniqueIDQueue       QUEUE,TYPE
+ID                      STRING(20)
+ID_Context              string(20)
+Type                    STRING(2)
+                    END
+SourceQueue         QUEUE,TYPE
+RequestorIDID           STRING(20)
+RequestorIDType         STRING(3)
+BookingChannelPrimary   STRING(5)
+BookingChannelType      STRING(5)
+CompanyName             STRING(20)
+CompanyNameCode         STRING(3)
+                    END
+RoomStayQueue       QUEUE,TYPE
+StayId                  STRING(20)
+MarketCode              STRING(10)
+PromotionCode           STRING(10)
+SourceOfBusiness        STRING(10)
+RoomTypeRoomType        STRING(60)
+RoomTypeRoomTypeCode    STRING(10)
+RoomTypeNonSmoking      STRING(10)
+RoomTypeConfiguration   STRING(60)
+RoomDescriptionText     STRING(60)
+RatePlanDescriptionText STRING(40)
+TimeSpanEnd             STRING(10)
+TimeSpanStart           STRING(10)
+RoomStayTotalAmountAfterTax     STRING(20)
+RoomStayTotalAmountBeforeTax    STRING(20)
+RoomStayTotalCurrencyCode       STRING(3)
+RoomStayTotalTaxesAmount        STRING(20)
+CommentText             STRING(255)
+HotelCode               STRING(20)
+                    END
+ResGuestRPHQueue    QUEUE,TYPE
+StayId                  STRING(20)
+RPH                     STRING(1)
+                    END
+ServiceRPHQueue     QUEUE,TYPE
+StayId                  STRING(20)
+RPH                     STRING(1)
+                    END
+RoomRateQueue       QUEUE,TYPE
+StayId                  STRING(20)
+RoomRateRoomTypeCode    STRING(10)
+RoomRateNumberOfUnits   STRING(10)
+RoomRateRatePlanCode    STRING(10)
+EffectiveDate           STRING(10)
+ExpireDate              STRING(10)
+RateTimeUnit            STRING(10)
+UnitMultiplier          STRING(3)
+BaseAmountAfterTax      STRING(15)
+BaseAmountBeforeTax     STRING(15)
+BaseCurrencyCode        STRING(3)
+BaseTaxesAmount         STRING(20)
+TotalAmountAfterTax     STRING(15)
+TotalAmountBeforeTax    STRING(15)
+TotalCurrencyCode       STRING(3)
+TotalTaxesAmount        STRING(20)
+                    END
+RatePlansQueue      QUEUE,TYPE
+StayId                  STRING(20)
+RatePlanEffectiveDate   STRING(10)
+RatePlanExpireDate      STRING(10)
+RatePlanRatePlanCode    STRING(10)
+RatePlanName            STRING(20)
+RatePlanDescriptionText STRING(255)
+AdditionalDetailCode    STRING(20)
+AdditionalDetailType    STRING(10)
+AdditionalDetailDetailDescriptionText   STRING(255),DIM(3)
+                    END
+GuestCountsQueue    QUEUE,TYPE
+StayId                  STRING(20)
+AgeQualifyingCode       STRING(2)
+Count                   STRING(2)
+                    END
+ResGuestQueue       QUEUE,TYPE
+ResGuestRPH             STRING(2)
+ArrivalTime             STRING(10)
+Age                     STRING(3)
+PrimaryIndicator        STRING(5)
+CommentName             STRING(20)
+CommentText             STRING(100)
+ProfileType             STRING(2) !--1: Customer,2: GDS, 3: Corporation, 4: TravelAgent, 5: Wholesaler, 21: Arranger
+NamePrefix              STRING(10)
+GivenName               STRING(40)
+MiddleName              STRING(40)
+Surname                 STRING(40)
+PhoneNumber             STRING(20),DIM(4)
+PhoneUseType            STRING(2),DIM(4)
+PhoneTechType           STRING(2),DIM(4)
+Email                   STRING(100)
+AddressLine             STRING(100),DIM(9)
+CityName                STRING(20)
+PostalCode              STRING(10)
+StateProv               STRING(20)
+CountryName             STRING(20)
+CompanyName             STRING(40)
+                    END
+!--Guarantee----------------------
+GuaranteeQueue      QUEUE,TYPE
+CardCode                STRING(2)
+CardType                STRING(1)
+CardNumber              STRING(20)
+ExpireDate              STRING(4)
+MaskedCardNumber        STRING(20)
+CardHolderName          STRING(60)
+
+CommentName             STRING(40),DIM(3)
+CommentText             STRING(255),DIM(3)
+                    END
+
+ResGlobalInfoQueue  QUEUE,TYPE
+HotelCode               STRING(20)
+ResID_Type              STRING(2),DIM(2)
+ResID_Value             STRING(20),DIM(2)
+!--Fees---------------------------
+FeesFeeAmount           STRING(20)
+FeeCode                 STRING(10)
+FeeTaxInclusive         STRING(5)
+FeeType                 STRING(10)
+FeeTaxesAmount          STRING(20)
+FeeDescriptionName      STRING(80)
+FeeDescriptionText      STRING(255)
+!--GuaranteePayment--------------
+GuaranteePaymentAmountPercentAmount     STRING(20)
+GuaranteePaymentAmountPercentCurrencyCode       STRING(3),NAME('AmountPercentCurrencyCode')
+GuaranteePaymentAmountPercentPercent    STRING(20),NAME('AmountPercentPercent')
+GuaranteePaymentAmountPercentTaxInclusive       STRING(20),NAME('AmountPercentTaxInclusive')
+GuaranteePaymentDescriptionText STRING(255)
+!--Total-------------------------
+TotalCurrencyCode       STRING(3)
+TotalAmountAfterTax     STRING(20)
+TotalAmountBeforeTax    STRING(20)
+TotalTaxesAmount        STRING(20)
+!--Profiles
+ProfileType             STRING(2) !--1: Customer,2: GDS, 3: Corporation, 4: TravelAgent, 5: Wholesaler, 21: Arranger
+NamePrefix              STRING(10)
+GivenName               STRING(40)
+MiddleName              STRING(40)
+Surname                 STRING(40)
+PhoneNumber             STRING(20),DIM(4)
+PhoneUseType            STRING(2),DIM(4)
+PhoneTechType           STRING(2),DIM(4)
+Email                   STRING(100)
+AddressLine             STRING(100),DIM(9)
+CityName                STRING(20)
+PostalCode              STRING(10)
+StateProv               STRING(20)
+CountryName             STRING(20)
+CompanyName             STRING(40)
+!--------------------------------
+ResGlobalInfoCommentsCommentText        STRING(255),DIM(3)
+                    END
+ServicesQueue       QUEUE,TYPE
+ServiceRPH              STRING(10)
+ServiceInventoryCode    STRING(10)
+Inclusive               STRING(10)
+Quantity                STRING(10)
+ID                      STRING(20)
+ID_Context              STRING(20)
+Type                    STRING(10)
+BaseCurrencyCode        STRING(3)
+BaseAmountAfterTax      STRING(20)
+BaseAmountBeforeTax     STRING(20)
+BaseTaxesAmount         STRING(20)
+TotalCurrencyCode       STRING(3)
+TotalAmountAfterTax     STRING(20)
+TotalAmountBeforeTax    STRING(20)
+TotalTaxesAmount        STRING(20)
+Text                    STRING(40)
+TimeSpanStart           STRING(10)
+TimeSpanEnd             STRING(10)
+                    END
+NotifReportSuccessQueue     QUEUE,TYPE
+DateTimeUpdate                  STRING(19)
+ResStatus                       STRING(6)
+uniqueID14                      STRING(20)
+uniqueID16                      STRING(20)
+pmsID                           LONG
+Success                         BYTE
+                            END
+NotifReportErrorQueue       QUEUE,TYPE
+DateTimeUpdate                  STRING(19)
+ResStatus                       STRING(6)
+uniqueID16                      STRING(20)
+ErrorType                       STRING(10)
+ErrorCode                       STRING(10)
+ErrorDescripcion                STRING(255)
+                            END
+[END]
+EMBED %BeforeGlobalIncludes
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+MaxStringSize       EQUATE(2000000)
+MaxCstringSize      EQUATE(2000000)
+MAXDRES             EQUATE(390)
+Inhotelv19_0        EQUATE(1) !--Inhotel Versión 19.0 o Superior
+Inhotelv19_5        EQUATE(2) !--Inhotel Versión 19.5 o Superior
+[END]
+[END]
+[END]

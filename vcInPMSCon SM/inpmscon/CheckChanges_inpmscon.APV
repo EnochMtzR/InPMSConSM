@@ -1,0 +1,142 @@
+[MODULE]
+NAME 'CheckChanges_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME CheckChanges
+PROTOTYPE '(*HRES:Record pRecordPrevious,*HRES:Record pRecordCurrent,long pRequest)'
+PARAMETERS '(*HRES:Record pRecordPrevious,*HRES:Record pRecordCurrent,long pRequest)'
+[COMMON]
+FROM ABC Source
+[PROMPTS]
+%GenerateOpenClose LONG  (0)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+CASE pRequest
+OF 1
+    fbit_gen(11,pRecordCurrent.SRESNUMRES, ' ',' ',' ')
+OF 2
+    IF pRecordPrevious.SRESCODCRE <> pRecordCurrent.SRESCODCRE
+        fbit_gen(2, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESCODCRE, pRecordCurrent.SRESCODCRE)
+    END
+    if pRecordPrevious.SRESESTRES <> pRecordCurrent.SRESESTRES
+        CASE pRecordCurrent.SRESESTRES
+        OF '0'
+            fbit_gen(13, pRecordCurrent.SRESNUMRES, ' ',' ', ' ')
+        OF '1'
+            fbit_gen(15, pRecordCurrent.SRESNUMRES, ' ',' ', ' ')
+        OF '2'
+            fbit_gen(14, pRecordCurrent.SRESNUMRES, ' ',' ', ' ')
+        OF '3'
+            fbit_gen(12, pRecordCurrent.SRESNUMRES, ' ',' ', ' ')
+
+        END
+    END
+    if pRecordPrevious.SRESFECLLE <> pRecordCurrent.SRESFECLLE
+        fbit_gen(19, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESFECLLE, pRecordCurrent.SRESFECLLE)
+    end
+    if pRecordPrevious.SRESFECSAL <> pRecordCurrent.SRESFECSAL
+        fbit_gen(20, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESFECSAL, pRecordCurrent.SRESFECSAL)
+    end
+    if pRecordPrevious.IRESCANCTO <> pRecordCurrent.IRESCANCTO
+        fbit_gen(21, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.IRESCANCTO, pRecordCurrent.IRESCANCTO)
+    end
+    if pRecordPrevious.IRESNUMADU <> pRecordCurrent.IRESNUMADU
+        fbit_gen(22, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.IRESNUMADU, pRecordCurrent.IRESNUMADU)
+    end
+    IF pRecordPrevious.RRESIMPTAR <> pRecordCurrent.RRESIMPTAR
+        fbit_gen(23, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.RRESIMPTAR, pRecordCurrent.RRESIMPTAR)
+    END
+    IF pRecordPrevious.SRESNOMHUE <> pRecordCurrent.SRESNOMHUE
+        fbit_gen(24, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESNOMHUE,pRecordCurrent.SRESNOMHUE)
+    END
+    IF pRecordPrevious.SRESOTRNOM <> pRecordCurrent.SRESOTRNOM
+        fbit_gen(24, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESOTRNOM,pRecordCurrent.SRESOTRNOM)
+    END
+    IF pRecordPrevious.SRESNUMCTO <> pRecordCurrent.SRESNUMCTO
+        fbit_gen(25, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESNUMCTO,pRecordCurrent.SRESNUMCTO)
+    END
+    if pRecordPrevious.SRESTIPCTO <> pRecordCurrent.SRESTIPCTO
+        fbit_gen(26, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESTIPCTO, pRecordCurrent.SRESTIPCTO)
+    end
+    IF pRecordPrevious.SRESNOTAS1 <> pRecordCurrent.SRESNOTAS1
+        fbit_gen(34,pRecordCurrent.SRESNUMRES,' ',pRecordPrevious.SRESNOTAS1,pRecordCurrent.SRESNOTAS1)
+    END
+    IF pRecordPrevious.SRESNOTAS2 <> pRecordCurrent.SRESNOTAS2
+        fbit_gen(34,pRecordCurrent.SRESNUMRES,' ',pRecordPrevious.SRESNOTAS2,pRecordCurrent.SRESNOTAS2)
+    END
+    IF pRecordPrevious.SRESNOTAS3 <> pRecordCurrent.SRESNOTAS3
+        fbit_gen(34,pRecordCurrent.SRESNUMRES,' ',pRecordPrevious.SRESNOTAS3,pRecordCurrent.SRESNOTAS3)
+    END
+    IF pRecordPrevious.SRESNOTASD <> pRecordCurrent.SRESNOTASD
+        fbit_gen(34,pRecordCurrent.SRESNUMRES,' ',pRecordPrevious.SRESNOTASD,pRecordCurrent.SRESNOTASD)
+    END
+    IF pRecordPrevious.SRESCODTAR <> pRecordCurrent.SRESCODTAR
+        fbit_gen(35,pRecordCurrent.SRESNUMRES,' ',pRecordPrevious.SRESCODTAR,pRecordCurrent.SRESCODTAR)
+    END
+    IF pRecordPrevious.SRESCVEPLA <> pRecordCurrent.SRESCVEPLA
+        fbit_gen(36,pRecordCurrent.SRESNUMRES,' ',pRecordPrevious.SRESCVEPLA,pRecordCurrent.SRESCVEPLA)
+    END
+    IF pRecordPrevious.RRESIMPPLA <> pRecordCurrent.RRESIMPPLA
+        fbit_gen(37,pRecordCurrent.SRESNUMRES,' ',pRecordPrevious.RRESIMPPLA,pRecordCurrent.RRESIMPPLA)
+    END
+    IF pRecordPrevious.IRESNUMNIN <> pRecordCurrent.IRESNUMNIN
+        fbit_gen(38, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.IRESNUMNIN, pRecordCurrent.IRESNUMNIN)
+    END
+    IF pRecordPrevious.SRESSEGMER <> pRecordCurrent.SRESSEGMER
+        fbit_gen(56, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESSEGMER, pRecordCurrent.SRESSEGMER)
+    END
+    IF pRecordPrevious.SRESSUBSEG <> pRecordCurrent.SRESSUBSEG
+        fbit_gen(57, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESSUBSEG, pRecordCurrent.SRESSUBSEG)
+    END
+    IF pRecordPrevious.SRESSUBSEG <> pRecordCurrent.SRESSUBSEG
+        fbit_gen(57, pRecordCurrent.SRESNUMRES, ' ',pRecordPrevious.SRESSUBSEG, pRecordCurrent.SRESSUBSEG)
+    END
+OF 3
+    fbit_gen(12,pRecordCurrent.SRESNUMRES, ' ',' ',' ')
+END
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[CALLS]
+fbit_gen
+[END]

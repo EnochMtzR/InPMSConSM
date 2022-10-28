@@ -1,0 +1,759 @@
+[MODULE]
+NAME 'FormPMSCFG_Connection_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME FormPMSCFG_Connection
+[COMMON]
+FROM ABC Form
+CATEGORY 'Form'
+[DATA]
+ActionMessage            CSTRING(40)
+!!> GUID('e9352822-948d-4a6a-a879-ca887c85b328')
+[SCREENCONTROLS]
+! PROMPT('GC onnection Local:'),USE(?GConnectionLocal:Prompt)
+! ENTRY(@s20),USE(GConnectionLocal)
+[REPORTCONTROLS]
+! STRING(@s20),USE(GConnectionLocal)
+GConnectionLocal         GROUP(ConnectionGroup),PRE(GCOL)
+!!> GUID('abcaa061-e911-49ca-bc30-28bd0f0e0673'),PROMPT('GC onnection Local:'),HEADER('GC onnection Local'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('83f3badc-f45d-4ba6-8333-33837f28a7c2')
+[SCREENCONTROLS]
+! PROMPT('GC redentials Local:'),USE(?GCredentialsLocal:Prompt)
+! ENTRY(@s20),USE(GCredentialsLocal)
+[REPORTCONTROLS]
+! STRING(@s20),USE(GCredentialsLocal)
+GCredentialsLocal        GROUP(credentialsGroup),PRE(GCRL)
+!!> GUID('32863d24-ee06-4b63-933e-0fffdd2064c6'),PROMPT('GC redentials Local:'),HEADER('GC redentials Local'),PICTURE(@s20),TYPEMODE(INS)
+                         END
+!!> GUID('4ff80add-d57e-46c4-a361-22771d91c148')
+[FILES]
+[PRIMARY]
+pmsCfg
+[INSTANCE]
+1
+[PROMPTS]
+%WindowOperationMode DEFAULT  ('Use WINDOW setting')
+%INISaveWindow LONG  (0)
+%ClassItem UNIQUE DEFAULT  ('Default', 'WindowToolbar')
+%DefaultBaseClassType DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('WindowManager')
+WHEN  ('WindowToolbar') ('ToolbarClass')
+
+%ActualDefaultBaseClassType DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('')
+WHEN  ('WindowToolbar') ('')
+
+%ClassLines DEPEND %ClassItem MULTI DEFAULT TIMES 1
+WHEN  ('Default') ('Ask {20}PROCEDURE(),DERIVED', 'Init {19}PROCEDURE(),BYTE,PROC,DERIVED', |
+  'Kill {19}PROCEDURE(),BYTE,PROC,DERIVED', 'Run {20}PROCEDURE(),BYTE,PROC,DERIVED', |
+  'TakeAccepted {11}PROCEDURE(),BYTE,PROC,DERIVED', 'TakeCompleted {10}PROCEDURE(),BYTE,PROC,DERIVED', |
+  'TakeEvent {14}PROCEDURE(),BYTE,PROC,DERIVED', 'TakeWindowEvent        PROCEDURE(),BYTE,PROC,DERIVED')
+
+%ReturnValue FIELD  ()
+%ProcedureOneInstance LONG  (0)
+%ProcedureDisableEnhanceFocus LONG  (0)
+%ProcedureUseEnterInsteadTabOverride LONG  (0)
+%WindowUseEnterInsteadTab LONG  (1)
+%ProcedureUseEnterInsteadTabExcludeListCombo LONG  (0)
+%ProcedureUseEnterInsteadTabEnableNextTabStop LONG  (0)
+%ProcedureUseEnterInsteadTabExcludeG LONG  (1)
+%WindowUseEnterInsteadTabExclude MULTI DEFAULT  ()
+%GlobalObject DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('NO')
+WHEN  ('WindowToolbar') ('NO')
+
+%ThisObjectName DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('ThisWindow')
+WHEN  ('WindowToolbar') ('Toolbar')
+
+%UseDefaultABCBaseClass DEPEND %ClassItem LONG TIMES 2
+WHEN  ('Default') (1)
+WHEN  ('WindowToolbar') (1)
+
+%UseABCBaseClass DEPEND %ClassItem LONG TIMES 2
+WHEN  ('Default') (1)
+WHEN  ('WindowToolbar') (1)
+
+%ABCBaseClass DEPEND %ClassItem DEFAULT TIMES 2
+WHEN  ('Default') ('ADOBlob')
+WHEN  ('WindowToolbar') ('ADOBlob')
+
+%ExtBaseClass DEPEND %ClassItem DEFAULT TIMES 0
+
+%BaseClassIncludeFile DEPEND %ClassItem DEFAULT TIMES 0
+
+%DeriveFromBaseClass DEPEND %ClassItem LONG TIMES 2
+WHEN  ('Default') (0)
+WHEN  ('WindowToolbar') (0)
+
+%NewMethods DEPEND %ClassItem MULTI LONG TIMES 0
+
+%NewMethodName DEPEND %NewMethods DEFAULT TIMES 0
+
+%NewMethodPrototype DEPEND %NewMethods DEFAULT TIMES 0
+
+%NewClassPropertyItems DEPEND %ClassItem MULTI LONG TIMES 0
+
+%NewClassProperty DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataType DEPEND %NewClassPropertyItems DEFAULT TIMES 1
+WHEN  ('WindowToolbar')TIMES 0
+
+%NewClassOtherType DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataIsRef DEPEND %NewClassPropertyItems LONG TIMES 0
+
+%NewClassDataSize DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim1 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim2 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim3 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim4 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%ClassMethods DEPEND %ClassItem MULTI LONG TIMES 0
+
+%ClassMethodName DEPEND %ClassMethods DEFAULT TIMES 0
+
+%ClassMethodPrototype DEPEND %ClassMethods DEFAULT TIMES 0
+
+%ClassPropertyItems DEPEND %ClassItem MULTI LONG TIMES 0
+
+%ClassProperty DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataType DEPEND %ClassPropertyItems DEFAULT TIMES 1
+WHEN  ('WindowToolbar')TIMES 0
+
+%ClassOtherType DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataIsRef DEPEND %ClassPropertyItems LONG TIMES 0
+
+%ClassDataSize DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim1 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim2 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim3 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim4 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%WindowStyles MULTI LONG  ()
+%WindowStyleFontName DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontNameVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontNameIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleFontSize DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontSizeVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontSizeIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleFontStyle DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontStyleVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontStyleIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleFontColor DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleFontCharSet DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleForegroundNormal DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleForegroundNormalVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleForegroundNormalIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleBackgroundNormal DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleBackgroundNormalVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleBackgroundNormalIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleForegroundSelected DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleForegroundSelectedVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleForegroundSelectedIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleBackgroundSelected DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleBackgroundSelectedVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStyleBackgroundSelectedIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStylePicture DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStylePictureVariable DEPEND %WindowStyles DEFAULT TIMES 0
+
+%WindowStylePictureIsVariable DEPEND %WindowStyles LONG TIMES 0
+
+%WindowStyleOtherListboxes MULTI DEFAULT  ()
+%ProcedureAutoBindFields MULTI LONG  ()
+%ProcedureAutoBindField DEPEND %ProcedureAutoBindFields DEFAULT TIMES 0
+
+%ProcedureAutoBindFieldTPL DEPEND %ProcedureAutoBindFields DEFAULT TIMES 0
+
+%ProcedureAutoBindProcedures MULTI LONG  ()
+%ProcedureAutoBindProcedure DEPEND %ProcedureAutoBindProcedures DEFAULT TIMES 0
+
+%ProcedureAutoBindProcedureTPL DEPEND %ProcedureAutoBindProcedures DEFAULT TIMES 0
+
+%ProcedureAutoBindFieldsIgnored MULTI LONG  ()
+%ProcedureAutoBindFieldIgnored DEPEND %ProcedureAutoBindFieldsIgnored DEFAULT TIMES 0
+
+%ProcedureAutoBindProceduresIgnored MULTI LONG  ()
+%ProcedureAutoBindProcedureIgnored DEPEND %ProcedureAutoBindProceduresIgnored DEFAULT TIMES 0
+
+%ProcedureAutoBindValidToAddField LONG  (0)
+%ProcedureUserBindFields MULTI LONG  ()
+%ProcedureUserBindField DEPEND %ProcedureUserBindFields FIELD TIMES 0
+
+%ProcedureAutoBindFieldIgnore DEPEND %ProcedureAutoBindFields LONG TIMES 0
+
+%ProcedureUserBindProcedures MULTI LONG  ()
+%ProcedureUserBindProcedure DEPEND %ProcedureUserBindProcedures PROCEDURE TIMES 0
+
+%ProcedureAutoBindProcedureIgnore DEPEND %ProcedureAutoBindProcedures LONG TIMES 0
+
+%ProcedureUserBindExpressions MULTI LONG  ()
+%ProcedureUserBindExpressionName DEPEND %ProcedureUserBindExpressions DEFAULT TIMES 0
+
+%ProcedureUserBindExpression DEPEND %ProcedureUserBindExpressions DEFAULT TIMES 0
+
+%PreserveVarsLoc MULTI LONG  ()
+%PreserveVarLoc DEPEND %PreserveVarsLoc DEFAULT TIMES 0
+
+%ExtUITabIcon DEPEND %Control DEFAULT TIMES 0
+
+%ExtUITabStyleOverrideGlobal DEPEND %Control LONG TIMES 0
+
+%ExtUITabStyle DEPEND %Control DEFAULT TIMES 2
+WHEN  ('') ('Default')
+WHEN  ('?SHEET1') ('Default')
+
+%FieldGradientColorType DEPEND %Control DEFAULT TIMES 1
+WHEN  ('') ('Off')
+
+%FieldGradientColorTypeVariable DEPEND %Control DEFAULT TIMES 1
+WHEN  ('') ('')
+
+%FieldGradientColorTypeIsVariable DEPEND %Control LONG TIMES 1
+WHEN  ('') (0)
+
+%FieldGradientColorFrom DEPEND %Control LONG TIMES 1
+WHEN  ('') (-1)
+
+%FieldGradientColorFromVariable DEPEND %Control DEFAULT TIMES 0
+
+%FieldGradientColorFromIsVariable DEPEND %Control LONG TIMES 1
+WHEN  ('') (0)
+
+%FieldGradientColorTo DEPEND %Control LONG TIMES 1
+WHEN  ('') (-1)
+
+%FieldGradientColorToVariable DEPEND %Control DEFAULT TIMES 0
+
+%FieldGradientColorToIsVariable DEPEND %Control LONG TIMES 1
+WHEN  ('') (0)
+
+%ButtonAction DEPEND %Control DEFAULT TIMES 3
+WHEN  ('') ('No Special Action')
+WHEN  ('?Cancel') ('No Special Action')
+WHEN  ('?OK') ('No Special Action')
+
+%ButtonRunName DEPEND %Control DEFAULT TIMES 0
+
+%ButtonRunParameters DEPEND %Control DEFAULT TIMES 0
+
+%ButtonProcedure DEPEND %Control PROCEDURE TIMES 0
+
+%ButtonThread DEPEND %Control LONG TIMES 0
+
+%ButtonThreadStack DEPEND %Control DEFAULT TIMES 3
+WHEN  ('') ('25000')
+WHEN  ('?Cancel') ('25000')
+WHEN  ('?OK') ('25000')
+
+%ButtonParameters DEPEND %Control DEFAULT TIMES 0
+
+%ButtonReturnValueAssignment DEPEND %Control FIELD TIMES 0
+
+%ButtonReturnValueReferenceAssign DEPEND %Control LONG TIMES 0
+
+%ButtonRequest DEPEND %Control DEFAULT TIMES 3
+WHEN  ('') ('None')
+WHEN  ('?Cancel') ('None')
+WHEN  ('?OK') ('None')
+
+%ButtonThreadParameters DEPEND %Control DEFAULT TIMES 0
+
+%ButtonThreadReturnValueAssignment DEPEND %Control FIELD TIMES 0
+
+%PreLookupKey DEPEND %Control KEY TIMES 0
+
+%PreLookupField DEPEND %Control COMPONENT TIMES 0
+
+%PreLookupProcedure DEPEND %Control PROCEDURE TIMES 0
+
+%PreLookupProcedureParameters DEPEND %Control DEFAULT TIMES 0
+
+%PostLookupKey DEPEND %Control KEY TIMES 0
+
+%PostLookupField DEPEND %Control COMPONENT TIMES 0
+
+%PostLookupProcedure DEPEND %Control PROCEDURE TIMES 0
+
+%PostLookupProcedureParameters DEPEND %Control DEFAULT TIMES 0
+
+%PostLookupDuringValidate DEPEND %Control LONG TIMES 15
+WHEN  ('') (1)
+WHEN  ('?GConnectionLocal.Accept_') (1)
+WHEN  ('?GConnectionLocal.AsyncOpenTimeOut') (1)
+WHEN  ('?GConnectionLocal.CARootFile') (1)
+WHEN  ('?GConnectionLocal.CertificateFile') (1)
+WHEN  ('?GConnectionLocal.HTTPVersion') (1)
+WHEN  ('?GConnectionLocal.PrivateKeyFile') (1)
+WHEN  ('?GConnectionLocal.SSLCipher') (1)
+WHEN  ('?GConnectionLocal.postURL') (1)
+WHEN  ('?GConnectionLocal:ContentType') (1)
+WHEN  ('?GConnectionLocal:InActiveTimeout') (1)
+WHEN  ('?GCredentialsLocal.hotelCode') (1)
+WHEN  ('?GCredentialsLocal.password') (1)
+WHEN  ('?GCredentialsLocal.requestorID') (1)
+WHEN  ('?GCredentialsLocal.username') (1)
+
+%LookupAssign DEPEND %Control MULTI LONG TIMES 0
+
+%MoreTarget DEPEND %LookupAssign FIELD TIMES 0
+
+%MoreField DEPEND %LookupAssign DEFAULT TIMES 0
+
+%ForceWindowRefresh DEPEND %Control LONG TIMES 0
+
+%CheckedAssigns DEPEND %Control MULTI LONG TIMES 0
+
+%CheckedAssignVariable DEPEND %CheckedAssigns FIELD TIMES 0
+
+%CheckedAssignValue DEPEND %CheckedAssigns DEFAULT TIMES 0
+
+%CheckedHides DEPEND %Control MULTI LONG TIMES 0
+
+%CheckedControl DEPEND %CheckedHides DEFAULT TIMES 0
+
+%CheckedControlAction DEPEND %CheckedHides DEFAULT TIMES 1
+WHEN  ('')TIMES 0
+
+%CheckedEnables DEPEND %Control MULTI LONG TIMES 0
+
+%CheckedControl1 DEPEND %CheckedEnables DEFAULT TIMES 0
+
+%CheckedControl1Action DEPEND %CheckedEnables DEFAULT TIMES 1
+WHEN  ('')TIMES 0
+
+%UncheckedAssigns DEPEND %Control MULTI LONG TIMES 0
+
+%UncheckedAssignVariable DEPEND %UncheckedAssigns FIELD TIMES 0
+
+%UncheckedAssignValue DEPEND %UncheckedAssigns DEFAULT TIMES 0
+
+%UnCheckedHides DEPEND %Control MULTI LONG TIMES 0
+
+%UnCheckedControl DEPEND %UnCheckedHides DEFAULT TIMES 0
+
+%UnCheckedControlAction DEPEND %UnCheckedHides DEFAULT TIMES 1
+WHEN  ('')TIMES 0
+
+%UnCheckedEnables DEPEND %Control MULTI LONG TIMES 0
+
+%UnCheckedControl1 DEPEND %UnCheckedEnables DEFAULT TIMES 0
+
+%UnCheckedControl1Action DEPEND %UnCheckedEnables DEFAULT TIMES 1
+WHEN  ('')TIMES 0
+
+%CheckedDisables DEPEND %Control MULTI LONG TIMES 0
+
+%CheckedDisableControl DEPEND %CheckedDisables DEFAULT TIMES 0
+
+%CheckedDisableControlAction DEPEND %CheckedDisables DEFAULT TIMES 1
+WHEN  ('')TIMES 0
+
+%UnCheckedDisables DEPEND %Control MULTI LONG TIMES 0
+
+%UnCheckedDisableControl DEPEND %UnCheckedDisables DEFAULT TIMES 0
+
+%UnCheckedDisableControlAction DEPEND %UnCheckedDisables DEFAULT TIMES 1
+WHEN  ('')TIMES 0
+
+%ActiveImageEnable DEPEND %Control LONG TIMES 0
+
+%AIObjectName DEPEND %Control DEFAULT TIMES 1
+WHEN  ('') ('AIBtn0')
+
+%AIEnableMimicControl DEPEND %Control LONG TIMES 1
+WHEN  ('') (1)
+
+%AIMimicControl DEPEND %Control DEFAULT TIMES 1
+WHEN  ('') ('?OK')
+
+%AIImgRound DEPEND %Control LONG TIMES 0
+
+%AIOverrideImg DEPEND %Control DEFAULT TIMES 0
+
+%AIOverrideImgVariable DEPEND %Control DEFAULT TIMES 0
+
+%AIOverrideImgIsVariable DEPEND %Control LONG TIMES 1
+WHEN  ('') (0)
+
+%AIDisableImg DEPEND %Control DEFAULT TIMES 0
+
+%AIDisableImgVariable DEPEND %Control DEFAULT TIMES 0
+
+%AIDisableImgIsVariable DEPEND %Control LONG TIMES 1
+WHEN  ('') (0)
+
+%AIHotImg DEPEND %Control DEFAULT TIMES 0
+
+%AIHotImgVariable DEPEND %Control DEFAULT TIMES 0
+
+%AIHotImgIsVariable DEPEND %Control LONG TIMES 1
+WHEN  ('') (0)
+
+%AIPressedImg DEPEND %Control DEFAULT TIMES 0
+
+%AIPressedImgVariable DEPEND %Control DEFAULT TIMES 0
+
+%AIPressedImgIsVariable DEPEND %Control LONG TIMES 1
+WHEN  ('') (0)
+
+[EMBED]
+EMBED %WindowManagerMethodCodeSection
+[INSTANCES]
+WHEN 'Init'
+[INSTANCES]
+WHEN '(),BYTE'
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 300
+PROPERTY:END
+GlobalRequest = ChangeRecord
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 7501
+PROPERTY:END
+CLEAR(cfg:Record)
+cfg:id = 'Connection'
+IF Access:pmsCfg.TryFetch(cfg:id_pk) = Level:Benign
+    !--Parámetros de conexión
+    GConnectionLocal.postURL = cfg:data1
+    GConnectionLocal.HTTPVersion = cfg:data2[1:20]
+    GConnectionLocal.Accept_ = cfg:data3
+    GConnectionLocal.ContentType = cfg:data4[1:100]
+    GConnectionLocal.AsyncOpenTimeOut = cfg:data2[21:40]
+    GConnectionLocal.InActiveTimeout = cfg:data2[41:60]
+    GConnectionLocal.CertificateFile = cfg:data5
+    GConnectionLocal.PrivateKeyFile = cfg:data6
+    GConnectionLocal.DontVerifyRemoteCertificateCommonName = cfg:data2[62]
+    GConnectionLocal.DontVerifyRemoteCertificateWithCARoot = cfg:data2[63]
+    GConnectionLocal.CARootFile = cfg:data7
+    GConnectionLocal.SSLMethod = cfg:data2[71:80]
+    !--Credenciales
+    GCredentialsLocal.RequestorID = cfg:data8[1:20]
+    GCredentialsLocal.Username = cfg:data8[21:80]
+    GCredentialsLocal.Password = cfg:data8[81:160]
+    GCredentialsLocal.HotelCode = cfg:data8[161:180]
+ELSE
+    GlobalErrors.SetErrors()
+    IF GlobalErrors.GetErrorcode() = 35
+        IF Access:pmsCfg.TryInsert() <> Level:Benign
+            GlobalErrors.SetErrors()
+            MESSAGE('No fue posible insertar registro de configuración de la conexión.|Error: '&GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')','Aviso!')
+            RETURN Level:Fatal
+        END
+    ELSE
+        MESSAGE('No fue posible obtener registro de configuración de la conexión.|Error: '&GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')','Aviso!')
+        RETURN Level:Fatal
+    END
+END
+[END]
+[END]
+WHEN 'TakeCompleted'
+[INSTANCES]
+WHEN '(),BYTE'
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 2800
+PROPERTY:END
+!--Conexión
+cfg:data1 = CLIP(GConnectionLocal.postURL)
+cfg:data2[1:20] = CLIP(GConnectionLocal.HTTPVersion)
+cfg:data3 =CLIP(GConnectionLocal.Accept_)
+cfg:data4[1:100] = CLIP(GConnectionLocal.ContentType)
+cfg:data2[21:40] = CLIP(GConnectionLocal.AsyncOpenTimeOut)
+cfg:data2[41:60] = CLIP(GConnectionLocal.InActiveTimeout)
+cfg:data5 = CLIP(GConnectionLocal.CertificateFile)
+cfg:data6 = CLIP(GConnectionLocal.PrivateKeyFile)
+cfg:data2[62] = CLIP(GConnectionLocal.DontVerifyRemoteCertificateCommonName)
+cfg:data2[63] = CLIP(GConnectionLocal.DontVerifyRemoteCertificateWithCARoot)
+cfg:data7 = CLIP(GConnectionLocal.CARootFile)
+cfg:data2[71:80] = CLIP(GConnectionLocal.SSLMethod)
+!--Credenciales
+cfg:data8[1:20] = CLIP(GCredentialsLocal.RequestorID)
+cfg:data8[21:80] = CLIP(GCredentialsLocal.Username)
+cfg:data8[81:160] = CLIP(GCredentialsLocal.Password)
+cfg:data8[161:180] = CLIP(GCredentialsLocal.HotelCode)
+[END]
+[END]
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 5
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[ADDITION]
+NAME ABC SaveButton
+[INSTANCE]
+INSTANCE 1
+PROCPROP
+[PROMPTS]
+%InsertAllowed LONG  (0)
+%InsertMessage DEFAULT  ('Record will be Added')
+%ChangeAllowed LONG  (1)
+%ChangeMessage DEFAULT  ('Registro será modificado.')
+%DeleteAllowed LONG  (0)
+%DeleteMessage DEFAULT  ('Record will be Deleted')
+%MessageHeader LONG  (0)
+%HistoryKey DEFAULT  ('CtrlH')
+%PrimingFields MULTI LONG  ()
+%PrimedField DEPEND %PrimingFields FIELD TIMES 0
+
+%PrimedValue DEPEND %PrimingFields DEFAULT TIMES 0
+
+%ViewMessage DEFAULT  ('View Record')
+%ActionOnCancel DEFAULT  ('Offer to save changes')
+%ActionOnDelete DEFAULT  ('Standard Warning')
+%AfterGoodInsert DEFAULT  ('Return to caller')
+%AskAfterAdd LONG  (0)
+%MessageLocation DEFAULT  ('None/Window Control')
+%MessageStatusSection DEFAULT  ('')
+%AppendToTitle LONG  (0)
+%AppendToTitleID DEFAULT  ('')
+[ADDITION]
+NAME ABC CancelButton
+[INSTANCE]
+INSTANCE 2
+[ADDITION]
+NAME ABC RecordValidation
+[INSTANCE]
+INSTANCE 3
+PROCPROP
+[PROMPTS]
+%ValidateOnAccept LONG  (1)
+%ValidateOnNonStopSelect LONG  (1)
+%ControlsExcluded MULTI LONG  ()
+%ControlToExclude DEPEND %ControlsExcluded DEFAULT TIMES 0
+
+%ValidateUsingColoration LONG  (0)
+%InvalidFieldColor LONG  (255)
+%InvalidPromptColor LONG  (255)
+%UseValidateMessage LONG  (0)
+%ValidationMessage DEFAULT  ('The values of Colored Fields are invalid, Please correct this information.')
+%MessageControl FIELD  ()
+[ADDITION]
+NAME ABC FormVCRControls
+[INSTANCE]
+INSTANCE 4
+PARENT 1
+[PROMPTS]
+%AllowVCRAccess LONG  (0)
+%ClassItem UNIQUE DEFAULT  ('Default')
+%DefaultBaseClassType DEPEND %ClassItem DEFAULT TIMES 1
+WHEN  ('Default') ('ToolbarUpdateClass')
+
+%ActualDefaultBaseClassType DEPEND %ClassItem DEFAULT TIMES 1
+WHEN  ('Default') ('')
+
+%ClassLines DEPEND %ClassItem MULTI DEFAULT TIMES 0
+
+%GlobalObject DEPEND %ClassItem DEFAULT TIMES 1
+WHEN  ('Default') ('NO')
+
+%ThisObjectName DEPEND %ClassItem DEFAULT TIMES 1
+WHEN  ('Default') ('ToolbarForm')
+
+%UseDefaultABCBaseClass DEPEND %ClassItem LONG TIMES 1
+WHEN  ('Default') (1)
+
+%UseABCBaseClass DEPEND %ClassItem LONG TIMES 1
+WHEN  ('Default') (1)
+
+%ABCBaseClass DEPEND %ClassItem DEFAULT TIMES 1
+WHEN  ('Default') ('ADOBlob')
+
+%ExtBaseClass DEPEND %ClassItem DEFAULT TIMES 0
+
+%BaseClassIncludeFile DEPEND %ClassItem DEFAULT TIMES 0
+
+%DeriveFromBaseClass DEPEND %ClassItem LONG TIMES 1
+WHEN  ('Default') (0)
+
+%NewMethods DEPEND %ClassItem MULTI LONG TIMES 0
+
+%NewMethodName DEPEND %NewMethods DEFAULT TIMES 0
+
+%NewMethodPrototype DEPEND %NewMethods DEFAULT TIMES 0
+
+%NewClassPropertyItems DEPEND %ClassItem MULTI LONG TIMES 0
+
+%NewClassProperty DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataType DEPEND %NewClassPropertyItems DEFAULT TIMES 1
+WHEN  ('Default')TIMES 0
+
+%NewClassOtherType DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataIsRef DEPEND %NewClassPropertyItems LONG TIMES 0
+
+%NewClassDataSize DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim1 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim2 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim3 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%NewClassDataDim4 DEPEND %NewClassPropertyItems DEFAULT TIMES 0
+
+%ClassMethods DEPEND %ClassItem MULTI LONG TIMES 0
+
+%ClassMethodName DEPEND %ClassMethods DEFAULT TIMES 0
+
+%ClassMethodPrototype DEPEND %ClassMethods DEFAULT TIMES 0
+
+%ClassPropertyItems DEPEND %ClassItem MULTI LONG TIMES 0
+
+%ClassProperty DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataType DEPEND %ClassPropertyItems DEFAULT TIMES 1
+WHEN  ('Default')TIMES 0
+
+%ClassOtherType DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataIsRef DEPEND %ClassPropertyItems LONG TIMES 0
+
+%ClassDataSize DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim1 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim2 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim3 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+%ClassDataDim4 DEPEND %ClassPropertyItems DEFAULT TIMES 0
+
+[WINDOW]
+FormWindow WINDOW('Parámetros de Conexión'),AT(,,416,220),FONT('Microsoft Sans Serif',8,,, |
+          CHARSET:DEFAULT),CENTER,GRAY,MDI,SYSTEM
+          BUTTON('Aceptar'),AT(11,199,40,12),USE(?OK),DEFAULT,REQ,#LINK(?Cancel),#ORIG(?OK), |
+            #SEQ(1),#ORDINAL(1)
+          BUTTON('Cancelar'),AT(55,199,40,12),USE(?Cancel),#ORIG(?Cancel),#SEQ(2),#ORDINAL(2)
+          STRING(@S40),AT(101,200),USE(ActionMessage),#ORDINAL(3)
+          SHEET,AT(2,2,411,193),USE(?SHEET1),#ORDINAL(4)
+            TAB('General'),USE(?TAB1),#ORDINAL(5)
+              PROMPT('Post URL:'),AT(11,89),USE(?GConnectionLocal:url:Prompt),#ORDINAL(6)
+              ENTRY(@s255),AT(11,103,385,10),USE(GConnectionLocal.postURL),#ORDINAL(7)
+              PROMPT('Async Open Timeout:'),AT(10,118),USE(?GConnectionLocal:AsyncOpenTimeOut:Prompt), |
+                #ORDINAL(8)
+              ENTRY(@n-14),AT(11,132,60,10),USE(GConnectionLocal.AsyncOpenTimeOut),RIGHT(1), |
+                #ORDINAL(9)
+              PROMPT('In Active Timeout:'),AT(11,148),USE(?GConnectionLocal:InActiveTimeout:Prompt), |
+                #ORDINAL(10)
+              ENTRY(@n-14),AT(11,162,60,10),USE(GConnectionLocal:InActiveTimeout),RIGHT(1), |
+                #ORDINAL(11)
+              GROUP('Header'),AT(10,23,393,62),USE(?GROUP1),BOXED,#ORDINAL(12)
+                ENTRY(@s20),AT(68,38,76,10),USE(GConnectionLocal.HTTPVersion),#ORDINAL(13)
+                PROMPT('HTTP Version:'),AT(17,38),USE(?GConnectionLocal:HTTPVersion:Prompt), |
+                  #ORDINAL(14)
+                ENTRY(@s100),AT(69,54,327,10),USE(GConnectionLocal:ContentType),#ORDINAL(15)
+                PROMPT('Content Type:'),AT(17,54),USE(?GConnectionLocal:ContentType:Prompt), |
+                  #ORDINAL(16)
+                ENTRY(@s254),AT(68,69,328,10),USE(GConnectionLocal.Accept_),#ORDINAL(17)
+                PROMPT('Accept type:'),AT(17,69),USE(?GConnectionLocal:Accept_:Prompt),#ORDINAL(18)
+              END
+            END
+            TAB('Seguridad HTTPS'),USE(?TAB2),#ORDINAL(19)
+              PROMPT('CA Root File:'),AT(11,26),USE(?GConnectionLocal:CARootFile:Prompt),#ORDINAL(20)
+              ENTRY(@s254),AT(65,26,331,10),USE(GConnectionLocal.CARootFile),#ORDINAL(21)
+              CHECK('Dont Verify Remote Certificate Common Name'),AT(64,54),USE(GConnectionLocal.DontVerifyRemoteCertificateCommonName), |
+                RIGHT,VALUE('1','0'),#ORDINAL(22)
+              CHECK('Dont Verify Remote Certificate With CA Root'),AT(64,40),USE(GConnectionLocal.DontVerifyRemoteCertificateWithCARoot), |
+                RIGHT,VALUE('1','0'),#ORDINAL(23)
+              PROMPT('Certificate File:'),AT(11,68),USE(?GConnectionLocal:CertificateFile:Prompt), |
+                #ORDINAL(24)
+              ENTRY(@s254),AT(65,82,320,10),USE(GConnectionLocal.CertificateFile),#ORDINAL(25)
+              PROMPT('Private Key File:'),AT(11,82),USE(?GConnectionLocal:PrivateKeyFile:Prompt), |
+                #ORDINAL(26)
+              ENTRY(@s254),AT(65,68,320,10),USE(GConnectionLocal.PrivateKeyFile),#ORDINAL(27)
+              PROMPT('SSL Cipher:'),AT(11,98),USE(?GConnectionLocal:SSLCipher:Prompt),#ORDINAL(28)
+              ENTRY(@s255),AT(65,97,320,10),USE(GConnectionLocal.SSLCipher),#ORDINAL(29)
+              OPTION('SSL Method'),AT(66,113,223,34),USE(GCOL:SSLMethod),FONT(,,COLOR:Black), |
+                BOXED,#ORIG(SSLMethod),#ORDINAL(30)
+                RADIO('TLS'),AT(77,126,50,14),USE(?GCOL:SSLMETHOD:RADIO1),#ORDINAL(31)
+                RADIO('TLSv1'),AT(131,126,50,14),USE(?GCOL:SSLMETHOD:RADIO2),#ORDINAL(32)
+                RADIO('TLSv1.1'),AT(185,126,50,14),USE(?GCOL:SSLMETHOD:RADIO3),#ORDINAL(33)
+                RADIO('TLSv1.2'),AT(239,126,50,14),USE(?GCOL:SSLMETHOD:RADIO4),#ORDINAL(34)
+              END
+            END
+            TAB('Credenciales'),USE(?TAB3),#ORDINAL(35)
+              PROMPT('Requestor ID:'),AT(89,44),USE(?requestorID:PROMPT1),#ORDINAL(36)
+              ENTRY(@s20),AT(155,42),USE(GCredentialsLocal.requestorID),#ORDINAL(37)
+              PROMPT('Nombre de Usuario:'),AT(89,61),USE(?username:PROMPT),#ORDINAL(38)
+              ENTRY(@s60),AT(155,60),USE(GCredentialsLocal.username),#ORDINAL(39)
+              PROMPT('Password:'),AT(89,78),USE(?password:PROMPT),#ORDINAL(40)
+              ENTRY(@s60),AT(155,77),USE(GCredentialsLocal.password),#ORDINAL(41)
+              PROMPT('Hotel Code:'),AT(89,96),USE(?hotelCode:PROMPT),#ORDINAL(42)
+              ENTRY(@s20),AT(155,95),USE(GCredentialsLocal.hotelCode),#ORDINAL(43)
+            END
+          END
+        END
+
+[END]

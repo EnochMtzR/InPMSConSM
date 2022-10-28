@@ -1,0 +1,88 @@
+[MODULE]
+NAME 'DeleteRecordsHPDOTRN_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME DeleteRecordsHPDOTRN
+PROTOTYPE '(string pNumRes),long'
+PARAMETERS '(string pNumRes)'
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('LERROR:'),USE(?LERROR:Prompt)
+! ENTRY(@n-14),USE(LERROR),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(LERROR),RIGHT(1)
+LERROR                   LONG
+!!> GUID('e77be47b-249d-4729-a022-6ec222ccd332'),PROMPT('LERROR:'),HEADER('LERROR'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[FILES]
+[OTHERS]
+HPDOTRN
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    DO OpenFiles
+    CLEAR(HON:Record)
+    HON:SRESNUMRES = PNUMRES
+    SET(HON:KEY_SRESNUMRES,HON:KEY_SRESNUMRES)
+    LOOP UNTIL Access:HPDOTRN.Next() OR HON:SRESNUMRES <> PNUMRES
+        IF Access:HPDOTRN.DeleteRecord(0) <> Level:Benign
+            GlobalErrors.SetErrors()
+            LERROR = GlobalErrors.GetErrorcode()
+            UpdatePMSBIT('DeleteRecordsHPDOTRN','No fue posible eliminar registro en archivo HPDOTRN: '&CLIP(LEFT(pnumres))&'<13,10>'&GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+            MonitorSMDisplay('No fue posible eliminar registro en archivo HPDOTRN: '&CLIP(LEFT(pnumres))&'(view log)')
+            BREAK
+        END
+    END
+    DO CloseFiles
+    IF LERROR
+        ROLLBACK
+        RETURN(PmsErrorCode14)
+    ELSE
+        RETURN 0
+    END
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

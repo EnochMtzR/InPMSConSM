@@ -1,0 +1,200 @@
+[MODULE]
+NAME 'AddServices_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME AddServices
+PROTOTYPE '(string pNumRes,string pStayID),long'
+PARAMETERS '(string PNUMRES,string pStayID)'
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('LERROR:'),USE(?LERROR:Prompt)
+! ENTRY(@n-14),USE(LERROR),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(LERROR),RIGHT(1)
+LERROR                   LONG
+!!> GUID('c49508b6-bafa-4011-adb1-0da13264c225'),PROMPT('LERROR:'),HEADER('LERROR'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('message Text:'),USE(?messageText:Prompt)
+! ENTRY(@s120),USE(messageText)
+[REPORTCONTROLS]
+! STRING(@s120),USE(messageText)
+messageText              CSTRING(121)
+!!> GUID('0d4c96b5-7cd6-4ac8-93bc-d18ac5b070dd'),PROMPT('message Text:'),HEADER('message Text'),PICTURE(@s120),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('message Text 2:'),USE(?messageText2:Prompt)
+! ENTRY(@s120),USE(messageText2)
+[REPORTCONTROLS]
+! STRING(@s120),USE(messageText2)
+messageText2             CSTRING(121)
+!!> GUID('54555cdc-c98d-48c6-81d7-7957b4bb6807'),PROMPT('message Text 2:'),HEADER('message Text 2'),PICTURE(@s120),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('message Text 3:'),USE(?messageText3:Prompt)
+! ENTRY(@s120),USE(messageText3)
+[REPORTCONTROLS]
+! STRING(@s120),USE(messageText3)
+messageText3             CSTRING(121)
+!!> GUID('23c7b2d0-2853-4a12-bbfb-eddbdf15db4e'),PROMPT('message Text 3:'),HEADER('message Text 3'),PICTURE(@s120),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('message Text 4:'),USE(?messageText4:Prompt)
+! ENTRY(@s120),USE(messageText4)
+[REPORTCONTROLS]
+! STRING(@s120),USE(messageText4)
+messageText4             CSTRING(121)
+!!> GUID('915a0604-6aa7-41f0-8771-970baedacdc2'),PROMPT('message Text 4:'),HEADER('message Text 4'),PICTURE(@s120),TYPEMODE(INS)
+[FILES]
+[OTHERS]
+HMENSAJ
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    DO OpenFiles
+    QServiceRPH = pStayID
+    GET(QServiceRPH,QServiceRPH.StayId)
+    IF NOT ERRORCODE()
+        LOOP Services#=1 TO RECORDS(QServices)
+            GET(QServices,Services#)
+            IF QServices.ServiceRPH <> QServiceRPH.RPH THEN CYCLE.
+            CLEAR(messageText)
+            messageText = 'SERVICES'
+            IF QServices.ServiceInventoryCode THEN messageText = messageText &'<13,10>InventoryCode:'&CLIP(QServices.ServiceInventoryCode).
+            IF QServices.ServiceRPH THEN messageText = messageText &'<13,10>ServiceRPH:'&CLIP(QServices.ServiceRPH).
+            IF QServices.Inclusive THEN messageText = messageText &'<13,10>Inclusive:'&CLIP(QServices.Inclusive).
+            IF QServices.Quantity THEN messageText = messageText &'<13,10>Quantity:'&CLIP(QServices.Quantity).
+            IF QServices.ID THEN messageText = messageText &'<13,10>ID:'&CLIP(QServices.ID).
+            IF QServices.ID_Context THEN messageText = messageText &'<13,10>ID_Context:'&CLIP(QServices.ID_Context).
+            IF QServices.Type THEN messageText = messageText &'<13,10>Type:'&CLIP(QServices.Type).
+            !--messageText2
+            IF QServices.BaseAmountBeforeTax OR QServices.BaseAmountAfterTax
+                CLEAR(messageText2)
+                messageText2 = '*Base'
+                IF QServices.BaseAmountBeforeTax THEN messageText2 = '<13,10>AmountBeforeTax:'&CLIP(QServices.BaseAmountBeforeTax).
+                IF QServices.BaseAmountAfterTax THEN messageText2 = messageText2 &'<13,10>AmountAfterTax:'&CLIP(QServices.BaseAmountAfterTax).
+                IF QServices.BaseCurrencyCode THEN messageText2 = messageText2 &'<13,10>CurrencyCode:'&CLIP(QServices.BaseCurrencyCode).
+                IF QServices.BaseTaxesAmount THEN messageText2 = messageText2 &'<13,10>TaxesAmount:'&CLIP(QServices.BaseTaxesAmount).
+            END
+            IF QServices.TotalAmountBeforeTax OR QServices.TotalAmountAfterTax
+                CLEAR(messageText3)
+                messageText3 = '*Total'
+                IF QServices.TotalAmountBeforeTax THEN messageText3 = messageText3 &'<13,10>AmountBeforeTax:'&CLIP(QServices.TotalAmountBeforeTax).
+                IF QServices.TotalAmountAfterTax THEN messageText3 = messageText3 &'<13,10>AmountAfterTax:'&CLIP(QServices.TotalAmountAfterTax).
+                IF QServices.TotalCurrencyCode THEN messageText3 = messageText3 &'<13,10>CurrencyCode:'&CLIP(QServices.TotalCurrencyCode).
+                IF QServices.TotalTaxesAmount THEN messageText3 = messageText3 &'<13,10>TaxesAmount:'&CLIP(QServices.TotalTaxesAmount).
+            END
+            !--messageText3
+            IF QServices.TimeSpanStart OR QServices.TimeSpanEnd OR QServices.Text
+                CLEAR(messageText4)
+                messageText4 = '*ServiceDetails'
+                IF QServices.TimeSpanStart THEN messageText4 = messageText4 & '<13,10>TimeSpanStart:'&CLIP(QServices.TimeSpanStart).
+                IF QServices.TimeSpanEnd THEN messageText4 = messageText4 & '<13,10>TimeSpanEnd:'&CLIP(QServices.TimeSpanEnd).
+                IF QServices.Text THEN messageText4 = messageText4 & '<13,10>RateDescription:'&CLIP(QServices.Text).
+            END
+            CLEAR(HMENSAJ)
+            HMEN:MENNUMRES = PNUMRES
+            HMEN:MENMENAVI = 'T'
+            HMEN:MENDESMJ1 = SUB(messageText,1,60)
+            HMEN:MENDESMJ2 = SUB(messageText,61,60)
+            HMEN:MENFECHA = FORMAT(TODAY(),@d12)
+            HMEN:MENHORA = FORMAT(CLOCK(),@T04)
+            IF Access:HMENSAJ.TryInsert() <> Level:Benign
+                GlobalErrors.SetErrors()
+                LERROR = GlobalErrors.GetErrorcode()
+                BREAK
+            END
+            IF messageText2
+                CLEAR(HMENSAJ)
+                HMEN:MENNUMRES = PNUMRES
+                HMEN:MENMENAVI = 'T'
+                HMEN:MENDESMJ1 = SUB(messageText2,1,60)
+                HMEN:MENDESMJ2 = SUB(messageText2,61,60)
+                HMEN:MENFECHA = FORMAT(TODAY(),@d12)
+                HMEN:MENHORA = FORMAT(CLOCK(),@T04)
+                IF Access:HMENSAJ.TryInsert() <> Level:Benign
+                    GlobalErrors.SetErrors()
+                    LERROR = GlobalErrors.GetErrorcode()
+                    BREAK
+                END
+            END
+            IF messageText3
+                CLEAR(HMENSAJ)
+                HMEN:MENNUMRES = PNUMRES
+                HMEN:MENMENAVI = 'T'
+                HMEN:MENDESMJ1 = SUB(messageText3,1,60)
+                HMEN:MENDESMJ2 = SUB(messageText3,61,60)
+                HMEN:MENFECHA = FORMAT(TODAY(),@d12)
+                HMEN:MENHORA = FORMAT(CLOCK(),@T04)
+                IF Access:HMENSAJ.TryInsert() <> Level:Benign
+                    GlobalErrors.SetErrors()
+                    LERROR = GlobalErrors.GetErrorcode()
+                    BREAK
+                END
+            END
+            IF messageText4
+                CLEAR(HMENSAJ)
+                HMEN:MENNUMRES = PNUMRES
+                HMEN:MENMENAVI = 'T'
+                HMEN:MENDESMJ1 = SUB(messageText4,1,60)
+                HMEN:MENDESMJ2 = SUB(messageText4,61,60)
+                HMEN:MENFECHA = FORMAT(TODAY(),@d12)
+                HMEN:MENHORA = FORMAT(CLOCK(),@T04)
+                IF Access:HMENSAJ.TryInsert() <> Level:Benign
+                    GlobalErrors.SetErrors()
+                    LERROR = GlobalErrors.GetErrorcode()
+                    BREAK
+                END
+            END
+        END
+        IF LERROR
+            ROLLBACK
+            UpdatePMSBIT('AddServices,Error('&DEFORMAT(LERROR)&')','Request: '&CLIP(QHotelReservation.ResStatus))
+            RETURN(PmsErrorCode23)
+        END
+    END
+    DO CloseFiles
+    RETURN 0
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

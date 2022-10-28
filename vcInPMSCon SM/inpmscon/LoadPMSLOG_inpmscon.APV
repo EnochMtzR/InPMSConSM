@@ -1,0 +1,232 @@
+[MODULE]
+NAME 'LoadPMSLOG_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME LoadPMSLOG
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('date File:'),USE(?dateFile:Prompt)
+! ENTRY(@s8),USE(dateFile)
+[REPORTCONTROLS]
+! STRING(@s8),USE(dateFile)
+dateFile                 STRING(8)
+!!> GUID('a8c42d0a-9af0-407a-9eaf-b9cd95939163'),PROMPT('date File:'),HEADER('date File'),PICTURE(@s8),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('path Backup:'),USE(?pathBackup:Prompt)
+! ENTRY(@s254),USE(pathBackup)
+[REPORTCONTROLS]
+! STRING(@s254),USE(pathBackup)
+pathBackup               CSTRING(255)
+!!> GUID('22737ec1-ed8f-4326-9018-f723cd595936'),PROMPT('path Backup:'),HEADER('path Backup'),PICTURE(@s254),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('file Destination:'),USE(?fileDestination:Prompt)
+! ENTRY(@s254),USE(fileDestination)
+[REPORTCONTROLS]
+! STRING(@s254),USE(fileDestination)
+fileDestination          CSTRING(255)
+!!> GUID('21b98dce-5980-431c-bc17-65800a1770bb'),PROMPT('file Destination:'),HEADER('file Destination'),PICTURE(@s254),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('file Origin:'),USE(?fileOrigin:Prompt)
+! ENTRY(@s254),USE(fileOrigin)
+[REPORTCONTROLS]
+! STRING(@s254),USE(fileOrigin)
+fileOrigin               CSTRING(255)
+!!> GUID('f4cbd0f1-16a2-4c38-bac8-323ebcf44732'),PROMPT('file Origin:'),HEADER('file Origin'),PICTURE(@s254),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('loc : error Code:'),USE(?errorCode:Prompt)
+! ENTRY(@n-14),USE(errorCode),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(errorCode),RIGHT(1)
+loc:errorCode            LONG
+!!> GUID('a5ce8d88-cace-496d-9b2b-cafa8de3bfe4'),PROMPT('loc : error Code:'),HEADER('loc : error Code'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('Cant New Recs:'),USE(?CantNewRecs:Prompt)
+! ENTRY(@n-14),USE(CantNewRecs),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(CantNewRecs),RIGHT(1)
+CantNewRecs              LONG
+!!> GUID('067a1fdf-8c0b-438b-8874-fecef22da218'),PROMPT('Cant New Recs:'),HEADER('Cant New Recs'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[FILES]
+[OTHERS]
+pmsLog
+pmsReq
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %DataSection
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 1300
+PROPERTY:END
+                    MAP
+AddNewRecord            PROCEDURE,LONG
+                    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+QFiles              QUEUE,PRE(QF)
+name                    STRING(FILE:MAXFILENAME)  !FILE:MAXFILENAME is an EQUATE
+shortname               STRING(13)
+date                    LONG
+time                    LONG
+size                    LONG
+attrib                  BYTE   !A bitmap, the same as the attributes EQUATEs
+                    END
+[END]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    FREE(QFiles)
+    DIRECTORY(QFiles,CLIP(GInhotel.path)&'\LTC*.log',FF_:NORMAL)
+    DIRECTORY(QFiles,CLIP(GInhotel.path)&'\ICR*.log',FF_:NORMAL)
+    DIRECTORY(QFiles,CLIP(GInhotel.path)&'\IPM*.log',FF_:NORMAL)
+    SORT(QFILES,+QF:name)
+    LOOP I# = 1 TO RECORDS(QFiles) BY 1
+        GET(QFiles,I#)
+        IF NOT ERRORCODE()
+            CLEAR(dateFile)
+            dateFile = FORMAT(DEFORMAT(SUB(qf:name,4,6),@D11),@D12)
+            glo:PmsLog = CLIP(GInhotel.path)&'\'&CLIP(QF:name)
+!            MonitorSMDisplay('Procesando '&CLIP(QF:name))
+            DO OPENFILES
+            CLEAR(CantNewRecs)
+            LOGOUT(1,pmsReq)
+            CLEAR(log:Record)
+            SET(pmsLog)
+            LOOP UNTIL Access:pmsLog.TryPrevious()
+                CASE log:method
+                OF AvailabilityNotify
+                OROF RateNew OROF RateModify OROF RateOverlay|
+                OROF StopSell OROF StopSellArrival OROF StopSellDeparture OROF StopSellArrivalAndDeparture|
+                OROF OpenSell OROF OpenSellArrival OROF OpenSellDeparture OROF OpenSellArrivalAndDeparture
+                    CLEAR(PRQ:Record)
+                    PRQ:date = DEFORMAT(dateFile,@D12)
+                    PRQ:time = LOG:time
+                    PRQ:method = LOG:method
+                    PRQ:data1 = LOG:data1
+                    PRQ:data2 = LOG:data2
+                    IF Access:pmsReq.TryFetch(PRQ:dateTimeMethodData1Data2_fk) <> Level:Benign
+                        GlobalErrors.SetErrors()
+                        IF GlobalErrors.GetErrorcode() = 35
+                            IF AddNewRecord() = Level:Benign
+                                CantNewRecs += 1
+                            ELSE
+                                MonitorSMDisplay('No fue posible agregar registro log a pmsreq(view log)')
+                                ROLLBACK()
+                                BREAK
+                            END
+                        END
+                    ELSE
+                        BREAK
+                    END
+                ELSE
+                    CYCLE
+                END
+            END
+            COMMIT
+            DO CloseFiles
+            IF CantNewRecs THEN MonitorSMDisplay('New records added to PMSREQ file: '&DEFORMAT(CantNewRecs)).
+            !---Copy file to backup folder
+            IF I# < RECORDS(QFiles)
+                ! Copia archivos anteriores al último a la carpeta \REPORTES\TRAVELCLICK y de elimina de la carpeta CRS
+                LOOP F# = 1 TO 100 BY 1
+                    fileDestination = GInhotel.pathBackup&'\'&QF:name[1:(INSTRING('.',QF:name,1,1)-1)]&'-'&F#&'.log'
+                    IF NOT EXISTS(CLIP(fileDestination))
+                        fileOrigin = CLIP(GInhotel.path)&'\'&CLIP(qf:name)
+                        COPY(CLIP(fileOrigin),CLIP(fileDestination))
+                        loc:errorCode = ERRORCODE()
+                        IF NOT loc:errorCode
+                            UpdatePMSBIT('LoadPMSLOG;copied','CRS: '&CLIP(fileOrigin)&' file copied.')
+                            REMOVE(CLIP(fileOrigin))
+                            loc:errorCode = ERRORCODE()
+                            IF loc:errorCode
+                                UpdatePMSBIT('LoadPMSLOG','Unable to remove logCRS file from working folder (error '&loc:errorCode&')')
+                            ELSE
+                                UpdatePMSBIT('LoadPMSLOG;Deleted','CRS: '&CLIP(fileOrigin)&' file deleted.')
+                            END
+                        ELSE
+                            UpdatePMSBIT('LoadPMSLOG','Failed to copy file: '&CLIP(fileOrigin)&' to subfolder (error '&loc:errorCode&')')
+                        END
+                        BREAK
+                    END
+                END
+            END
+        END
+    END
+[END]
+EMBED %LocalProcedures
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+AddNewRecord        PROCEDURE
+CODE
+    CLEAR(PRQ:Record)
+    IF Access:PMSREQ.TryPrimeAutoInc() = Level:Benign  !prime Client record
+        PRQ:date = DEFORMAT(dateFile,@D12)
+        PRQ:time = LOG:time
+        PRQ:method = LOG:method
+        PRQ:data1 = LOG:data1
+        PRQ:data2 = LOG:data2
+        PRQ:data3 = LOG:data3
+        PRQ:data4 = LOG:data4
+        PRQ:data5 = LOG:data5
+        PRQ:data5 = LOG:data6
+        PRQ:data5 = LOG:data7
+        PRQ:data5 = LOG:data8
+        PRQ:data5 = LOG:data9
+        IF Access:pmsReq.TryInsert() = Level:Benign
+            RETURN Level:Benign
+        ELSE
+            GlobalErrors.SetErrors()
+            UpdatePMSBIT('LoadPMSLOG',GlobalErrors.ThrowMessage(Msg:AddNewRecord, NAME(PMSREQ))&'<13,10>Error: '&GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+            RETURN Level:Fatal
+        END
+    END
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

@@ -1,0 +1,308 @@
+[MODULE]
+NAME 'OTA_ResRetrieveRS_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME OTA_ResRetrieveRS
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('I:'),USE(?I:Prompt)
+! ENTRY(@n-7),USE(I),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-7),USE(I),RIGHT(1)
+I                        SHORT
+!!> GUID('72465bef-b911-4da9-aee5-efaba3616308'),PROMPT('I:'),HEADER('I'),PICTURE(@n-7),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('Stay NDX:'),USE(?StayNDX:Prompt)
+! ENTRY(@n-7),USE(StayNDX),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-7),USE(StayNDX),RIGHT(1)
+StayNDX                  SHORT
+!!> GUID('2da10797-1b4d-492c-b2e5-ebf75ae9b096'),PROMPT('Stay NDX:'),HEADER('Stay NDX'),PICTURE(@n-7),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('NDX:'),USE(?NDX:Prompt)
+! ENTRY(@n-7),USE(NDX),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-7),USE(NDX),RIGHT(1)
+NDX                      SHORT
+!!> GUID('6a0ea1bc-3fcc-43f0-a48a-d0764614690f'),PROMPT('NDX:'),HEADER('NDX'),PICTURE(@n-7),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('i Save State:'),USE(?iSaveState:Prompt)
+! ENTRY(@n-7),USE(iSaveState),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-7),USE(iSaveState),RIGHT(1)
+iSaveState               SHORT
+!!> GUID('6aa4333e-b53c-4be1-ba4f-c22a8131e97f'),PROMPT('i Save State:'),HEADER('i Save State'),PICTURE(@n-7),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Reservation:'),USE(?idxReservation:Prompt)
+! ENTRY(@n-7),USE(idxReservation),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-7),USE(idxReservation),RIGHT(1)
+idxReservation           SHORT
+!!> GUID('2055034d-6509-49c4-af4d-4845dacaeee0'),PROMPT('idx Reservation:'),HEADER('idx Reservation'),PICTURE(@n-7),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    !--_Quita la url del name space porque no existe y genera error en el template iQ-XML-------
+    XmlResponse = XML:Replace(glo:XMLResponse,'xmlns="http://www.opentravel.org/OTA/2003/05"','')
+    !-------------------------------------------------------------------------------------------
+    FREE(QLogDisp)
+    FREE(QNotifReportSuccess)
+    FREE(QNotifReportError)
+    idxReservation = 0
+    XML:SetProgressWindow(-1)
+    XML:SetEncoding('UTF-8')
+    Glo:XmlError = XML:LoadFromString(XmlResponse)
+    IF NOT GLO:XmlError
+        GLO:XmlError = Xml:FindNextNode('SOAP-ENV:Envelope','SOAP-ENV:Body','OTA_ResRetrieveRS','Success',,1)
+        IF NOT Glo:XmlError
+            Xml:GotoTop()
+            IF NOT XML:FindNextNode('HotelReservation')
+                LOOP
+                    idxReservation += 1
+                    FREE(QHotelReservation);CLEAR(QHotelReservation)
+                    FREE(QUniqueID);CLEAR(QUniqueID)
+                    FREE(QSource);CLEAR(QSource)
+                    FREE(QRoomStays);CLEAR(QRoomStays)
+                    FREE(QRoomRates);CLEAR(QRoomRates)
+                    FREE(QRatePlans);CLEAR(QRatePlans)
+                    FREE(QResGuestRPH);CLEAR(QResGuestRPH)
+                    FREE(QServiceRPH);CLEAR(QServiceRPH)
+                    FREE(QGuestCounts);CLEAR(QGuestCounts)
+                    FREE(QResGuests);CLEAR(QResGuests)
+                    FREE(QServices);CLEAR(QServices)
+                    FREE(QGuarantee);CLEAR(QGuarantee)
+                    FREE(QResGlobalInfo);CLEAR(QResGlobalInfo)
+                    XML:AutoRootSet()
+                    HRRecs = XML:LoadQueue(QHotelReservation,TRUE,FALSE)
+                    MonitorSMDisplay('OTA_ResRetrieveRS Pocessing Record '&idxReservation)
+                    UpdatePMSBIT('OTA_ResRetrieveRS Pocessing Record:'&idxReservation,'processing channel manager response.')
+                    XML:QualifyFieldClear()
+                    IF HRRecs
+                        IF NOT XML:FindNextNode('HotelReservation','UniqueID')
+                            Recs = XML:LoadQueue(QUniqueID,TRUE,TRUE)
+                        END
+                        IF NOT XML:FindNextNode('POS','Source')
+                            XML:QualifyFieldSet('ID')
+                            XML:QualifyFieldSet('Type')
+                            XML:QualifyFieldSet('Primary')
+                            XML:QualifyFieldSet('Code')
+                            Recs = XML:LoadQueue(QSource,TRUE,FALSE)
+                            XML:QualifyFieldClear()
+                        END
+
+                        !--------------------------------------------
+                        iSaveState = XML:SaveState()
+                        IF NOT XML:FindNextNode('RoomStays','RoomStay')
+                            StayNDX = 1
+                            LOOP
+                                XML:PrimaryFieldCascade('StayId',StayNDX)
+                                XML:AutoRootSet()
+                                XML:QualifyFieldSet('Start')
+                                XML:QualifyFieldSet('End')
+                                XML:QualifyFieldSet('AmountAfterTax',1) !--GrandparentParent
+                                XML:QualifyFieldSet('AmountBeforeTax',1) !--GrandparentParent
+                                XML:QualifyFieldSet('CurrencyCode',1) !--GrandparentParent
+                                XML:QualifyFieldSet('Amount',2) !--GreatGrandparentParent
+                                XML:QualifyFieldSet('Text')
+                                XML:QualifyFieldSet('RoomType')
+                                XML:QualifyFieldSet('RoomTypeCode')
+                                XML:QualifyFieldSet('NonSmoking')
+                                XML:QualifyFieldSet('Configuration')
+                                XML:PrimaryKeyCascade('RoomTypeRoomType',IQXML:CASCADE_SAVE)
+                                XML:PrimaryKeyCascade('RoomTypeConfiguration',IQXML:CASCADE_SAVE)
+                                XML:PrimaryKeyCascade('RoomTypeNonSmoking',IQXML:CASCADE_SAVE)
+                                XML:PrimaryKeyCascade('RoomTypeRoomTypeCode',IQXML:CASCADE_SAVE)
+                                XML:PrimaryKeyCascade('RoomDescriptionText',IQXML:CASCADE_SAVE)
+                                NDX = XML:LoadQueue(QRoomStays,True,False)
+                                XML:QualifyFieldClear()
+                                IF ~xml:FindNextNode('GuestCounts','GuestCount')
+                                    NDX = XML:LoadQueue(QGuestCounts,False,True)
+                                END
+                                !-- Loading RoomRate and RatePlan------------------------------------------------
+                                GET(QSource,1)
+                                IF NOT ERRORCODE()
+                                    IF QSource.CompanyNameCode <> 'BDC'
+                                        !--Cuando es diferente de BDC las tarifas y planes vienen en un nodo
+                                        !--de lo contrario viene en nodos diferentes.
+                                        !-- Rateplans
+                                        XML:PrimaryKeyCascade('RatePlanEffectiveDate',IQXML:CASCADE_SAVE)
+                                        XML:PrimaryKeyCascade('RatePlanExpireDate',IQXML:CASCADE_SAVE)
+                                        XML:PrimaryKeyCascade('RatePlanRatePlanCode',IQXML:CASCADE_SAVE)
+                                        !-- RoomRate
+                                        XML:PrimaryKeyCascade('RoomRateNumberOfUnits',IQXML:CASCADE_SAVE)
+                                        XML:PrimaryKeyCascade('RoomRateRoomTypeCode',IQXML:CASCADE_SAVE)
+                                        XML:PrimaryKeyCascade('RoomRateRatePlanCode',IQXML:CASCADE_SAVE)
+                                    END
+                                END
+                                IF ~xml:FindNextNode('RatePlans','RatePlan')
+                                    XML:QualifyFieldSet('EffectiveDate')
+                                    XML:QualifyFieldSet('ExpireDate')
+                                    XML:QualifyFieldSet('RatePlanCode')
+                                    XML:QualifyFieldSet('Type')
+                                    XML:QualifyFieldSet('Code')
+                                    XML:QualifyFieldSet('Text',1) !--GrandparentParent
+                                    Recs = XML:LoadQueue(QRatePlans,TRUE,TRUE)
+                                    XML:QualifyFieldClear()
+                                END
+                                IF ~xml:FindNextNode('RoomRates','RoomRate')
+                                    XML:QualifyFieldSet('NumberOfUnits')
+                                    XML:QualifyFieldSet('RoomTypeCode')
+                                    XML:QualifyFieldSet('RatePlanCode')
+                                    XML:QualifyFieldSet('AmountAfterTax')
+                                    XML:QualifyFieldSet('AmountBeforeTax')
+                                    XML:QualifyFieldSet('CurrencyCode')
+                                    XML:QualifyFieldSet('Amount',1) !--GrandparentParent
+                                    Recs = XML:LoadQueue(QRoomRates,true,true)
+                                    XML:QualifyFieldClear()
+                                END
+                                !-- End Loading RoomRate_------------------------------------------
+                                IF NOT XML:FindNextNode('ResGuests',)
+                                    Recs = XML:LoadQueue(QResGuests,TRUE,FALSE)
+                                END
+                                IF ~xml:FindNextNode('ResGuestRPHs','ResGuestRPH')
+                                    NDX = XML:LoadQueue(QResGuestRPH,TRUE,TRUE)
+                                END
+                                IF ~xml:FindNextNode('ServiceRPHs','ServiceRPH')
+                                    NDX = XML:LoadQueue(QServiceRPH,TRUE,TRUE)
+                                END
+                                XML:PrimaryFieldClear()
+                                XML:PrimaryKeyClear()
+                                IF xml:GotoSibling() then break.
+                                StayNDX+=1
+                            END
+                        END
+                        If XML:RestoreState(iSaveState).
+                        IF NOT XML:FindNextNode('ResGuests','ResGuest')
+                            Recs = XML:LoadQueue(QResGuests,TRUE,TRUE)
+                        END
+                        If XML:RestoreState(iSaveState).
+                        IF NOT XML:FindNextNode('ResGlobalInfo','Guarantee')
+                            XML:QualifyFieldSet('Name')
+                            XML:QualifyFieldSet('Text')
+                            Recs = XML:LoadQueue(QGuarantee,TRUE,TRUE)
+                            XML:QualifyFieldClear()
+                        END
+                        If XML:RestoreState(iSaveState).
+                        IF NOT XML:FindNextNode('ResGlobalInfo')
+                            XML:QualifyFieldSet('Amount',1)
+                            XML:QualifyFieldSet('Code')
+                            XML:QualifyFieldSet('TaxInclusive')
+                            XML:QualifyFieldSet('Type')
+                            XML:QualifyFieldSet('Name',1)
+                            XML:QualifyFieldSet('Text',2)
+                            XML:QualifyFieldSet('CurrencyCode')
+                            XML:QualifyFieldSet('AmountAfterTax')
+                            XML:QualifyFieldSet('AmountBeforeTax')
+                            XML:QualifyFieldSet('Percent')
+                            XML:QualifyFieldSet('TaxInclusive')
+                            Recs = XML:LoadQueue(QResGlobalInfo,TRUE,TRUE)
+                            XML:QualifyFieldClear()
+                        END
+                        If XML:RestoreState(iSaveState).
+                        IF NOT XML:FindNextNode('Services')
+                            XML:QualifyFieldSet('CurrencyCode')
+                            XML:QualifyFieldSet('AmountAfterTax')
+                            XML:QualifyFieldSet('AmountBeforeTax')
+                            XML:QualifyFieldSet('Amount',1) !--GrandparentParent
+                            XML:QualifyFieldSet('Start')
+                            XML:QualifyFieldSet('End')
+                            Recs = XML:LoadQueue(QServices,TRUE,TRUE)
+                            XML:QualifyFieldClear()
+                        END
+                    END
+                    If XML:RestoreState(iSaveState).
+!                    XML:DebugMyQueue(QHotelReservation,'QHotelReservation')
+!                    XML:DebugMyQueue(QUniqueID,'QUniqueID')
+!                    XML:DebugMyQueue(QSource,'QSource')
+!                    XML:DebugMyQueue(QRoomStays,'QRoomStays')
+!                    XML:DebugMyQueue(QRoomRates,'QRoomRates')
+!                    XML:DebugMyQueue(QResGuestRPH,'QResGuestRPH')
+!                    XML:DebugMyQueue(QServiceRPH,'QServiceRPH')
+!                    XML:DebugMyQueue(QRatePlans,'QRatePlans')
+!                    XML:DebugMyQueue(QGuestCounts,'QGuestCounts')
+!                    XML:DebugMyQueue(QResGuests,'QResGuests')
+!                    XML:DebugMyQueue(QGuarantee,'QGuarantee')
+!                    XML:DebugMyQueue(QResGlobalInfo,'QResGlobalInfo')
+!                    XML:DebugMyQueue(QServices,'QServices')
+                    LOOP IResGuests# = 1 TO RECORDS(QResGuests)
+                        GET(QResGuests,IResGuests#)
+                        QResGuests.PrimaryIndicator = UPPER(QResGuests.PrimaryIndicator)
+                        PUT(QResGuests)
+                    END
+                    UpdateInhotel()
+                    IF XML:GotoSibling() THEN BREAK.
+                END
+                XML:Free()
+            END
+        ELSE
+            MonitorSMDisplay('Response with error(View Log).')
+        END
+    END
+    OTA_NotifReportRQ()
+    GeneraLogDisp()
+
+
+[END]
+EMBED %DataSection
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 1300
+PROPERTY:END
+XmlResponse             CSTRING(MaxCstringSize)
+HRRecs                  LONG
+Recs                    LONG
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+%LBH MULTI DEFAULT  ()
+%LBFN LONG  (0)
+[CALLS]
+AddRecordsHMENSAJ
+GeneraLogDisp
+OTA_NotifReportRQ
+UpdateInhotel
+[END]

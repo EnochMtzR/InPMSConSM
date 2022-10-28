@@ -1,0 +1,138 @@
+[MODULE]
+NAME 'Get_Config_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME Get_Config
+GLOBAL
+[COMMON]
+FROM ABC Source
+[FILES]
+[OTHERS]
+pmsCfg
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+DO OpenFiles
+DO Get_Connection
+DO Get_Inhotel
+DO Get_MonitorSM
+DO CloseFiles
+[END]
+EMBED %ProcedureRoutines
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+Get_Connection        ROUTINE
+    CLEAR(GConnection)
+    CLEAR(GCredentials)
+    CLEAR(cfg:Record)
+    cfg:id = 'Connection'
+    IF Access:pmsCfg.TryFetch(cfg:id_pk) = Level:Benign
+        GConnection.postURL = cfg:data1
+        GConnection.HTTPVersion = cfg:data2[1:20]
+        GConnection.Accept_ = cfg:data3
+        GConnection.ContentType = cfg:data4[1:100]
+        GConnection.AsyncOpenTimeOut = cfg:data2[21:40]
+        GConnection.InActiveTimeout = cfg:data2[41:60]
+        GConnection.CertificateFile = cfg:data5
+        GConnection.PrivateKeyFile = cfg:data6
+        GConnection.DontVerifyRemoteCertificateCommonName = cfg:data2[62]
+        GConnection.DontVerifyRemoteCertificateWithCARoot = cfg:data2[63]
+        GConnection.CARootFile = cfg:data7
+        !--Credenciales
+        GCredentials.RequestorID = cfg:data8[1:20]
+        GCredentials.Username = cfg:data8[21:80]
+        GCredentials.Password = cfg:data8[81:160]
+        GCredentials.HotelCode = cfg:data8[161:180]
+    ELSE
+        GlobalErrors.SetErrors()
+        MESSAGE('No se encontró registro de configuración de la conexión.|Error: '&GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+    END
+    EXIT
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+Get_Inhotel   ROUTINE
+    CLEAR(GInhotel)
+    CLEAR(cfg:Record)
+    cfg:id = 'Inhotel'
+    IF Access:pmsCfg.TryFetch(cfg:id_pk) = Level:Benign
+        GInhotel.path = cfg:data1
+        GInhotel.pathBackup = cfg:data2
+        GInhotel.marketSegment = cfg:data3[1:6]
+        GInhotel.userPMS = cfg:data3[7:8]
+        Ginhotel.Version = cfg:data3[10]
+        IF EXISTS(GInhotel.path) THEN Set_FilesNamesInh().
+        Get_FecsisInhotel()
+    ELSE
+        GlobalErrors.SetErrors()
+        MESSAGE('No se encontró registro de configuración de INHOTEL.|Error: '&GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+    END
+    EXIT
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+Get_MonitorSM       ROUTINE
+    CLEAR(GMonitorSM)
+    CLEAR(cfg:Record)
+    cfg:id = 'MonitorSM'
+    IF Access:pmsCfg.TryFetch(cfg:id_pk) = Level:Benign
+        GMonitorSM.lapsePMS = cfg:data1[1:20]
+        GMonitorSM.lapseCHM = cfg:data1[21:40]
+    ELSE
+        GMonitorSM.lapsePMS = 10
+        GMonitorSM.lapseCHM = 120
+    END
+
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[CALLS]
+Get_FecsisInhotel
+Set_FilesNamesInh
+[END]

@@ -1,0 +1,83 @@
+[MODULE]
+NAME 'Set_FilesNamesInh_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME Set_FilesNamesInh
+[COMMON]
+FROM ABC Source
+[PROMPTS]
+%GenerateOpenClose LONG  (0)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    glo:hbit = CLIP(GInhotel.path) & '\hbit.tps'
+    glo:hcaagen = CLIP(Ginhotel.path) & '\hcaagen.tps'
+    glo:hcaalco = CLIP(GInhotel.path) & '\hcaalco.tps'
+    glo:hcaclas = CLIP(GInhotel.path) & '\hcaclas.tps'
+    glo:hcactos = CLIP(GInhotel.path) & '\hcactos.tps'
+    glo:hcamovi = CLIP(GInhotel.path) & '\hcamovi.tps'
+    glo:hcaplan = CLIP(GInhotel.path) & '\hcaplan.tps'
+    glo:hcatari = CLIP(GInhotel.path) & '\hcatari.tps'
+    glo:hcatfex = CLIP(GInhotel.path) & '\hcatfex.tps'
+    glo:hcatptf = CLIP(GInhotel.path) & '\hcatptf.tps'
+    glo:hcavari = CLIP(GInhotel.path) & '\hcavari.tps'
+    glo:hcoallo = CLIP(GInhotel.path) & '\hcoallo.tps'
+    glo:hcrsvgp = CLIP(GInhotel.path) & '\hcrsvgp.tps'
+    glo:hcrtpgp = CLIP(GInhotel.path) & '\hcrtpgp.tps'
+    glo:hmensaj = CLIP(GInhotel.path) & '\hmensaj.tps'
+    glo:hpdbloq = CLIP(GInhotel.path) & '\hpdbloq.tps'
+    glo:hpddisp = CLIP(GInhotel.path) & '\hpddisp.tps'
+    glo:hpdesta = CLIP(GInhotel.path) & '\hpdesta.tps'
+    glo:hpdfoli = CLIP(GInhotel.path) & '\hpdfoli.tps'
+    glo:hpdhues = CLIP(GInhotel.path) & '\hpdhues.tps'
+    glo:hpdiden = CLIP(GInhotel.path) & '\hpdiden.tps'
+    glo:hpdligp = CLIP(GInhotel.path) & '\hpdligp.tps'
+    glo:hpdmovi = CLIP(GInhotel.path) & '\hcamovi.tps'
+    glo:hpdotrn = CLIP(GInhotel.path) & '\hpdotrn.tps'
+    glo:hpdrese = CLIP(GInhotel.path) & '\hpdrese.tps'
+    glo:hpdsigf = CLIP(GInhotel.path) & '\hpdsigf.tps'
+    glo:hpdtarres = CLIP(GInhotel.path) & '\hpdtarres.tps'
+    glo:hpdtpgp = CLIP(GInhotel.path) & '\hpdtpgp.tps'
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

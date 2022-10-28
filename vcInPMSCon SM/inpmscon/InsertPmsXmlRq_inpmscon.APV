@@ -1,0 +1,87 @@
+[MODULE]
+NAME 'InsertPmsXmlRq_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME InsertPmsXmlRq
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('Xml File Name:'),USE(?XmlFileName:Prompt)
+! ENTRY(@s254),USE(XmlFileName)
+[REPORTCONTROLS]
+! STRING(@s254),USE(XmlFileName)
+XmlFileName              CSTRING(255)
+!!> GUID('6760af22-46b7-4209-9a3a-34b4304e30d8'),PROMPT('Xml File Name:'),HEADER('Xml File Name'),PICTURE(@s254),TYPEMODE(INS)
+[FILES]
+[OTHERS]
+pmsXmlRq
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    XmlFileName = PATH()& '\XMLFiles\' & glo:EchoTokenRQ & ' - RQ.xml'
+    ConvertXMLStringToXMLFile(CLIP(glo:XMLRequest),XmlFileName)
+    DO OpenFiles
+    CLEAR(xrq:Record)
+    xrq:echoToken = glo:EchoTokenRQ
+    xrq:numPmsReq = glo:numberRequest
+    xrq:date = TODAY()
+    xrq:time = CLOCK()
+    IF FILETOBLOB(XmlFileName, xrq:xmlFile)  !returns an ERRORCODE if copy fails
+        UpdatePMSBIT('InsertXMLRequestToFile',XmlFileName & ' was not copied -  ERRORCODE: ' & ERRORCODE())
+        MonitorSMDisplay(XmlFileName & ' was not copied -  ErrorCode: ' & ERRORCODE())
+    END
+    IF Access:pmsXmlRq.TryInsert() <> Level:Benign
+        GlobalErrors.SetErrors()
+        UpdatePMSBIT('InsertPmsXmlRq-Error',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+        MonitorSMDisplay('No fue posible insertar registro en archivo pmsXmlRq(view log)')
+    END
+    DO CloseFiles
+    RETURN
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[CALLS]
+ConvertXMLStringToXMLFile
+[END]

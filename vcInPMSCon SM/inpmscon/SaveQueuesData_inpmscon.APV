@@ -1,0 +1,407 @@
+[MODULE]
+NAME 'SaveQueuesData_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME SaveQueuesData
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('idx Hotel Reservation:'),USE(?idxHotelReservation:Prompt)
+! ENTRY(@n-14),USE(idxHotelReservation),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxHotelReservation),RIGHT(1)
+idxHotelReservation      LONG
+!!> GUID('8b2f5bb1-bd50-4abd-a234-8d45c518125d'),PROMPT('idx Hotel Reservation:'),HEADER('idx Hotel Reservation'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Unique ID:'),USE(?idxUniqueID:Prompt)
+! ENTRY(@n-14),USE(idxUniqueID),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxUniqueID),RIGHT(1)
+idxUniqueID              LONG
+!!> GUID('cda6fc0a-4a54-44cb-9628-e2ca7975a0ee'),PROMPT('idx Unique ID:'),HEADER('idx Unique ID'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Source:'),USE(?idxSource:Prompt)
+! ENTRY(@n-14),USE(idxSource),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxSource),RIGHT(1)
+idxSource                LONG
+!!> GUID('044bb15e-4623-4dbd-ba18-04de463ac7fe'),PROMPT('idx Source:'),HEADER('idx Source'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Room Stay:'),USE(?idxRoomStay:Prompt)
+! ENTRY(@n-14),USE(idxRoomStay),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxRoomStay),RIGHT(1)
+idxRoomStay              LONG
+!!> GUID('e7e03d5b-47d4-4558-a3f7-f8e24ca7b996'),PROMPT('idx Room Stay:'),HEADER('idx Room Stay'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Room Types:'),USE(?idxRoomTypes:Prompt)
+! ENTRY(@n-14),USE(idxRoomTypes),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxRoomTypes),RIGHT(1)
+idxRoomTypes             LONG
+!!> GUID('105a9aa4-0321-43f9-aeec-b34af845e189'),PROMPT('idx Room Types:'),HEADER('idx Room Types'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Room Rate:'),USE(?idxRoomRate:Prompt)
+! ENTRY(@n-14),USE(idxRoomRate),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxRoomRate),RIGHT(1)
+idxRoomRate              LONG
+!!> GUID('e5ee8f57-172a-4c5c-848b-ae4cee5a4d1b'),PROMPT('idx Room Rate:'),HEADER('idx Room Rate'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Guest Count:'),USE(?idxGuestCount:Prompt)
+! ENTRY(@n-14),USE(idxGuestCount),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxGuestCount),RIGHT(1)
+idxGuestCount            LONG
+!!> GUID('00a14442-f12d-48b4-ba3d-b62013a0c289'),PROMPT('idx Guest Count:'),HEADER('idx Guest Count'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Room Stay Total:'),USE(?idxRoomStayTotal:Prompt)
+! ENTRY(@n-14),USE(idxRoomStayTotal),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxRoomStayTotal),RIGHT(1)
+idxRoomStayTotal         LONG
+!!> GUID('a02795ce-4eef-4344-b2d1-3f653b266307'),PROMPT('idx Room Stay Total:'),HEADER('idx Room Stay Total'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Res Guest:'),USE(?idxResGuest:Prompt)
+! ENTRY(@n-14),USE(idxResGuest),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxResGuest),RIGHT(1)
+idxResGuest              LONG
+!!> GUID('1c796446-6cd3-452d-ae71-30d8b256879a'),PROMPT('idx Res Guest:'),HEADER('idx Res Guest'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Phones:'),USE(?idxPhones:Prompt)
+! ENTRY(@n-14),USE(idxPhones),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxPhones),RIGHT(1)
+idxPhones                LONG
+!!> GUID('0cac7b26-03e6-4850-88cb-cd94a00a46f4'),PROMPT('idx Phones:'),HEADER('idx Phones'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Guarantee:'),USE(?idxGuarantee:Prompt)
+! ENTRY(@n-14),USE(idxGuarantee),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxGuarantee),RIGHT(1)
+idxGuarantee             LONG
+!!> GUID('599d1fb2-abd9-4002-9c24-dc6d07a9bcbc'),PROMPT('idx Guarantee:'),HEADER('idx Guarantee'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('idx Notif Report:'),USE(?idxNotifReport:Prompt)
+! ENTRY(@n-14),USE(idxNotifReport),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxNotifReport),RIGHT(1)
+idxNotifReport           LONG
+!!> GUID('962e3c77-6010-4d87-a0fc-38004a0cd97e'),PROMPT('idx Notif Report:'),HEADER('idx Notif Report'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+!    DO OpenFiles
+!    LOGOUT(1,cmGCount,cmGrntee,cmNotifR,cmPhones,cmReser,cmRGuest,cmRRate,cmRStay,cmRSTot,cmRTypes,cmSource,cmUniid)
+!    LOOP idxHotelReservation = 1 TO RECORDS(QHotelReservation)
+!        GET(QHotelReservation,idxHotelReservation)
+!        CLEAR(QUniqueID)
+!        QUniqueID.ResID_Value = QHotelReservation.ResID_Value
+!        QUniqueID.Type = 14
+!        GET(QUniqueID,QUniqueID.ResID_Value,QUniqueID.Type)
+!        CLEAR(cmr:Record)
+!        cmr:guid = ST.MakeGuid()
+!        cmr:date = TODAY()
+!        cmr:time = CLOCK()
+!        cmr:ResID_Value = QHotelReservation.ResID_Value
+!        cmr:ResID_Type = QHotelReservation.ResID_Type
+!        cmr:UniqueID14 = QUniqueID.ID
+!        cmr:CreateDateTime = QHotelReservation.CreateDateTime
+!        cmr:ResStatus = QHotelReservation.ResStatus
+!        cmr:CommentText[1] = QHotelReservation.CommentText[1]
+!        cmr:CommentText[2] = QHotelReservation.CommentText[2]
+!        cmr:CommentText[3] = QHotelReservation.CommentText[3]
+!        cmr:CommentText[4] = QHotelReservation.CommentText[4]
+!        cmr:CommentText[5] = QHotelReservation.CommentText[5]
+!        IF Access:cmReser.TryInsert() <> Level:Benign
+!            GlobalErrors.SetErrors()
+!            UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmReser',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!            ROLLBACK()
+!            BREAK
+!        END
+!        LOOP idxUniqueID = 1 TO RECORDS(QUniqueID)
+!            GET(QUniqueID,idxUniqueID)
+!            IF QUniqueID.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(cui:Record)
+!            cui:guid = ST.MakeGuid()
+!            cui:guidRva = cmr:guid
+!            cui:ID = QUniqueID.ID
+!            cui:ID_Context = QUniqueID.ID_Context
+!            cui:Type = QUniqueID.Type
+!            IF Access:cmUniid.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmUniid',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxSource = 1 TO RECORDS(QSource)
+!            GET(QSource,idxSource)
+!            IF QSource.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(csr:Record)
+!            csr:guid = ST.MakeGuid()
+!            csr:guidRva = cmr:guid
+!            csr:RequestorIDID = QSource.RequestorIDID
+!            csr:RequestorIDType = QSource.RequestorIDType
+!            csr:BookingChannelPrimary = QSource.BookingChannelPrimary
+!            csr:BookingChannelType = QSource.BookingChannelType
+!            csr:CompanyName = QSource.CompanyName
+!            csr:CompanyNameCode = QSource.CompanyNameCode
+!            IF Access:cmSource.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmSource',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxRoomStay = 1 TO RECORDS(QRoomStay)
+!            GET(QRoomStay,idxRoomStay)
+!            IF QRoomStay.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(crs:Record)
+!            crs:guid = ST.MakeGuid()
+!            crs:guidRva = cmr:guid
+!            crs:MarketCode = QRoomStay.MarketCode
+!            crs:PromotionCode = QRoomStay.PromotionCode
+!            crs:SourceOfBusiness = QRoomStay.SourceOfBusiness
+!            crs:TimeSpanEnd = QRoomStay.TimeSpanEnd
+!            crs:TimeSpanStart = QRoomStay.TimeSpanStart
+!            crs:HotelCode = QRoomStay.HotelCode
+!            IF Access:cmRStay.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmRStay',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxRoomTypes = 1 TO RECORDS(QRoomTypes)
+!            GET(QRoomTypes,idxRoomTypes)
+!            IF QRoomTypes.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(crt:Record)
+!            crt:guid = ST.MakeGuid()
+!            crt:guidRva = cmr:guid
+!            crt:RoomTypeCode = QRoomTypes.RoomTypeCode
+!            crt:NonSmoking = QRoomTypes.NonSmoking
+!            crt:Configuration = QRoomTypes.Configuration
+!            crt:RoomDescriptionText = QRoomTypes.RoomDescriptionText
+!            IF Access:cmRTypes.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmRTypes',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxRoomRate = 1 TO RECORDS(QRoomRate)
+!            GET(QRoomRate,idxRoomRate)
+!            IF QRoomRate.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(crr:Record)
+!            crr:guid = ST.MakeGuid()
+!            crr:guidRva = cmr:guid
+!            crr:NumberOfUnits = QRoomRate.NumberOfUnits
+!            crr:RoomTypeCode = QRoomRate.RoomTypeCode
+!            crr:EffectiveDate = QRoomRate.EffectiveDate
+!            crr:ExpireDate = QRoomRate.ExpireDate
+!            crr:RateTimeUnit = QRoomRate.RateTimeUnit
+!            crr:UnitMultiplier = QRoomRate.UnitMultiplier
+!            crr:BaseAmountAfterTax = QRoomRate.BaseAmountAfterTax
+!            crr:BaseAmountBeforeTax = QRoomRate.BaseAmountBeforeTax
+!            crr:BaseCurrencyCode = QRoomRate.BaseCurrencyCode
+!            crr:TotalAmountAfterTax = QRoomRate.TotalAmountAfterTax
+!            crr:TotalAmountBeforeTax = QRoomRate.TotalAmountBeforeTax
+!            crr:TotalCurrencyCode = QRoomRate.TotalCurrencyCode
+!            IF Access:cmRRate.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmRRate',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxGuestCount = 1 TO RECORDS(QGuestCount)
+!            GET(QGuestCount,idxGuestCount)
+!            IF QGuestCount.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(cGC:Record)
+!            cGC:guid = ST.MakeGuid()
+!            cGC:guidRva = cmr:guid
+!            cGC:AgeQualifyingCode = QGuestCount.AgeQualifyingCode
+!            cGC:Count = QGuestCount.Count
+!            IF Access:cmGCount.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmGCount',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxRoomStayTotal = 1 TO RECORDS(QRoomStayTotal)
+!            GET(QRoomStayTotal,idxRoomStayTotal)
+!            IF QRoomStayTotal.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(crst:Record)
+!            crst:guid = ST.MakeGuid()
+!            crst:guidRva = cmr:guid
+!            crst:AmountAfterTax = QRoomStayTotal.AmountAfterTax
+!            crst:AmountBeforeTax = QRoomStayTotal.AmountBeforeTax
+!            crst:CurrencyCode = QRoomStayTotal.CurrencyCode
+!            IF Access:cmRSTot.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmRSTot',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxResGuest = 1 TO RECORDS(QResGuest)
+!            GET(QResGuest,idxResGuest)
+!            IF QResGuest.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(crg:Record)
+!            crg:guid = ST.MakeGuid()
+!            crg:guidRva = cmr:guid
+!            crg:ResGuestRPH = QResGuest.ResGuestRPH
+!            crg:ArrivalTime = QResGuest.ArrivalTime
+!            crg:Age = QResGuest.Age
+!            crg:PrimaryIndicator = QResGuest.PrimaryIndicator
+!            crg:Name = QResGuest.CommentName
+!            crg:Text = QResGuest.CommentText
+!            crg:UniqueID = QResGuest.ID
+!            crg:Type = QResGuest.Type
+!            crg:ID = QResGuest.ID
+!            crg:ID_Context = QResGuest.ID_Context
+!            crg:ProfileType = QResGuest.ProfileType
+!            crg:NamePrefix = QResGuest.NamePrefix
+!            crg:GivenName = QResGuest.GivenName
+!            crg:MiddleName = QResGuest.MiddleName
+!            crg:Surname = QResGuest.Surname
+!            crg:PhoneNumber[1] = QResGuest.PhoneNumber[1]
+!            crg:PhoneNumber[2] = QResGuest.PhoneNumber[2]
+!            crg:PhoneNumber[3] = QResGuest.PhoneNumber[3]
+!            crg:PhoneNumber[4] = QResGuest.PhoneNumber[4]
+!            crg:PhoneNumber[5] = QResGuest.PhoneNumber[5]
+!            crg:PhoneUseType[1] = QResGuest.PhoneUseType[1]
+!            crg:PhoneUseType[2] = QResGuest.PhoneUseType[2]
+!            crg:PhoneUseType[3] = QResGuest.PhoneUseType[3]
+!            crg:PhoneUseType[4] = QResGuest.PhoneUseType[4]
+!            crg:PhoneUseType[5] = QResGuest.PhoneUseType[5]
+!            crg:PhoneTechType[1] = QResGuest.PhoneTechType[1]
+!            crg:PhoneTechType[2] = QResGuest.PhoneTechType[2]
+!            crg:PhoneTechType[3] = QResGuest.PhoneTechType[3]
+!            crg:PhoneTechType[4] = QResGuest.PhoneTechType[4]
+!            crg:PhoneTechType[5] = QResGuest.PhoneTechType[5]
+!            crg:Email = QResGuest.Email
+!            crg:AddressLine[1] = QResGuest.AddressLine[1]
+!            crg:AddressLine[2] = QResGuest.AddressLine[2]
+!            crg:AddressLine[3] = QResGuest.AddressLine[3]
+!            crg:AddressLine[4] = QResGuest.AddressLine[4]
+!            crg:AddressLine[5] = QResGuest.AddressLine[5]
+!            crg:CityName = QResGuest.CityName
+!            crg:PostalCode = QResGuest.PostalCode
+!            crg:StateProv = QResGuest.StateProv
+!            crg:CountryName = QResGuest.CountryName
+!            crg:CompanyName = QResGuest.CompanyName
+!            IF Access:cmRGuest.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmRGuest',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxPhones = 1 TO RECORDS(QPhones)
+!            GET(QPhones,idxPhones)
+!            IF QResGuest.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(cph:Record)
+!            cph:guid = ST.MakeGuid()
+!            cph:guidRva = cmr:guid
+!            cph:ProfileType = QPhones.ProfileType
+!            cph:PhoneNumber = QPhones.PhoneNumber
+!            cph:PhoneUseType = QPhones.PhoneUseType
+!            cph:PhoneTechType = QPhones.PhoneTechType
+!            IF Access:cmPhones.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmPhones',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxGuarantee = 1 TO RECORDS(QGuarantee)
+!            GET(QGuarantee,idxGuarantee)
+!            IF QGuarantee.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(cgrt:Record)
+!            cgrt:guid = ST.MakeGuid()
+!            cgrt:guidRva = cmr:guid
+!            cgrt:CardCode = QGuarantee.CardCode
+!            cgrt:CardType = QGuarantee.CardType
+!            cgrt:ExpireDate = QGuarantee.ExpireDate
+!            cgrt:MaskedCardNumber = QGuarantee.MaskedCardNumber
+!            cgrt:CardHolderName = QGuarantee.CardHolderName
+!            IF Access:cmGrntee.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmGrntee',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!        LOOP idxNotifReport = 1 TO RECORDS(QNotifReport)
+!            GET(QNotifReport,idxNotifReport)
+!            IF QNotifReport.ResID_Value <> QHotelReservation.ResID_Value THEN CYCLE.
+!            CLEAR(cnr:Record)
+!            cnr:guid = st.MakeGuid()
+!            cnr:guidRva = cmr:guid
+!            cnr:pmsID = QNotifReport.pmsID
+!            cnr:success = QNotifReport.Success
+!            cnr:errorType = QNotifReport.ErrorType
+!            cnr:errorCode = QNotifReport.ErrorCode
+!            cnr:errorDescription = QNotifReport.ErrorDescripcion
+!            IF Access:cmNotifR.TryInsert() <> Level:Benign
+!                GlobalErrors.SetErrors()
+!                UpdatePMSBIT('OTA_ResRetrieveRS-Error Insert cmNotifR',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+!                ROLLBACK()
+!                BREAK
+!            END
+!        END
+!
+!    END
+!    COMMIT()
+!    DO Closefiles
+!
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

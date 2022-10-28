@@ -1,0 +1,151 @@
+[MODULE]
+NAME 'Get_AmountRate_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME Get_AmountRate
+PROTOTYPE '(string pStayId),REAL'
+PARAMETERS '(string pStayId)'
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('r Amount Rate:'),USE(?rAmountRate:Prompt)
+! ENTRY(@n-10.2),USE(rAmountRate),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(rAmountRate),DECIMAL(12)
+rAmountRate              DECIMAL(7,2)
+!!> GUID('faeaa310-2b6b-4855-be37-7f9f3abe9af5'),PROMPT('r Amount Rate:'),HEADER('r Amount Rate'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('Base Amount Before Tax:'),USE(?BaseAmountBeforeTax:Prompt)
+! ENTRY(@n-10.2),USE(BaseAmountBeforeTax),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(BaseAmountBeforeTax),DECIMAL(12)
+BaseAmountBeforeTax      DECIMAL(7,2)
+!!> GUID('9cc05427-be25-4429-9709-b6859990b0c5'),PROMPT('Base Amount Before Tax:'),HEADER('Base Amount Before Tax'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('Base Amount After Tax:'),USE(?BaseAmountAfterTax:Prompt)
+! ENTRY(@n-10.2),USE(BaseAmountAfterTax),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(BaseAmountAfterTax),DECIMAL(12)
+BaseAmountAfterTax       DECIMAL(7,2)
+!!> GUID('6fa888c7-fe49-44b0-87f3-3c0a90035300'),PROMPT('Base Amount After Tax:'),HEADER('Base Amount After Tax'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('Total Amount Before Tax:'),USE(?TotalAmountBeforeTax:Prompt)
+! ENTRY(@n-10.2),USE(TotalAmountBeforeTax),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(TotalAmountBeforeTax),DECIMAL(12)
+TotalAmountBeforeTax     DECIMAL(7,2)
+!!> GUID('2c3b8638-327f-4a96-bcdf-83f48e0ee2b2'),PROMPT('Total Amount Before Tax:'),HEADER('Total Amount Before Tax'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('Total Amount After Tax:'),USE(?TotalAmountAfterTax:Prompt)
+! ENTRY(@n-10.2),USE(TotalAmountAfterTax),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(TotalAmountAfterTax),DECIMAL(12)
+TotalAmountAfterTax      DECIMAL(7,2)
+!!> GUID('9131df65-3a51-4627-a4c3-ca76d5d33bb5'),PROMPT('Total Amount After Tax:'),HEADER('Total Amount After Tax'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[PROMPTS]
+%GenerateOpenClose LONG  (0)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    QRoomRates.StayId = pStayId
+    GET(QRoomRates,QRoomRates.StayId)
+    IF NOT ERRORCODE()
+        BaseAmountBeforeTax = DEFORMAT(QRoomRates.BaseAmountBeforeTax)
+        BaseAmountAfterTax = DEFORMAT(QRoomRates.BaseAmountAfterTax)
+        TotalAmountBeforeTax = DEFORMAT(QRoomRates.TotalAmountBeforeTax)
+        TotalAmountAfterTax = DEFORMAT(QRoomRates.TotalAmountAfterTax)
+        CASE SIS:METAPL
+        OF 'C'
+            IF BaseAmountAfterTax
+                rAmountRate = BaseAmountAfterTax
+                rAmountRate = rAmountRate / ((SIS:PORTAX/100)+1)
+            ELSIF BaseAmountBeforeTax
+                rAmountRate = BaseAmountBeforeTax
+            ELSIF TotalAmountAfterTax
+                rAmountRate = TotalAmountAfterTax
+                rAmountRate = rAmountRate / ((SIS:PORTAX/100)+1)
+            ELSIF TotalAmountBeforeTax
+                rAmountRate = TotalAmountBeforeTax
+            END
+        OF 'F'
+            IF BaseAmountAfterTax
+                rAmountRate = BaseAmountAfterTax
+            ELSIF BaseAmountBeforeTax
+                rAmountRate = BaseAmountBeforeTax
+                rAmountRate = rAmountRate * ((SIS:PORTAX/100)+1)
+            ELSIF TotalAmountAfterTax
+                rAmountRate = TotalAmountAfterTax
+            ELSIF TotalAmountBeforeTax
+                rAmountRate = TotalAmountBeforeTax
+                rAmountRate = rAmountRate * ((SIS:PORTAX/100)+1)
+            END
+        END
+    ELSE
+        QRoomStays.StayId = pStayId
+        GET(QRoomStays,QRoomStays.StayId)
+        IF NOT ERRORCODE()
+            TotalAmountBeforeTax = DEFORMAT(QRoomStays.RoomStayTotalAmountBeforeTax)
+            TotalAmountAfterTax = DEFORMAT(QRoomStays.RoomStayTotalAmountAfterTax)
+            CASE SIS:METAPL
+            OF 'C'
+                IF TotalAmountAfterTax
+                    rAmountRate = TotalAmountAfterTax
+                    rAmountRate = rAmountRate / ((SIS:PORTAX/100)+1)
+                ELSE
+                    rAmountRate = TotalAmountBeforeTax
+                END
+            OF 'F'
+                IF TotalAmountAfterTax
+                    rAmountRate = TotalAmountAfterTax
+                ELSE
+                    rAmountRate = TotalAmountBeforeTax
+                    rAmountRate = rAmountRate * ((SIS:PORTAX/100)+1)
+                END
+            END
+        END
+    END
+    RETURN(rAmountRate)
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

@@ -1,0 +1,88 @@
+[MODULE]
+NAME 'DeleteRecordsHMENSAJ_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME DeleteRecordsHMENSAJ
+PROTOTYPE '(string pNumRes),long'
+PARAMETERS '(string pNumRes)'
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('LERROR:'),USE(?LERROR:Prompt)
+! ENTRY(@n-14),USE(LERROR),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(LERROR),RIGHT(1)
+LERROR                   LONG
+!!> GUID('b5b6460f-a8b2-49ee-9f11-87939276f57c'),PROMPT('LERROR:'),HEADER('LERROR'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[FILES]
+[OTHERS]
+HMENSAJ
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    DO OpenFiles
+    CLEAR(HMEN:Record)
+    HMEN:MENNUMRES = PNUMRES
+    SET(HMEN:KEY_HMENSAJ,HMEN:KEY_HMENSAJ)
+    LOOP UNTIL Access:HMENSAJ.Next() OR HMEN:MENNUMRES <> PNUMRES
+        IF Access:HMENSAJ.DeleteRecord(0) <> Level:Benign
+            GlobalErrors.SetErrors()
+            LERROR = GlobalErrors.GetErrorcode()
+            UpdatePMSBIT('DeleteRecordsHMENSAJ','No fue posible eliminar registro en archivo HPDTARRES: '&CLIP(LEFT(pnumres))&'<13,10>'&GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+            MonitorSMDisplay('No fue posible eliminar registro en archivo HMENSAJ: '&CLIP(LEFT(pnumres))&'(view log)')
+            BREAK
+        END
+    END
+    DO CloseFiles
+    IF LERROR
+        ROLLBACK
+        RETURN(PmsErrorCode16)
+    ELSE
+        RETURN 0
+    END
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]

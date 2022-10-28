@@ -1,0 +1,2760 @@
+[MODULE]
+NAME 'UpdateInhotel_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME UpdateInhotel
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('sigfol:'),USE(?sigfol:Prompt)
+! ENTRY(@n-14),USE(sigfol),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(sigfol),RIGHT(1)
+sigfol                   LONG
+!!> GUID('dd92575e-af9c-4899-9fba-333009ef2974'),PROMPT('sigfol:'),HEADER('sigfol'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT(':'),USE(?idxHotelReservation:Prompt)
+! ENTRY(@n-14),USE(idxHotelReservation),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(idxHotelReservation),RIGHT(1)
+idxHotelReservation      LONG
+!!> GUID('92f4b273-cbbb-48c8-ae59-da81c936867f'),PROMPT(':'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('Num Res Key:'),USE(?NumResKey:Prompt)
+! ENTRY(@n-14),USE(NumResKey),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(NumResKey),RIGHT(1)
+NumResKey                LONG
+!!> GUID('d7f05b56-f00a-440f-a163-0997b13f7f79'),PROMPT('Num Res Key:'),HEADER('Num Res Key'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('unique ID Aux:'),USE(?uniqueID_Aux:Prompt)
+! ENTRY(@s20),USE(uniqueID_Aux)
+[REPORTCONTROLS]
+! STRING(@s20),USE(uniqueID_Aux)
+uniqueID_Aux             STRING(20)
+!!> GUID('a7d72614-234e-4a44-9043-66e6d3997392'),PROMPT('unique ID Aux:'),HEADER('unique ID Aux'),PICTURE(@s20),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('LERROR:'),USE(?LERROR:Prompt)
+! ENTRY(@n-14),USE(LERROR),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(LERROR),RIGHT(1)
+LERROR                   LONG
+!!> GUID('a82ae2a6-7588-44a3-8c84-2077af598168'),PROMPT('LERROR:'),HEADER('LERROR'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('loc : fecmodi:'),USE(?fecmodi:Prompt)
+! ENTRY(@s8),USE(fecmodi)
+[REPORTCONTROLS]
+! STRING(@s8),USE(fecmodi)
+loc:fecmodi              STRING(8)
+!!> GUID('b5eb3a26-9f0c-4f88-87fc-d0f45186ae01'),PROMPT('loc : fecmodi:'),HEADER('loc : fecmodi'),PICTURE(@s8),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('loc : fecmodf:'),USE(?fecmodf:Prompt)
+! ENTRY(@s8),USE(fecmodf)
+[REPORTCONTROLS]
+! STRING(@s8),USE(fecmodf)
+loc:fecmodf              STRING(8)
+!!> GUID('d030fe9e-fe5f-4b59-98d9-1bd9e68848d2'),PROMPT('loc : fecmodf:'),HEADER('loc : fecmodf'),PICTURE(@s8),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Curren:'),USE(?GroupCurrent:Prompt)
+! ENTRY(@s20),USE(GroupCurrent)
+[REPORTCONTROLS]
+! STRING(@s20),USE(GroupCurrent)
+GroupCurrent             GROUP,PRE(GCU)
+!!> GUID('70743241-3588-43d5-99b4-304301e73771'),PROMPT('Curren:'),HEADER('Curren'),PICTURE(@s20),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Num Res:'),USE(?GCU:NumRes:Prompt)
+! ENTRY(@s7),USE(GCU:NumRes),DECIMAL(14)
+[REPORTCONTROLS]
+! STRING(@s7),USE(GCU:NumRes),DECIMAL(14)
+NumRes                     STRING(7)
+!!> GUID('1ed8ee51-a070-443b-9f51-eb160f17a8bd'),PROMPT('Num Res:'),HEADER('Num Res'),PICTURE(@s7),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Res Status:'),USE(?GCU:ResStatus:Prompt)
+! ENTRY(@s10),USE(GCU:ResStatus)
+[REPORTCONTROLS]
+! STRING(@s10),USE(GCU:ResStatus)
+ResStatus                  CSTRING(11)
+!!> GUID('aa932898-9f6d-40a1-b979-a177b099a1ca'),PROMPT('Res Status:'),HEADER('Res Status'),PICTURE(@s10),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Fec Res:'),USE(?GCU:FecRes:Prompt)
+! ENTRY(@s8),USE(GCU:FecRes)
+[REPORTCONTROLS]
+! STRING(@s8),USE(GCU:FecRes)
+FecRes                     STRING(8)
+!!> GUID('141d8dec-f025-429d-8a1b-90043c738faf'),PROMPT('Fec Res:'),HEADER('Fec Res'),PICTURE(@s8),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Feclle:'),USE(?GCU:Feclle:Prompt)
+! ENTRY(@s8),USE(GCU:Feclle)
+[REPORTCONTROLS]
+! STRING(@s8),USE(GCU:Feclle)
+Feclle                     STRING(8)
+!!> GUID('40f64a6c-45f2-472a-8778-2d4a5c52ced6'),PROMPT('Feclle:'),HEADER('Feclle'),PICTURE(@s8),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Fecsal:'),USE(?GCU:Fecsal:Prompt)
+! ENTRY(@s8),USE(GCU:Fecsal)
+[REPORTCONTROLS]
+! STRING(@s8),USE(GCU:Fecsal)
+Fecsal                     STRING(8)
+!!> GUID('c188edcb-0c54-467d-9478-d117454f786a'),PROMPT('Fecsal:'),HEADER('Fecsal'),PICTURE(@s8),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Room Type Code:'),USE(?GCU:RoomTypeCode:Prompt)
+! ENTRY(@s10),USE(GCU:RoomTypeCode)
+[REPORTCONTROLS]
+! STRING(@s10),USE(GCU:RoomTypeCode)
+RoomTypeCode               STRING(10)
+!!> GUID('0b726fd9-95ba-4558-9492-d6c85c1b9af3'),PROMPT('Room Type Code:'),HEADER('Room Type Code'),PICTURE(@s10),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Name Prefix:'),USE(?GCU:NamePrefix:Prompt)
+! ENTRY(@s10),USE(GCU:NamePrefix)
+[REPORTCONTROLS]
+! STRING(@s10),USE(GCU:NamePrefix)
+NamePrefix                 STRING(10)
+!!> GUID('5a3345ce-9e8d-474f-921c-22c5a2933f7e'),PROMPT('Name Prefix:'),HEADER('Name Prefix'),PICTURE(@s10),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Given Name:'),USE(?GCU:GivenName:Prompt)
+! ENTRY(@s40),USE(GCU:GivenName)
+[REPORTCONTROLS]
+! STRING(@s40),USE(GCU:GivenName)
+GivenName                  STRING(40)
+!!> GUID('3f6c02c3-0dcc-4316-8621-340941f5eb2a'),PROMPT('Given Name:'),HEADER('Given Name'),PICTURE(@s40),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Middle Name:'),USE(?GCU:MiddleName:Prompt)
+! ENTRY(@s40),USE(GCU:MiddleName)
+[REPORTCONTROLS]
+! STRING(@s40),USE(GCU:MiddleName)
+MiddleName                 STRING(40)
+!!> GUID('bcb9a66c-cbe3-4deb-a790-2dc9a1413e15'),PROMPT('Middle Name:'),HEADER('Middle Name'),PICTURE(@s40),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Surname:'),USE(?GCU:Surname:Prompt)
+! ENTRY(@s40),USE(GCU:Surname)
+[REPORTCONTROLS]
+! STRING(@s40),USE(GCU:Surname)
+Surname                    STRING(40)
+!!> GUID('c88a7ff1-cf77-48a9-9f52-bef6efb52fac'),PROMPT('Surname:'),HEADER('Surname'),PICTURE(@s40),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('num Adu:'),USE(?GCU:numAdu:Prompt)
+! ENTRY(@n-7),USE(GCU:numAdu),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-7),USE(GCU:numAdu),RIGHT(1)
+numAdu                     SHORT
+!!> GUID('f31b452b-5d70-48a0-a7d1-673961ed61a6'),PROMPT('num Adu:'),HEADER('num Adu'),PICTURE(@n-7),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('num Nin:'),USE(?GCU:numNin:Prompt)
+! ENTRY(@s20),USE(GCU:numNin)
+[REPORTCONTROLS]
+! STRING(@s20),USE(GCU:numNin)
+numNin                     STRING(20)
+!!> GUID('12d6541b-02a3-4492-9a33-32621853bc66'),PROMPT('num Nin:'),HEADER('num Nin'),PICTURE(@s20),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Direc 1:'),USE(?GCU:Direc1:Prompt)
+! ENTRY(@s40),USE(GCU:Direc1)
+[REPORTCONTROLS]
+! STRING(@s40),USE(GCU:Direc1)
+Direc1                     STRING(40)
+!!> GUID('710cdfe1-6f3d-4228-ab78-9ffb09ba016c'),PROMPT('Direc 1:'),HEADER('Direc 1'),PICTURE(@s40),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Direc 2:'),USE(?GCU:Direc2:Prompt)
+! ENTRY(@s40),USE(GCU:Direc2)
+[REPORTCONTROLS]
+! STRING(@s40),USE(GCU:Direc2)
+Direc2                     STRING(40)
+!!> GUID('6f5a8223-1bc8-4249-ac79-01fe66f06171'),PROMPT('Direc 2:'),HEADER('Direc 2'),PICTURE(@s40),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Direc 3:'),USE(?GCU:Direc3:Prompt)
+! ENTRY(@s40),USE(GCU:Direc3)
+[REPORTCONTROLS]
+! STRING(@s40),USE(GCU:Direc3)
+Direc3                     STRING(40)
+!!> GUID('1da83533-c6d6-4116-bc6d-1ff6bd079264'),PROMPT('Direc 3:'),HEADER('Direc 3'),PICTURE(@s40),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Postal Code:'),USE(?GCU:PostalCode:Prompt)
+! ENTRY(@s10),USE(GCU:PostalCode)
+[REPORTCONTROLS]
+! STRING(@s10),USE(GCU:PostalCode)
+PostalCode                 STRING(10)
+!!> GUID('c09b8fd8-6867-4d4e-a15f-e0064f1ced2a'),PROMPT('Postal Code:'),HEADER('Postal Code'),PICTURE(@s10),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Telefono:'),USE(?GCU:Telefono:Prompt)
+! ENTRY(@s20),USE(GCU:Telefono)
+[REPORTCONTROLS]
+! STRING(@s20),USE(GCU:Telefono)
+Telefono                   STRING(20)
+!!> GUID('96562016-67dd-4d87-9eab-204a3855bac4'),PROMPT('Telefono:'),HEADER('Telefono'),PICTURE(@s20),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('email:'),USE(?GCU:email:Prompt)
+! ENTRY(@s70),USE(GCU:email)
+[REPORTCONTROLS]
+! STRING(@s70),USE(GCU:email)
+email                      STRING(70)
+!!> GUID('8167f1a3-c8a7-4ddb-b8bf-0fd47afe486a'),PROMPT('email:'),HEADER('email'),PICTURE(@s70),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('cod Age:'),USE(?GCU:codAge:Prompt)
+! ENTRY(@s10),USE(GCU:codAge)
+[REPORTCONTROLS]
+! STRING(@s10),USE(GCU:codAge)
+codAge                     STRING(10)
+!!> GUID('77be95ca-5b72-4173-87df-8477278f1dad'),PROMPT('cod Age:'),HEADER('cod Age'),PICTURE(@s10),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Company Name:'),USE(?GCU:CompanyName:Prompt)
+! ENTRY(@s40),USE(GCU:CompanyName)
+[REPORTCONTROLS]
+! STRING(@s40),USE(GCU:CompanyName)
+CompanyName                STRING(40)
+!!> GUID('b14bcdb6-04e1-4d11-b92e-82ca8b9f9924'),PROMPT('Company Name:'),HEADER('Company Name'),PICTURE(@s40),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('segmer:'),USE(?GCU:segmer:Prompt)
+! ENTRY(@s6),USE(GCU:segmer)
+[REPORTCONTROLS]
+! STRING(@s6),USE(GCU:segmer)
+segmer                     STRING(6)
+!!> GUID('e378cbb0-fbcb-4dc9-ac70-34a508011631'),PROMPT('segmer:'),HEADER('segmer'),PICTURE(@s6),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('subseg:'),USE(?GCU:subseg:Prompt)
+! ENTRY(@s6),USE(GCU:subseg)
+[REPORTCONTROLS]
+! STRING(@s6),USE(GCU:subseg)
+subseg                     STRING(6)
+!!> GUID('c5224910-dfb7-4ad5-8b2d-0b6913f6bb78'),PROMPT('subseg:'),HEADER('subseg'),PICTURE(@s6),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Source Of Business:'),USE(?GCU:SourceOfBusiness:Prompt)
+! ENTRY(@s6),USE(GCU:SourceOfBusiness)
+[REPORTCONTROLS]
+! STRING(@s6),USE(GCU:SourceOfBusiness)
+SourceOfBusiness           STRING(6)
+!!> GUID('07ade27b-00ca-4669-a86b-0c59a1d1e136'),PROMPT('Source Of Business:'),HEADER('Source Of Business'),PICTURE(@s6),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Contacto:'),USE(?GCU:Contacto:Prompt)
+! ENTRY(@s40),USE(GCU:Contacto)
+[REPORTCONTROLS]
+! STRING(@s40),USE(GCU:Contacto)
+Contacto                   STRING(40)
+!!> GUID('09f84e35-d2ba-4d81-a40d-ff773b74168a'),PROMPT('Contacto:'),HEADER('Contacto'),PICTURE(@s40),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('codtar:'),USE(?GCU:codtar:Prompt)
+! ENTRY(@s8),USE(GCU:codtar)
+[REPORTCONTROLS]
+! STRING(@s8),USE(GCU:codtar)
+codtar                     STRING(8)
+!!> GUID('9d9fa503-6f63-4a23-b38f-675e74b76acd'),PROMPT('codtar:'),HEADER('codtar'),PICTURE(@s8),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Notas:'),USE(?GCU:Notas:Prompt)
+! ENTRY(@s255),USE(GCU:Notas)
+[REPORTCONTROLS]
+! STRING(@s255),USE(GCU:Notas)
+Notas                      STRING(300)
+!!> GUID('277498b9-3f28-4dbb-a678-e24a717f0975'),PROMPT('Notas:'),HEADER('Notas'),PICTURE(@s255),TYPEMODE(INS)
+                         END
+!!> GUID('68a02d19-f262-458e-9e8d-0d10e23da122')
+[SCREENCONTROLS]
+! PROMPT('Room Stays PMS:'),USE(?RoomStaysPMS:Prompt)
+! ENTRY(@s20),USE(RoomStaysPMS)
+[REPORTCONTROLS]
+! STRING(@s20),USE(RoomStaysPMS)
+RoomStaysPMS             QUEUE,PRE()
+!!> GUID('117a9770-e27d-45de-890a-15e65e61bf58'),PROMPT('Room Stays PMS:'),HEADER('Room Stays PMS'),PICTURE(@s20),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Numres:'),USE(?Numres:Prompt)
+! ENTRY(@s20),USE(Numres)
+[REPORTCONTROLS]
+! STRING(@s20),USE(Numres)
+Numres                     LIKE(HRES:SRESNUMRES)
+!!> GUID('80c56c0d-174f-4f0d-865f-6da4e974bafa'),PROMPT('Numres:'),HEADER('Numres'),PICTURE(@s20),TYPEMODE(INS)
+[SCREENCONTROLS]
+! PROMPT('Status:'),USE(?Status:Prompt)
+! ENTRY(@s1),USE(Status)
+[REPORTCONTROLS]
+! STRING(@s1),USE(Status)
+Status                     STRING(1)
+!!> GUID('f3919a7e-4f85-446c-a94c-8be68ddf80d2'),PROMPT('Status:'),HEADER('Status'),PICTURE(@s1),TYPEMODE(INS)
+                         END
+!!> GUID('b0e02e70-d261-4a4f-bb8a-d424c9e1d300')
+[SCREENCONTROLS]
+! PROMPT('date Start:'),USE(?dateStart:Prompt)
+! ENTRY(@n-14),USE(dateStart),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(dateStart),RIGHT(1)
+dateStart                LONG
+!!> GUID('b3d8e949-337a-4539-a0a2-53be668b380d'),PROMPT('date Start:'),HEADER('date Start'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('date End:'),USE(?dateEnd:Prompt)
+! ENTRY(@n-14),USE(dateEnd),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(dateEnd),RIGHT(1)
+dateEnd                  LONG
+!!> GUID('f106fcd5-a349-4c5a-851f-3ee082ea1d7c'),PROMPT('date End:'),HEADER('date End'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[FILES]
+[OTHERS]
+pmsocc
+HCAAGEN
+HMENSAJ
+HPDSIGF
+HCOALLO
+HPDOTRN
+HPDBLOQ
+HCAALCO
+HCACTOS
+HPDDISP
+HPDTARRES
+HPDHUES
+HPDTPGP
+HCAVARI
+HPDRESE
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    Get_FecsisInhotel()
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    UpdatePMSBIT('UpdateInhotel('&Get_UniqueID('14')&') Started.','Process has been starting.')
+    DO OpenFiles
+    CLEAR(GroupCurrent)
+    GCU:FecRes = FORMAT(TODAY(),@D12)
+    GET(QHotelReservation,1)
+    CASE QHotelReservation.ResStatus
+    OF 'Book'
+        CLEAR(HRES:Record)
+        HRES:SRESMEDRES = 'SM'
+        HRES:SRESNUMCCR = GET_UniqueID('14')
+        IF Access:HPDRESE.TryFetch(HRES:KEY_NUMCCR) = Level:Benign
+            AddNotifReportSuccess(HRES:SRESNUMRES)
+            RETURN
+        ELSE
+            GlobalErrors.SetErrors()
+            IF GlobalErrors.GetErrorcode() = 35
+                GCU:ResStatus = CLIP(QHotelReservation.ResStatus)
+            ELSE
+                AddNotifReportError(PmsErrorCode07)
+                RETURN
+            END
+        END
+    OF 'Modify'
+        CLEAR(HRES:Record)
+        HRES:SRESMEDRES = 'SM'
+        HRES:SRESNUMCCR = GET_UniqueID('14')
+        IF Access:HPDRESE.TryFetch(HRES:KEY_NUMCCR) = Level:Benign
+            IF HRES:SRESESTRES='3'
+                AddNotifReportError(PmsErrorCode28)
+                RETURN
+            ELSE
+                GCU:ResStatus = CLIP(QHotelReservation.ResStatus)
+            END
+
+        ELSE
+            GlobalErrors.SetErrors()
+            IF GlobalErrors.GetErrorcode() = 35
+                GCU:ResStatus = 'Book'
+            ELSE
+                AddNotifReportError(PmsErrorCode08)
+                RETURN
+            END
+        END
+    OF 'Cancel'
+        ExistReservation# = 0
+        uniqueID_Aux = GET_UniqueID('14')
+        CLEAR(HRES:Record)
+        HRES:SRESMEDRES = 'SM'
+        HRES:SRESNUMCCR = uniqueID_Aux
+        SET(HRES:KEY_NUMCCR,HRES:KEY_NUMCCR)
+        LOOP UNTIL Access:HPDRESE.Next() OR HRES:SRESMEDRES <> 'SM' OR HRES:SRESNUMCCR <> uniqueID_Aux
+            IF NOT NumResKey
+                NumResKey = HRES:SRESNUMRES
+            ELSE
+                IF NumResKey > HRES:SRESNUMRES
+                    NumResKey = HRES:SRESNUMRES
+                END
+            END
+            IF HRES:SRESESTRES = '1' OR HRES:SRESESTRES = '2'
+                GCU:ResStatus = CLIP(QHotelReservation.ResStatus)
+                ExistReservation# = 1
+                BREAK
+            END
+        END
+        IF NumResKey = ''
+            AddNotifReportError(PmsErrorCode09)
+            RETURN
+        END
+        IF ExistReservation# = 0
+            AddNotifReportSuccess(HRES:SRESNUMRES)
+            RETURN
+        END
+    END
+    Do ProcesaRequest
+    !--Establece fecha de entrada y salida
+!    GET(QRoomStays,1)
+!    dateStart = DEFORMAT(QRoomStays.TimeSpanStart,@D10-)
+!    dateEnd = DEFORMAT(QRoomStays.TimeSpanEnd,@D10-)
+    !---Verica si la reservación ya pasó
+    IF dateEnd < TODAY()
+        AddNotifReportError(PmsErrorCode35)
+        RETURN
+    END
+    GCU:Feclle = FORMAT(dateStart,@D12)
+    GCU:Fecsal = FORMAT(dateEnd,@D12)
+    !---Valida Disponibilidad
+    IF GCU:ResStatus <> 'Cancel'
+        FECHA_INICIAL   = GCU:Feclle
+        FECHA_FINAL     = GCU:Fecsal
+        if GCU:ResStatus = 'Book'
+            do CargaTiposEnQDS
+            do TipCtoBloqFs
+            do LeeHPDRESE
+            !do Discrepancia  !!!!!! checar si este es el punto correcto para esta llamada
+            do Allotment
+            ! si hay cuartos disponibles inserta nva. reserva
+            checa_disp
+        else
+            ! Algoritmo de pasos para validar disponibilidad
+            ! 1- Cargar datos de cuartos de reserva original
+            CargaCtosReserAnt()
+            ! 2- Verificar si hubo cambios en fechas, cant. de cuartos, tipos reservados
+            do CargaTiposEnQDS
+            loc:verdisp = VerDispGpo()
+            IF LOC:VERDISP
+                do TipCtoBloqFs
+                do LeeHPDRESE
+                !do Discrepancia  !!!!!! checar si este es el punto correcto para esta llamada
+                do Allotment
+                Checa_DispMod
+                !VerdispMesp
+            ELSE
+                OKDISP = 3
+            END
+        end
+        IF OKDISP<>3  ! NO HAY DISPONIBILIDAD
+            !ERR:TIPO = 13
+            ! armar descripción de NO Disponibilidad, en qué fecha y tipo de cuarto
+            CASE OKDISP
+            OF '0'
+                !err:code = 346
+                !err:desc = 'Closed Date-Fecha Cerrada '&format(deformat(tipond[1:8],@d12),@D10-)
+!                IF GLO:skipAvailability
+!                    UpdatePMSBIT('ProcessRoomStays','skipAvailability('&PmsErrorDescription29&')')
+!                ELSE
+!                    RETURN(ERRCOD29)
+!                END
+                MonitorSMDisplay(PmsErrorDescription29)
+                UpdatePMSBIT('UpdateInhotel('&Get_UniqueID('14')&') no room availability',PmsErrorDescription29)
+                AddNotifReportError(PmsErrorCode29)
+                RETURN
+            OF '1'
+                !err:code = 427
+                !err:desc = 'No Rooms available for requested date-No hay cuartos disponibles en la fecha '&format(deformat(tipond[1:8],@d12),@D10-)
+!                IF GLO:skipAvailability
+!                    UpdatePMSBIT('ProcessRoomStays','skipAvailability('&PmsErrorDescription30&')')
+!                ELSE
+!
+!                    RETURN(ERRCOD30)
+!                END
+                MonitorSMDisplay(PmsErrorDescription30)
+                UpdatePMSBIT('UpdateInhotel('&Get_UniqueID('14')&') no room availability ',PmsErrorDescription30)
+                AddNotifReportError(PmsErrorCode30)
+                RETURN
+            OF '2' OROF '4'
+                !err:code = 4
+                !err:desc = 'No Rooms available for request date and RoomType-No hay cuartos dispoibles en fecha y tipo de cuarto '& |
+                           !format(deformat(tipond[1:8],@d12),@D10-)&' RoomType:'&tipond[9:14]
+!                IF GLO:skipAvailability
+!                    Writelogbook(msg.echoToken,'ProcessRoomStays','skipAvailability('&ERRCOD31&')')
+!                ELSE
+!                    RETURN(ERRCOD31)
+!                END
+                MonitorSMDisplay(PmsErrorDescription31)
+                UpdatePMSBIT('UpdateInhotel('&Get_UniqueID('14')&') no room availability ',PmsErrorDescription31)
+                AddNotifReportError(PmsErrorCode31)
+                RETURN
+            END
+        END
+    END
+    LOGOUT(1,HCAALCO,HCACTOS,HCAVARI,HCOALLO,HMENSAJ,HPDBLOQ,HPDDISP,HPDOTRN,HPDRESE,HPDSIGF,HPDTARRES,pmsocc)
+    CASE GCU:ResStatus
+    OF 'Book'
+        LOOP RoomStays# = 1 TO RECORDS(QRoomStays)
+            GET(QRoomStays,RoomStays#)
+            GCU:RoomTypeCode = QRoomStays.RoomTypeRoomTypeCode
+            GCU:Notas = GET_Notas(QRoomStays.StayId)
+            Get_MarketCode(QRoomStays.StayId)
+            Get_DataProfile(QRoomStays.StayId)
+            Get_GuestCount(QRoomStays.StayId)
+            GCU:segmer = QRoomStays.MarketCode
+            LERROR = NewReservation(QRoomStays.StayId)
+            IF LERROR THEN BREAK.
+        END
+        IF LERROR > 0
+            RETURN
+        END
+    OF 'Modify'
+        CargaCtosReserAnt()
+        do CargaTiposEnQDS
+        loc:verdisp = VerDispGpo()
+        if loc:verdisp
+            do TipCtoBloqFs
+            !ActualizaLog('OperCAMBIO',0, 'TipCtoBloqFs')
+            do LeeHPDRESE
+            !ActualizaLog('OperCAMBIO',0, 'LeeHPDRESE')
+            !do Discrepancia  !!!!!! checar si este es el punto correcto para esta llamada
+            do Allotment
+            !ActualizaLog('OperCAMBIO',0, 'Allotment')
+            Checa_DispMod()
+            !ActualizaLog('OperCAMBIO',0, 'Checa_DispMod')
+            !VerdispMesp
+        else
+            okdisp = 3
+        end
+        CLEAR(HRES:Record)
+        HRES:SRESMEDRES = 'SM'
+        HRES:SRESNUMCCR = Get_UniqueID('14')
+        IF Access:HPDRESE.TryFetch(HRES:KEY_NUMCCR) <> Level:Benign
+            GlobalErrors.SetErrors()
+            ROLLBACK
+            MonitorSMDisplay('Error12:'&PmsErrorDescription12)
+            UpdatePMSBIT('UpdateInhotel('&Get_UniqueID('14')&') TryFetch Error','Error:'&GlobalErrors.GetError()&|
+                '<13,10>ErrorCode:'&GlobalErrors.GetErrorcode()&|
+                '<13,10>ErrorPMS:'&PmsErrorDescription12)
+            AddNotifReportError(PmsErrorCode12)
+            RETURN
+        END
+        !---llena cola de reservaciones que existen en el PMS
+        FREE(RoomStaysPMS)
+        CLEAR(HRES:Record)
+        HRES:SRESMEDRES = 'SM'
+        HRES:SRESNUMCCR = Get_UniqueID('14')
+        SET(HRES:KEY_NUMCCR,HRES:KEY_NUMCCR)
+        LOOP
+            NEXT(HPDRESE)
+            IF ERRORCODE() OR HRES:SRESMEDRES <> 'SM' OR HRES:SRESNUMCCR <> Get_UniqueID('14') THEN BREAK.
+            IF HRES:SRESESTRES = '3' THEN CYCLE.    !Cancelada
+            IF HRES:SRESESTRES = '6' THEN CYCLE.    !Lista de Espera
+            CLEAR(RoomStaysPMS)
+            RoomStaysPMS:Numres = HRES:SRESNUMRES
+            RoomStaysPMS:Status = HRES:SRESESTRES
+            ADD(RoomStaysPMS,+RoomStaysPMS:Numres)
+        END
+        !---Obtiene la primera reserva para retornar a Sitemander
+        GET(RoomStaysPMS,1)
+        NumResKey = RoomStaysPMS:Numres
+        LOOP RoomStays# = 1 TO RECORDS(QRoomStays)
+            GET(QRoomStays,RoomStays#)
+            GCU:RoomTypeCode = QRoomStays.RoomTypeRoomTypeCode
+            GCU:Notas = GET_Notas(QRoomStays.StayId)
+            Get_MarketCode(QRoomStays.StayId)
+            Get_DataProfile(QRoomStays.StayId)
+            Get_GuestCount(QRoomStays.StayId)
+            GCU:segmer = QRoomStays.MarketCode
+            GET(RoomStaysPMS,RoomStays#)
+            IF NOT ERRORCODE()
+                IF RoomStaysPMS:Status = '1' OR RoomStaysPMS:Status = '2'
+                    LERROR = ModifyReservation(RoomStaysPMS:Numres,QRoomStays.StayId)
+                    IF LERROR > 0 THEN BREAK END
+                END
+            ELSIF ERRORCODE() = 30
+                LERROR = NewReservation(QRoomStays.StayId)
+                IF LERROR > 0 THEN BREAK END
+            END
+        END
+        IF LERROR > 0
+            ROLLBACK
+            AddNotifReportError(LERROR)
+            RETURN
+        END
+        IF RECORDS(RoomStaysPMS) > RECORDS(QRoomStays)
+            !---Cancela reservas adicionales
+            LOOP RoomStaysPMS# = RECORDS(QRoomStays) + 1 TO RECORDS(RoomStaysPMS)
+                GET(RoomStaysPMS,RoomStaysPMS#)
+                CLEAR(HRES:Record)
+                HRES:SRESNUMRES = RoomStaysPMS:Numres
+                GET(HPDRESE,HRES:KEY_HPDRESE)
+                IF NOT ERRORCODE()
+                    LERROR = CancelReservation()
+                    IF LERROR > 0
+                        BREAK
+                    END
+                END
+            END
+        END
+        IF LERROR
+            ROLLBACK
+            AddNotifReportError(LERROR)
+            RETURN
+        END
+    OF 'Cancel'
+        CLEAR(HRES:Record)
+        HRES:SRESMEDRES = 'SM'
+        HRES:SRESNUMCCR = Get_UniqueID('14')
+        SET(HRES:KEY_NUMCCR,HRES:KEY_NUMCCR)
+        LOOP UNTIL Access:HPDRESE.Next() OR HRES:SRESMEDRES <> 'SM' OR HRES:SRESNUMCCR <> Get_UniqueID('14')
+            IF HRES:SRESESTRES <> '1' AND HRES:SRESESTRES <> '2' THEN CYCLE END
+            LERROR = CancelReservation()
+            IF LERROR > 0
+                BREAK
+            END
+        END
+        IF LERROR
+            AddNotifReportError(LERROR)
+            RETURN
+        END
+    ELSE
+        MonitorSMDisplay('Error20:'&PmsErrorDescription20)
+        UpdatePMSBIT('UpdateInhotel('&Get_UniqueID('14')&') unknown',PmsErrorDescription20)
+        AddNotifReportError(PmsErrorCode20)
+        RETURN
+    END
+    COMMIT()
+    DO CloseFiles
+!    MonitorSMDisplay('Procesando '&Get_UniqueID('14') &' '&CLIP(QHotelReservation.ResStatus) &' finished.')
+[END]
+EMBED %DataSection
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 1170
+PROPERTY:END
+                    MAP
+NewReservation          PROCEDURE(string pStayId),LONG
+ModifyReservation       PROCEDURE(string pNumRes,string pStayId),LONG
+CancelReservation       PROCEDURE,LONG
+ValidatePrefix          PROCEDURE(STRING pPrefix),LONG
+Get_GpoCia              PROCEDURE()
+CHECA_DISP              PROCEDURE()
+CargaCtosReserAnt       PROCEDURE()
+CHECA_DISPIGPO          PROCEDURE()
+ActualizaLogDisp        PROCEDURE  (string pResStatus)
+VERDISPGPO              FUNCTION, byte
+CHECA_DISPMOD           PROCEDURE
+CHECA_DISPMODIGPO       PROCEDURE
+IncFechaLog             FUNCTION(STRING, byte, string,string), BYTE
+Get_MarketCode          PROCEDURE(string pStayId)
+Get_DataProfile         PROCEDURE(string pStayId)
+Get_GuestCount          PROCEDURE(string pStayId)
+                    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 1170
+PROPERTY:END
+! variables para validar disponibilidad
+Qds                 queue,pre(ds)
+tipcto                  string(6)
+disp                    short,dim(MAXDRES) ! CTOS DISPONIBLES
+totcto                  short,dim(MAXDRES) ! total de cuartos x tipo de habitacion
+realocu                 short,dim(MAXDRES) ! se utiliza para lo real ocupado
+tgrz                    short,dim(MAXDRES)
+tngr                    short, dim(MAXDRES)
+tfs                     short, dim(MAXDRES)
+                    end
+ll                  short
+lh                  short
+SRD                 short
+Bls:Bloq            BYTE,DIM(MAXDRES)
+Bloq:Act            byte
+vfechaclose         string(MAXDRES)  ! vector de fechas para saber si están cerradas
+Dis:Ocu             string(2)
+loc:caldisres       byte
+Fecha:BloqIni       long
+Fecha:BloqFin       long
+Fecha:Bloqueo       long
+loc:camfectip       byte
+! fechas reservadas por maestra de grupo, para comparar con las fechas del integrante
+gpo:feclle          string(8)
+gpo:fecsal          string(8)
+gpo:antlle          string(8)
+gpo:antsal          string(8)
+gpo:tipcto          string(6)
+gpo:modinv          byte
+
+FechaAllot          long
+FechaAllot1         long
+FechaAllot2         long
+QAll                QUEUE,PRE(All)
+TipCto                  STRING(6)
+FechAll                 STRING(8)
+CutOff                  DECIMAL(7,2)
+Contrato                SHORT
+Ventas                  SHORT
+                    END
+ocre                byte(0)
+ll2                 short
+lh2                 short
+ANT:tipo            string(6),dim(10) ! tipos de cuarto
+ANT:cant            short, dim(10)  ! cantidad de cuartos
+loc:ctosant         short
+okdisp              byte
+TIPOND              string(14)  ! tipo que no hay disponibles
+!----------------------------------
+fecha_inicial       string(8)
+fecha_final         string(8)
+fecant_ini          string(8)
+fecant_fin          string(8)
+loc:verdisp         byte
+rqreserva           GROUP, pre(RS)
+bloqcod                 string(8)   ! codigo de bloqueo para un grupo
+tar:tipo                string(6),dim(10) ! tipos de cuarto
+tar:cant                short, dim(10)  ! cantidad de cuartos
+ResGpo                  string(7)   ! Numero confirmacion en PMS de codigo grupo
+tar:ini                 string(10), dim(10)   ! fecha inicio
+tar:fin                 string(10), dim(10)   ! fecha final
+tar:tot                 real, dim(10)         ! total sin impuestos
+tar:mon                 string(5), dim(10)    ! moneda
+tar:code                string(8), dim(10)  ! codigo de tarifa
+                    END
+loc:tipctoan        string(6)
+[END]
+EMBED %LocalProcedures
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+NewReservation      PROCEDURE(string pStayId)
+CODE
+!    MonitorSMDisplay('NewReservation '&Get_UniqueID('14')&' Starting...')
+    UpdatePMSBIT('NewReservation('&Get_UniqueID('14')&') Started','Request: '&QHotelReservation.ResStatus& |
+        '<13,10>CreateDateTime'&QHotelReservation.CreateDateTime&|
+        '<13,10>LastModifyDateTime'&QHotelReservation.LastModifyDateTime)
+    sigfol = 0
+    sigfol = get_numsig('1')
+    IF NOT sigfol
+        ROLLBACK
+        RETURN PmsErrorCode10
+    ELSE
+        GCU:NumRes = FORMAT(sigfol,@N_7B)
+    END
+    CLEAR(HRES:Record)
+    HRES:SRESNUMRES = GCU:NumRes
+    HRES:SRESFECLLE = GCU:Feclle
+    HRES:SRESHORLLE = '15:00'
+    HRES:SRESFECSAL = GCU:Fecsal
+    HRES:SRESFECRES = GCU:FecRes
+    HRES:SRESNOMHUE = GCU:GivenName & ' ' & GCU:MiddleName
+    HRES:SRESEMPRES = Ginhotel.userPMS
+    HRES:SRESDIREC1 = GCU:Direc1
+    HRES:SRESDIREC2 = GCU:Direc2
+    HRES:SRESCP     = GCU:PostalCode
+    HRES:SRESCVEVIP = 'N'
+    HRES:SRESCODCRE = Get_Guarantee(GuaranteeCardCode)
+    HRES:SRESCODAGE = GCU:codAge
+    HRES:SRESGPOCIA = GCU:CompanyName
+    HRES:SRESCVEGPL = '1'
+    HRES:SRESCONTAC = GCU:Contacto
+    HRES:SRESCODTAR = Get_RatePlanCode(pStayId)
+    HRES:RRESIMPTAR = Get_AmountRate(pStayId)
+    HRES:SRESTARCRE = Get_Guarantee(GuaranteeCardNumber)
+    HRES:SRESFECEXP = Get_Guarantee(GuaranteeExpireDate)
+    IF GCU:segmer
+        HRES:SRESSEGMER = GCU:segmer
+    ELSE
+        HRES:SRESSEGMER = Ginhotel.marketSegment
+    END
+    HRES:SRESSUBSEG = GCU:subseg
+    HRES:SRESCONALL = 'N'
+    HRES:SRESCOMISI = 'N'
+    HRES:SRESTELEFO = GCU:Telefono
+    HRES:SRESESTRES = '2'
+    HRES:SRESESTAT  = '1'
+    HRES:SRESTIPFOL = '1'
+    HRES:IRESNUMADU = GCU:numAdu
+    HRES:IRESNUMNIN = GCU:numNin
+    HRES:IRESCANCTO = 1
+    HRES:SRESMEDRES = 'SM'
+    HRES:SRESNUMCOM[25:30] = GCU:SourceOfBusiness
+    HRES:SRESNUMCOM[31:36] = GCU:NamePrefix
+    HRES:SRESTIPCTO = GCU:RoomTypeCode
+    IF GET_CurrencyCode() <> 'MXN'
+        HRES:SRESCVEMON = 'SI'
+    ELSE
+        HRES:SRESCVEMON = 'NO'
+    END
+    HRES:SRESNOTAS1 = SUB(GCU:Notas,1,60)
+    HRES:SRESNOTAS2 = SUB(GCU:Notas,61,60)
+    HRES:SRESNOTAS3 = SUB(GCU:Notas,121,60)
+    HRES:SRESEMAIL  = GCU:email
+    HRES:SRESOTRNOM = GCU:Surname
+    HRES:SRESDIREC3 = GCU:Direc3
+    HRES:SRESNUMCCR = Get_UniqueID('14')
+    IF Access:HPDRESE.TryInsert() = Level:Benign
+        !---Verifica y obtiene la reserva con el numero mas bajo para retorna a SiteMander
+        IF NumResKey = ''
+            NumResKey = HRES:SRESNUMRES
+        END
+        IF NumResKey > HRES:SRESNUMRES
+            NumResKey = HRES:SRESNUMRES
+        END
+        LERROR = AddRecordsHPDOTRN(HRES:SRESNUMRES,QRoomStays.StayId)
+        IF LERROR THEN RETURN(LERROR) END
+        IF Ginhotel.Version => Inhotelv19_0
+            LERROR = AddHPDTARRES(GCU:NumRes,pStayId)
+            IF LERROR THEN RETURN(LERROR) END
+        END
+        LERROR = AddRecordsHMENSAJ(GCU:NumRes,pStayId)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = AddServices(GCU:NumRes,pStayId)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = AddDetailPayments(GCU:NumRes)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = AddRecordsProfiles(GCU:NumRes)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = AddCommentsInfo(GCU:NumRes,pStayId)
+        IF LERROR THEN RETURN(LERROR) END
+        CheckChanges(HRES:Record,HRES:Record,1)
+        IF LOC:FECMODI = '' THEN LOC:FECMODI = HRES:SRESFECLLE END
+        IF LOC:FECMODF = '' THEN LOC:FECMODF = HRES:SRESFECSAL END
+        IF LOC:FECMODI > HRES:SRESFECLLE THEN LOC:FECMODI = HRES:SRESFECLLE END
+        IF LOC:FECMODF < HRES:SRESFECSAL THEN LOC:FECMODF = HRES:SRESFECSAL END
+        MonitorSMDisplay('NewReservation('&Get_UniqueID('14')&'/'&DEFORMAT(HRES:SRESNUMRES)&') Successfully')
+        UpdatePMSBIT('NewReservation('&Get_UniqueID('14')&DEFORMAT(GCU:NumRes)&') Successfully','PMSRES: '&CLIP(GCU:NumRes)&' NumResKey:'&NumResKey&' LOC:FECMODI:'&LOC:FECMODI&' LOC:FECMODF:'&LOC:FECMODF)
+        AddNotifReportSuccess(HRES:SRESNUMRES)
+        ActualizaLogDisp(GCU:ResStatus)
+    ELSE
+        GlobalErrors.SetErrors()
+        MonitorSMDisplay('NewReservation '&Get_UniqueID('14')&'/'&DEFORMAT(HRES:SRESNUMRES)&' Error(view log).')
+        UpdatePMSBIT('NewReservation('&Get_UniqueID('14')&') Error',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+        ROLLBACK
+        RETURN PmsErrorCode11
+    END
+    RETURN 0
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+ModifyReservation   PROCEDURE(string pNumRes,string pStayId)
+SaveReservation         LIKE(HRES:Record)
+CODE
+!    MonitorSMDisplay('ModifyReservation '&Get_UniqueID('14')&' StartCode')
+    UpdatePMSBIT('ModifyReservation('&Get_UniqueID('14')&') Stated.','ResStatus:'&QHotelReservation.ResStatus&|
+        '<13,10>CreateDateTime'&QHotelReservation.CreateDateTime&|
+        '<13,10>LastModifyDateTime'&QHotelReservation.LastModifyDateTime)
+    CargaCtosReserAnt()
+    do CargaTiposEnQDS
+    loc:verdisp = VerDispGpo()
+    if loc:verdisp
+        do TipCtoBloqFs
+            !ActualizaLog('OperCAMBIO',0, 'TipCtoBloqFs')
+        do LeeHPDRESE
+            !ActualizaLog('OperCAMBIO',0, 'LeeHPDRESE')
+            !do Discrepancia  !!!!!! checar si este es el punto correcto para esta llamada
+        do Allotment
+            !ActualizaLog('OperCAMBIO',0, 'Allotment')
+        Checa_DispMod()
+            !ActualizaLog('OperCAMBIO',0, 'Checa_DispMod')
+            !VerdispMesp
+    else
+        okdisp = 3
+    end
+    CLEAR(HRES:Record)
+    HRES:SRESNUMRES = PNUMRES
+    GET(HPDRESE,HRES:KEY_HPDRESE)
+    IF ERRORCODE()
+        ROLLBACK
+        RETURN(PmsErrorCode08)
+    END
+    SaveReservation :=: HRES:Record
+    GCU:NumRes = HRES:SRESNUMRES
+    HRES:SRESFECLLE = FORMAT(DEFORMAT(QRoomStays.TimeSpanStart,@D10-),@D12)
+    HRES:SRESFECSAL = FORMAT(DEFORMAT(QRoomStays.TimeSpanEnd,@D10-),@D12)
+    HRES:SRESFECRES = GCU:FecRes
+    HRES:SRESNOMHUE = GCU:GivenName & ' ' & GCU:MiddleName
+    HRES:SRESDIREC1 = GCU:Direc1
+    HRES:SRESDIREC2 = GCU:Direc2
+    HRES:SRESCP     = GCU:PostalCode
+    HRES:SRESCODCRE = Get_Guarantee(GuaranteeCardCode)
+    HRES:SRESCODAGE = GCU:codAge
+    HRES:SRESGPOCIA = GCU:CompanyName
+    HRES:SRESCVEGPL = '1'
+    HRES:SRESCONTAC = GCU:Contacto
+    HRES:SRESCODTAR = Get_RatePlanCode(pStayId)
+    HRES:RRESIMPTAR = Get_AmountRate(pStayId)
+    HRES:SRESTARCRE = Get_Guarantee(GuaranteeCardNumber)
+    HRES:SRESFECEXP = Get_Guarantee(GuaranteeExpireDate)
+    IF GCU:segmer THEN HRES:SRESSEGMER = GCU:segmer.
+    IF GCU:subseg THEN HRES:SRESSUBSEG = GCU:subseg.
+    HRES:SRESTELEFO = GCU:Telefono
+    HRES:IRESNUMADU = GCU:numAdu
+    HRES:IRESNUMNIN = GCU:numNin
+    HRES:IRESCANCTO = 1
+    HRES:SRESNUMCOM[25:30] = GCU:SourceOfBusiness
+    HRES:SRESNUMCOM[31:36] = GCU:NamePrefix
+    HRES:SRESTIPCTO = GCU:RoomTypeCode
+    HRES:SRESNUMCTO = ''
+    IF GET_CurrencyCode() <> 'MXN'
+        HRES:SRESCVEMON = 'SI'
+    ELSE
+        HRES:SRESCVEMON = 'NO'
+    END
+    HRES:SRESNOTAS1 = GCU:Notas[1:60]
+    HRES:SRESNOTAS2 = GCU:Notas[61:120]
+    HRES:SRESNOTAS3 = GCU:Notas[121:180]
+    HRES:SRESEMAIL  = GCU:email
+    HRES:SRESOTRNOM = GCU:Surname
+    HRES:SRESDIREC3 = GCU:Direc3
+    HRES:SRESTIPBED[1] = 'M'
+    IF Access:HPDRESE.TryUpdate() = Level:Benign
+        MonitorSMDisplay('ModifyReservation('&Get_UniqueID('14')&'/'&DEFORMAT(HRES:SRESNUMRES)&') Success')
+        UpdatePMSBIT('ModifyReservation('&Get_UniqueID('14')&'/'&DEFORMAT(HRES:SRESNUMRES)&') Succedd','Reservation has been modified successfully.')
+        IF LOC:FECMODI = '' THEN LOC:FECMODI = HRES:SRESFECLLE END
+        IF LOC:FECMODF = '' THEN LOC:FECMODF = HRES:SRESFECSAL END
+        IF LOC:FECMODI > HRES:SRESFECLLE THEN LOC:FECMODI = HRES:SRESFECLLE END
+        IF LOC:FECMODF < HRES:SRESFECSAL THEN LOC:FECMODF = HRES:SRESFECSAL END
+        LERROR = DeleteRecordsHPDOTRN(GCU:NumRes)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = DeleteRecordsHMENSAJ(GCU:NumRes)
+        IF LERROR THEN RETURN(LERROR) END
+        IF Ginhotel.Version => Inhotelv19_0
+            LERROR = DeleteHPDTARRES(GCU:NumRes)
+            IF LERROR THEN RETURN(LERROR) END
+        END
+        IF SaveReservation.SRESNUMCTO
+            LERROR = DeleteRecordsHPDBLOQ(SaveReservation.SRESNUMCTO,SaveReservation.SRESNUMRES)
+            IF LERROR THEN RETURN(LERROR) END
+        END
+        LERROR = AddRecordsHPDOTRN(GCU:NumRes,QRoomStays.StayId)
+        IF LERROR THEN RETURN(LERROR) END
+        IF Ginhotel.Version  => Inhotelv19_0
+            LERROR = AddHPDTARRES(GCU:NumRes,pStayId)
+            IF LERROR THEN RETURN(LERROR) END
+        END
+        LERROR = AddRecordsHMENSAJ(GCU:NumRes,pStayId)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = AddServices(GCU:NumRes,pStayId)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = AddDetailPayments(GCU:NumRes)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = AddRecordsProfiles(GCU:NumRes)
+        IF LERROR THEN RETURN(LERROR) END
+        LERROR = AddCommentsInfo(GCU:NumRes,pStayId)
+        IF LERROR THEN RETURN(LERROR) END
+        LOC:FECMODI = HRES:SRESFECLLE
+        LOC:FECMODF = HRES:SRESFECSAL
+        CheckChanges(SaveReservation,HRES:Record,2)
+        AddNotifReportSuccess(HRES:SRESNUMRES)
+        ActualizaLogDisp(GCU:ResStatus)
+    ELSE
+        MonitorSMDisplay('ModifyReservation('&Get_UniqueID('14')&'/'&DEFORMAT(HRES:SRESNUMRES)&') Error vie log.')
+        UpdatePMSBIT('ModifyReservation('&Get_UniqueID('14')&') Error',GlobalErrors.GetError()&'('&GlobalErrors.GetErrorcode()&')')
+        ROLLBACK
+        RETURN(PmsErrorCode13)
+    END
+    RETURN 0
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+CancelReservation   PROCEDURE
+SavPosition             STRING(260)
+CODE
+    UpdatePMSBIT('CancelReservation('&Get_UniqueID('14')&') Started','CreateDateTime:'&QHotelReservation.CreateDateTime&|
+        '<13,10>'&QHotelReservation.LastModifyDateTime&|
+        '<13,10>ResStatus: '&QHotelReservation.ResStatus)
+    SIGFOL = GET_NUMSIG('5')  !  /* SIG. CANCELACION */
+    IF SIGFOL>0 THEN
+        GCU:NumRes = HRES:SRESNUMRES
+        HRES:SRESNUMCAN = FORMAT(sigfol,@N_7B)
+        HRES:SRESEMPCAN = Ginhotel.userPMS
+        HRES:SRESFECCAN = FORMAT(TODAY(),@D12)
+        HRES:SRESESTRES = '3'
+        HRES:SRESESTAT  = '1'
+        HRES:SRESHORCAN = FORMAT(CLOCK(),@T04)
+        PUT(HPDRESE)
+        LERROR = ERRORCODE()
+        IF LERROR
+            ROLLBACK
+            RETURN(PmsErrorCode19)
+        ELSE
+            IF HRES:SRESNUMCTO
+                LERROR = DeleteRecordsHPDBLOQ(HRES:SRESNUMCTO,HRES:SRESNUMRES)
+                IF LERROR THEN RETURN(LERROR) END
+            END
+            CheckChanges(HRES:Record,HRES:Record,3)
+            MonitorSMDisplay('CancelReservation('&Get_UniqueID('14')&'/'&DEFORMAT(HRES:SRESNUMRES)&') Success')
+            UpdatePMSBIT('CancelReservation('&Get_UniqueID('14')&') Success','PMSRES: '&CLIP(HRES:SRESNUMRES)&', the cancellation has been successful.')
+            SavPosition = POSITION(HRES:KEY_NUMCCR)
+            !---Verifica y obtiene la reserva con el numero mas bajo para retornar a SiteMander
+            IF NumResKey > HRES:SRESNUMRES
+                NumResKey = HRES:SRESNUMRES
+            END
+            AddNotifReportSuccess(HRES:SRESNUMRES)
+            CLEAR(ant:tipo)
+            CLEAR(ant:cant)
+            LOC:FECMODI = HRES:SRESFECLLE
+            LOC:FECMODF = HRES:SRESFECSAL
+            ant:tipo[1] = HRES:SRESTIPCTO
+            ant:cant[1] = HRES:IRESCANCTO
+            ActualizaLogDisp(GCU:ResStatus)
+            RESET(HRES:KEY_NUMCCR,SavPosition)
+            NEXT(HPDRESE)
+            CLEAR(HON:Record)
+            HON:SRESNUMRES = HRES:SRESNUMRES
+            SET(HON:KEY_SRESNUMRES,HON:KEY_SRESNUMRES)
+            LOOP UNTIL Access:HPDOTRN.Next() OR HON:SRESNUMRES <> HRES:SRESNUMRES
+                HON:SRESESTRES  = HRES:SRESESTRES
+                HON:SRESESTAT   = HRES:SRESESTAT
+                PUT(HPDOTRN)
+                LERROR = ERRORCODE()
+                IF LERROR THEN BREAK.
+            END
+        END
+    ELSE
+        RETURN(PmsErrorCode19)
+    END
+    IF LERROR
+        ROLLBACK
+        RETURN(PmsErrorCode19)
+    END
+    IF HRES:SRESNUMCTO <> ''
+        LERROR = DeleteRecordsHPDBLOQ(HRES:SRESNUMCTO, HRES:SRESNUMRES)
+        IF LERROR
+            ROLLBACK
+            RETURN(LERROR)
+        END
+    END
+    RETURN 0
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+ValidatePrefix      PROCEDURE(STRING pPrefix)
+CODE
+    IF pPrefix
+        CLEAR(HCAVARI)
+        CVAR:SVARTIPCAT = '5'
+        CVAR:SVARCODIGO = pPrefix
+        GET(HCAVARI,CVAR:KEY_HCAVARI)
+        IF ERRORCODE() = 35
+            CVAR:SVARDESC   = 'SiteMander AutoInsert'
+            CVAR:SVARGPOCLA = '07'
+            ADD(HCAVARI)
+            IF ERRORCODE()
+                RETURN(0)
+            ELSE
+                RETURN(1)
+            END
+        END
+    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+Get_GpoCia          PROCEDURE
+CompanyNameRet          CSTRING(41)
+CODE
+    !--1: Customer/2: GDS/3: Corporation/4: TravelAgent/5: Wholesaler/21: Arranger
+    QResGlobalInfo.ProfileType = '4'
+    GET(QResGlobalInfo,QResGlobalInfo.ProfileType)
+    IF NOT ERRORCODE()
+        CompanyNameRet = CLIP(QResGlobalInfo.CompanyName)
+        CLEAR(CAG:Record)
+        GCU:CompanyName = CompanyNameRet
+        GET(HCAAGEN,CAG:KEY_HCAAGE1)
+        IF NOT ERRORCODE()
+            GCU:codAge = CAG:SAGECODAGE
+        END
+    ELSE
+        QResGlobalInfo.ProfileType = '3'
+        GET(QResGlobalInfo,QResGlobalInfo.ProfileType)
+        IF NOT ERRORCODE()
+            CompanyNameRet = CLIP(QResGlobalInfo.CompanyName)
+            CLEAR(CAG:Record)
+            GCU:CompanyName = CompanyNameRet
+            GET(HCAAGEN,CAG:KEY_HCAAGE1)
+            IF NOT ERRORCODE()
+                GCU:codAge = CAG:SAGECODAGE
+            END
+        END
+    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+Get_MarketCode      PROCEDURE(string pStayId)
+CODE
+    GET(QRoomStays,pStayId)
+    IF NOT ERRORCODE()
+        CLEAR(HCAVARI)
+        CVAR:SVARTIPCAT = '9'
+        CVAR:SVARCODIGO = QRoomStays.MarketCode
+        GET(HCAVARI, CVAR:KEY_HCAVARI)
+        IF NOT ERRORCODE()
+            GCU:segmer = CVAR:SVARCODIGO
+            GCU:subseg = CVAR:SVARGPOCLA
+        ELSE
+            CVAR:SVARTIPCAT = '4'
+            CVAR:SVARCODIGO = QRoomStays.MarketCode
+            GET(HCAVARI, CVAR:KEY_HCAVARI)
+            IF NOT ERRORCODE()
+                GCU:segmer = CVAR:SVARcodigo
+            ELSE
+                GCU:segmer = QRoomStays.MarketCode
+            END
+        END
+    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+CHECA_DISP          PROCEDURE
+ldias                   long
+rengq                   short
+dia                     short
+vdisp                   short,dim(MAXDRES)
+tipos                   short
+ttipo                   short
+fechatemp               long
+sfechatemp              string(8)
+auxdisp                 short
+CODE
+    okdisp = 3 ! Disponibilidad ok
+    if rs:bloqcod THEN
+        checa_dispIgpo
+        RETURN
+    end
+    ldias = deformat(fecha_final,@D12)-deformat(fecha_inicial,@D12)
+    if ldias>MAXDRES then ldias=MAXDRES.
+    clear(vdisp)
+    clear(tipond)
+    ! checa fechas cerradas antes de continuar
+    loop dia=1 to ldias by 1
+        if vfechaclose[dia]='*' then
+            okdisp = 0  ! fecha cerrada
+            tipond = FORMAT(deformat(fecha_inicial,@D12)+(DIA-1),@D12)
+            break
+        end
+    end
+    if not okdisp then return.
+    okdisp = 0
+    ! acumula disponibilidad por fecha para todos los tipos de habitacion
+    loop rengq=1 to records(qds) by 1
+        get(qds,rengq)
+        if not errorcode()
+            fechatemp = deformat(fecha_inicial,@d12)
+            loop dia = 1 to ldias by 1
+                vdisp[dia] += ds:disp[dia]
+                ! checa si el tipo está en el desglose del grupo
+                ttipo = 0
+                fechatemp = fechatemp+(dia-1)
+                sfechatemp = format(fechatemp,@d12)
+                !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!                clear(loc:tipctoan)
+                !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                loop tipos=1 to 10 by 1
+!                    if loc:tipctoan<>rs:tar:tipo[tipos]
+!                        if rs:tar:tipo[tipos]=ds:tipcto and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+!                            ttipo += rs:tar:cant[tipos]
+!                        end
+!                        loc:tipctoan = rs:tar:tipo[tipos]
+!                    end
+                    if rs:tar:tipo[tipos]=ds:tipcto and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                        ttipo += rs:tar:cant[tipos]
+                    end
+                end
+                if (ds:disp[dia]-ttipo)<0 and ttipo>0
+                    okdisp = 2
+                    tipond = sfechatemp & DS:TIPCTO
+                    UpdatePMSBIT('CHECA_DISP-SinDisponibilidad','UniqueID:'&Get_UniqueID('14')&|
+                        '<13,10>Request: '&GCU:ResStatus&|
+                        '<13,10>Loop Día='&dia&|
+                        '<13,10>Tipo Carto='&ds:tipcto&|
+                        '<13,10>Disponibles='&ds:disp[dia]&|
+                        '<13,10>Total='&ds:totcto[dia]&|
+                        '<13,10>Ocupación='&ds:realocu[dia]&|
+                        '<13,10>Total Grtz='&ds:tgrz[dia]&|
+                        '<13,10>Total NoGrtz='&ds:tngr[dia]&|
+                        '<13,10>Total FS='&ds:tfs[dia]&|
+                        '<13,10>Cant. Reservada='&ttipo&|
+                        '<13,10>fecha_inicial='&fecha_inicial&|
+                        '<13,10>fecha_final='&fecha_final)
+                    BREAK
+                END
+            end
+        end
+    end
+    auxdisp = okdisp
+    okdisp = 0
+    ! verifica total disponible por fecha
+    fechatemp = deformat(fecha_inicial,@d12)
+    loop dia=1 to ldias by 1
+        fechatemp = fechatemp+(dia-1)
+        sfechatemp = format(fechatemp,@d12)
+        ttipo = 0
+        clear(loc:tipctoan)
+        loop tipos=1 to 10 by 1
+            if loc:tipctoan<>rs:tar:tipo[tipos]
+                if sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                    ttipo += rs:tar:cant[tipos]
+                end
+                loc:tipctoan = rs:tar:tipo[tipos]
+            end
+        end
+        if (vdisp[dia]-ttipo)<0 and ttipo>0 then
+            okdisp = 1  ! NO DISPONIBLES EN UNA FECHA
+            tipond = sfechatemp
+            break
+        end
+    end
+    auxdisp += okdisp
+    okdisp = auxdisp
+    if okdisp=0 then
+        okdisp = 3  ! si hay disponibles
+    elsif okdisp=3
+        okdisp = 4  ! no hay disponibles en el total y ni en el tipo solicitado
+    end
+!    SavePreviousAvailability('CHECA_DISP')
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+CargaCtosReserAnt   PROCEDURE
+!NUMRES                  STRING(25)
+iloop                   short
+ifound                  byte
+NUMCCR                  LIKE(HRES:SRESNUMCCR)
+code
+    NUMCCR = Get_UniqueID('14')
+    clear(ant:tipo)
+    clear(ant:cant)
+    loc:ctosant = 0
+    CLEAR(HPDRESE)
+    HRES:SRESMEDRES = 'SM'
+    HRES:SRESNUMCCR = NUMCCR
+    SET(HRES:KEY_NUMCCR, HRES:KEY_NUMCCR)
+    LOOP
+        NEXT(HPDRESE)
+        if errorcode() or HRES:SRESMEDRES <> 'SM' or HRES:SRESNUMCCR <> NUMCCR
+            BREAK
+        END
+        if HRES:SRESESTRES = '3'
+            cycle
+        end
+!        loc:ctosant += 1
+!        fecant_ini = hres:sresfeclle
+!        fecant_fin = hres:sresfecsal
+!        loop iloop=1 to 10 by 1
+!            if ant:tipo[iloop]=HRES:SRESTIPCTO
+!                ant:cant[iloop] += 1
+!                break
+!            elsif not ant:tipo[iloop]
+!                ant:tipo[iloop] = hres:srestipcto
+!                ant:cant[iloop] = 1
+!                break
+!            END
+!        end
+        CASE HRES:SRESCVEGPL
+        OF '3'
+            IAUXVEC# = 0
+            CLEAR(HPDTPGP)
+            HTPG:STPGCODGPO = HRES:SRESCODGPO
+            HTPG:STPGNUMRES = HRES:SRESNUMRES
+            SET(HTPG:KEY_HPDTPGP,HTPG:KEY_HPDTPGP)
+            LOOP
+                NEXT(HPDTPGP)
+                IF ERRORCODE() OR HTPG:STPGCODGPO <> HRES:SRESCODGPO OR HTPG:STPGNUMRES <> HRES:SRESNUMRES THEN BREAK.
+                IF fecant_ini  = '' THEN fecant_ini = HTPG:STPGFECLLE.
+                IF fecant_fin  = '' THEN fecant_fin = HTPG:STPGFECLLE.
+                IF fecant_ini > HTPG:STPGFECLLE
+                    fecant_ini = HTPG:STPGFECLLE
+                END
+                IF HTPG:STPGFECSAL > fecant_fin
+                    fecant_fin = HTPG:STPGFECSAL
+                END
+                IAUXVEC# += 1
+                ant:tipo[IAUXVEC#]  = HTPG:STPGTIPCTO
+                ant:cant[IAUXVEC#]  = HTPG:ITPGCANCTO
+                loc:ctosant         += HTPG:ITPGCANCTO
+            END
+        ELSE
+            loc:ctosant += 1
+            IF fecant_ini  = '' THEN fecant_ini = hres:sresfeclle.
+            IF fecant_fin  = '' THEN fecant_fin = hres:sresfecsal.
+            IF fecant_ini > hres:sresfeclle
+                fecant_ini = hres:sresfeclle
+            END
+            IF hres:sresfecsal > fecant_fin
+                fecant_fin = hres:sresfecsal
+            END
+            loop iloop=1 to 10 by 1
+                if ant:tipo[iloop]=HRES:SRESTIPCTO
+                    ant:cant[iloop] += 1
+                    break
+                elsif not ant:tipo[iloop]
+                    ant:tipo[iloop] = hres:srestipcto
+                    ant:cant[iloop] = 1
+                    break
+                END
+            end
+        END
+    END
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+CHECA_DISPIGPO      PROCEDURE
+ldias                   long
+rengq                   short
+dia                     short
+vdisp                   short,dim(MAXDRES)
+tipos                   short
+ttipo                   short
+fechatemp               long
+sfechatemp              string(8)
+auxdisp                 short
+CODE
+    okdisp = 3 ! Disponibilidad ok
+    ldias = deformat(fecha_final,@D12)-deformat(fecha_inicial,@D12)
+    if ldias>MAXDRES then ldias=MAXDRES.
+    clear(vdisp)
+    clear(tipond)
+   ! checa fechas cerradas antes de continuar
+    loop dia=1 to ldias by 1
+        if vfechaclose[dia]='*' then
+            sfechatemp = FORMAT(deformat(fecha_inicial,@D12)+(DIA-1),@D12)
+            if sfechatemp<gpo:feclle or sfechatemp>=gpo:fecsal
+                okdisp = 0  ! fecha cerrada
+                tipond = sfechatemp
+                break
+            end
+        end
+    end
+    if not okdisp then return.
+    okdisp = 0
+   ! acumula disponibilidad por fecha para todos los tipos de habitacion
+    loop rengq=1 to records(qds) by 1
+        get(qds,rengq)
+        if not errorcode()
+            fechatemp = deformat(fecha_inicial,@d12)
+            loop dia = 1 to ldias by 1
+                vdisp[dia] += ds:disp[dia]
+           ! checa si el tipo está en el desglose del grupo
+                ttipo = 0
+                fechatemp = fechatemp+(dia-1)
+                sfechatemp = format(fechatemp,@d12)
+           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                clear(loc:tipctoan)
+           !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                loop tipos=1 to 10 by 1
+                    if loc:tipctoan<>rs:tar:tipo[tipos]
+                        if rs:tar:tipo[tipos]=ds:tipcto and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                            ttipo += rs:tar:cant[tipos]
+                        end
+                        loc:tipctoan = rs:tar:tipo[tipos]
+                    end
+                end
+                if (ds:disp[dia]-ttipo)<0 and ttipo>0 and (sfechatemp<gpo:feclle or sfechatemp>=gpo:fecsal)
+                    okdisp = 2
+                    tipond = sfechatemp & DS:TIPCTO
+                    BREAK
+                END
+            end
+        end
+    end
+    auxdisp = okdisp
+    okdisp = 0
+   ! verifica total disponible por fecha
+    fechatemp = deformat(fecha_inicial,@d12)
+    loop dia=1 to ldias by 1
+        fechatemp = fechatemp+(dia-1)
+        sfechatemp = format(fechatemp,@d12)
+        ttipo = 0
+        clear(loc:tipctoan)
+        loop tipos=1 to 10 by 1
+            if loc:tipctoan<>rs:tar:tipo[tipos]
+                if sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                    ttipo += rs:tar:cant[tipos]
+                end
+                loc:tipctoan = rs:tar:tipo[tipos]
+            end
+        end
+        if (vdisp[dia]-ttipo)<0 and ttipo>0 and (sfechatemp<gpo:feclle or sfechatemp>=gpo:fecsal)
+            okdisp = 1  ! NO DISPONIBLES EN UNA FECHA
+            tipond = sfechatemp
+            break
+        end
+    end
+    auxdisp += okdisp
+    okdisp = auxdisp
+    if okdisp=0 then
+        okdisp = 3  ! si hay disponibles
+    elsif okdisp=3
+        okdisp = 4  ! no hay disponibles en el total y ni en el tipo solicitado
+    end
+!    SavePreviousAvailability('CHECA_DISPIGPO')
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+VERDISPGPO          FUNCTION
+verif                   byte(0)
+ldias                   long
+rengq                   short
+dia                     short
+tipos                   short
+ttipo                   short
+ttipoa                  short
+fechatemp               long
+sfechatemp              string(8)
+CODE
+    ldias = deformat(fecha_final,@D12)-deformat(fecha_inicial,@D12)
+    loop rengq=1 to records(qds) by 1
+        get(qds,rengq)
+        if not errorcode()
+            fechatemp = deformat(fecha_inicial,@d12)
+            loop dia = 1 to ldias by 1
+                ! checa si el tipo está en el desglose del grupo
+                ttipo = 0
+                fechatemp = fechatemp+(dia-1)
+                sfechatemp = format(fechatemp,@d12)
+!                clear(loc:tipctoan)
+                loop tipos=1 to 10 by 1
+!                    if loc:tipctoan<>rs:tar:tipo[tipos]
+!                        if rs:tar:tipo[tipos]=ds:tipcto and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+!                            ttipo += rs:tar:cant[tipos]
+!                        end
+!                        loc:tipctoan = rs:tar:tipo[tipos]
+!                    end
+                    if rs:tar:tipo[tipos]=ds:tipcto and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                        ttipo += rs:tar:cant[tipos]
+                    end
+                end
+                ttipoa=0
+                loop tipos=1 to 10 by 1
+                    if ant:tipo[tipos]=ds:tipcto and sfechatemp>=fecant_ini and sfechatemp<fecant_fin
+                        ttipoa += ant:cant[tipos]
+                    end
+                end
+                if ttipo>ttipoa
+                    verif = 1
+                    BREAK
+                END
+            end
+        end
+    end
+    RETURN(verif)
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+CHECA_DISPMOD       PROCEDURE
+ldias                   long
+rengq                   short
+dia                     short
+vdisp                   short,dim(MAXDRES)
+tipos                   short
+ttipo                   short
+ttipoa                  short
+difctos                 short ! diferencia en ctos de grupo anterior vs. modificado
+fechatemp               long
+sfechatemp              string(8)
+auxdisp                 short
+CODE
+    okdisp = 3 ! Disponibilidad ok
+    if rs:bloqcod THEN
+        checa_dispmodIgpo
+        RETURN
+    end
+    ldias = deformat(fecha_final,@D12)-deformat(fecha_inicial,@D12)
+    if ldias>MAXDRES then ldias=MAXDRES.
+    clear(vdisp)
+    clear(tipond)
+    fechatemp = deformat(fecha_inicial,@d12)
+    ! checa fechas cerradas antes de continuar
+    loop dia=1 to ldias by 1
+        if vfechaclose[dia]='*' then
+            ttipo = 0
+            fechatemp = fechatemp+(dia-1)
+            sfechatemp = format(fechatemp,@d12)
+!            clear(loc:tipctoan)
+            loop tipos=1 to 10 by 1
+!                if loc:tipctoan<>rs:tar:tipo[tipos]
+!                    if rs:tar:tipo[tipos] and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+!                        ttipo += rs:tar:cant[tipos]
+!                    end
+!                    loc:tipctoan = rs:tar:tipo[tipos]
+!                end
+                if rs:tar:tipo[tipos] and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                    ttipo += rs:tar:cant[tipos]
+                end
+            end
+            ttipoa = 0
+            loop tipos=1 to 10 by 1
+                if ant:tipo[tipos] and sfechatemp>=fecant_ini and sfechatemp<fecant_fin
+                    ttipoa += ant:cant[tipos]
+                end
+            end
+            if ttipo>ttipoa
+                okdisp = 0  ! fecha cerrada
+                tipond = sfechatemp
+                break
+            end
+        end
+    end
+    if not okdisp then return.
+    okdisp = 0
+    ! acumula disponibilidad por fecha para todos los tipos de habitacion
+    UpdatePMSBIT('Checa_DispMod,StartCode3('&Get_UniqueID('14')&')','Request: '&CLIP(GCU:ResStatus))
+    loop rengq=1 to records(qds) by 1
+        get(qds,rengq)
+        if not errorcode()
+            fechatemp = deformat(fecha_inicial,@d12)
+            loop dia = 1 to ldias by 1
+                vdisp[dia] += ds:disp[dia]
+                ! checa si el tipo está en el desglose del grupo
+                ttipo = 0
+                fechatemp = fechatemp+(dia-1)
+                sfechatemp = format(fechatemp,@d12)
+!                clear(loc:tipctoan)
+                loop tipos=1 to 10 by 1
+!                    if loc:tipctoan<>rs:tar:tipo[tipos]
+!                        if rs:tar:tipo[tipos]=ds:tipcto and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+!                            ttipo += rs:tar:cant[tipos]
+!                        end
+!                        loc:tipctoan = rs:tar:tipo[tipos]
+!                    end
+                    if rs:tar:tipo[tipos]=ds:tipcto and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                        ttipo += rs:tar:cant[tipos]
+                    end
+                end
+                ttipoa = 0
+                loop tipos=1 to 10 by 1
+                    if ant:tipo[tipos]=ds:tipcto and sfechatemp>=fecant_ini and sfechatemp<fecant_fin
+                        ttipoa += ant:cant[tipos]
+                    end
+                end
+                difctos = ttipo-ttipoa
+                if (ds:disp[dia]-difctos)<0 and difctos>0
+                    okdisp = 2
+                    tipond = sfechatemp & DS:TIPCTO
+                    UpdatePMSBIT('Checa_DispMod,SinDisp1('&Get_UniqueID('14')&')','Request: '&CLIP(GCU:ResStatus)&|
+                        ';loop dia='&dia&|
+                        ';tipo carto='&ds:tipcto&|
+                        ';disponibilidad='&ds:disp[dia]&|
+                        ';fecha_inicial='&fecha_inicial&|
+                        ';fecha_final='&fecha_final&|
+                        ';Cant. Reservada='&ttipo&|
+                        ';Cant. Anterior='&ttipoa&|
+                        ';Diferencia='&difctos&|
+                        ';okdisp='&okdisp)
+                    BREAK
+                END
+            end
+        end
+    end
+    ! verifica total disponible por fecha
+    auxdisp = okdisp
+    okdisp = 0
+    fechatemp = deformat(fecha_inicial,@d12)
+    loop dia=1 to ldias by 1
+        fechatemp = fechatemp+(dia-1)
+        sfechatemp = format(fechatemp,@d12)
+        ttipo = 0
+!        clear(loc:tipctoan)
+        loop tipos=1 to 10 by 1
+!            if loc:tipctoan<>rs:tar:tipo[tipos]
+!                if rs:tar:tipo[tipos] and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+!                    ttipo += rs:tar:cant[tipos]
+!                end
+!                loc:tipctoan = rs:tar:tipo[tipos]
+!            end
+            if rs:tar:tipo[tipos] and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                ttipo += rs:tar:cant[tipos]
+            end
+        end
+        ttipoa = 0
+        loop tipos=1 to 10 by 1
+            if ant:tipo[tipos] and sfechatemp>=fecant_ini and sfechatemp<fecant_fin
+                ttipoa += ant:cant[tipos]
+            end
+        end
+        difctos = ttipo-ttipoa
+        if (vdisp[dia]-difctos)<0 and difctos>0 then
+            okdisp = 1  ! NO DISPONIBLES EN UNA FECHA
+            tipond = sfechatemp
+            UpdatePMSBIT('Checa_DispMod,SinDisp2('&Get_UniqueID('14')&')','Request: '&CLIP(GCU:ResStatus)&|
+                ';loop dia='&dia&|
+                ';tipo carto='&ds:tipcto&|
+                ';disponibilidad='&ds:disp[dia]&|
+                ';fecha_inicial='&fecha_inicial&|
+                ';fecha_final='&fecha_final&|
+                ';Cant. Reservada='&ttipo&|
+                ';Cant. Anterior='&ttipoa&|
+                ';Diferencia='&difctos&|
+                ';okdisp='&okdisp)
+            break
+        end
+    end
+    auxdisp += okdisp
+    okdisp = auxdisp
+    if okdisp=0 then
+        okdisp = 3  ! si hay disponibles
+    elsif okdisp=3
+        okdisp = 4  ! no hay disponibles en el total y tampoco en el tipo solicitado
+    end
+!    SavePreviousAvailability('CHECA_DISPMOD')
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+CHECA_DISPMODIGPO   PROCEDURE
+ldias                   long
+rengq                   short
+dia                     short
+vdisp                   short,dim(MAXDRES)
+tipos                   short
+ttipo                   short
+ttipoa                  short
+difctos                 short ! diferencia en ctos de grupo anterior vs. modificado
+fechatemp               long
+sfechatemp              string(8)
+auxdisp                 short
+CODE
+    okdisp = 3 ! Disponibilidad ok
+   ! si fechas son iguales y tipo de cuarto igual no hay chequeo por hacer
+    if fecha_inicial=fecant_ini and fecha_final=fecant_fin and ant:tipo[1]=HRES:SRESTIPCTO
+        RETURN
+    end
+    ldias = deformat(fecha_final,@D12)-deformat(fecha_inicial,@D12)
+    if ldias>MAXDRES then ldias=MAXDRES.
+    clear(vdisp)
+    clear(tipond)
+    fechatemp = deformat(fecha_inicial,@d12)
+   ! checa fechas cerradas antes de continuar
+    loop dia=1 to ldias by 1
+        if vfechaclose[dia]='*' then
+            ttipo = 0
+            fechatemp = fechatemp+(dia-1)
+            sfechatemp = format(fechatemp,@d12)
+            clear(loc:tipctoan)
+            loop tipos=1 to 10 by 1
+                if loc:tipctoan<>rs:tar:tipo[tipos]
+                    if rs:tar:tipo[tipos] and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                        ttipo += rs:tar:cant[tipos]
+                    end
+                    loc:tipctoan = rs:tar:tipo[tipos]
+                end
+            end
+            ttipoa = 0
+            loop tipos=1 to 10 by 1
+                if ant:tipo[tipos] and sfechatemp>=fecant_ini and sfechatemp<fecant_fin
+                    ttipoa += ant:cant[tipos]
+                end
+            end
+            if ttipo>ttipoa and (sfechatemp<gpo:feclle or sfechatemp>=gpo:fecsal)
+                okdisp = 0  ! fecha cerrada
+                tipond = sfechatemp
+                break
+            end
+        end
+    end
+    if not okdisp then return.
+    okdisp = 0
+
+   ! acumula disponibilidad por fecha para todos los tipos de habitacion
+    loop rengq=1 to records(qds) by 1
+        get(qds,rengq)
+        if not errorcode()
+            fechatemp = deformat(fecha_inicial,@d12)
+            loop dia = 1 to ldias by 1
+                vdisp[dia] += ds:disp[dia]
+           ! checa si el tipo está en el desglose del grupo
+                ttipo = 0
+                fechatemp = fechatemp+(dia-1)
+                sfechatemp = format(fechatemp,@d12)
+                clear(loc:tipctoan)
+                loop tipos=1 to 10 by 1
+                    if loc:tipctoan<>rs:tar:tipo[tipos]
+                        if rs:tar:tipo[tipos]=ds:tipcto and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                            ttipo += rs:tar:cant[tipos]
+                        end
+                        loc:tipctoan = rs:tar:tipo[tipos]
+                    end
+                end
+                ttipoa = 0
+                loop tipos=1 to 10 by 1
+                    if ant:tipo[tipos]=ds:tipcto and sfechatemp>=fecant_ini and sfechatemp<fecant_fin
+                        ttipoa += ant:cant[tipos]
+                    end
+                end
+                difctos = ttipo-ttipoa
+                if (ds:disp[dia]-difctos)<0 and difctos>0 and (sfechatemp<gpo:feclle or sfechatemp>=gpo:fecsal)
+                    okdisp = 2
+                    tipond = sfechatemp & DS:TIPCTO
+                    BREAK
+                END
+            end
+        end
+    end
+   ! verifica total disponible por fecha
+    auxdisp = okdisp
+    okdisp = 0
+    fechatemp = deformat(fecha_inicial,@d12)
+    loop dia=1 to ldias by 1
+        fechatemp = fechatemp+(dia-1)
+        sfechatemp = format(fechatemp,@d12)
+        ttipo = 0
+        clear(loc:tipctoan)
+        loop tipos=1 to 10 by 1
+            if loc:tipctoan<>rs:tar:tipo[tipos]
+                if rs:tar:tipo[tipos] and sfechatemp>=fecha_inicial and sfechatemp<fecha_final
+                    ttipo += rs:tar:cant[tipos]
+                end
+                loc:tipctoan = rs:tar:tipo[tipos]
+            end
+        end
+        ttipoa = 0
+        loop tipos=1 to 10 by 1
+            if ant:tipo[tipos] and sfechatemp>=fecant_ini and sfechatemp<fecant_fin
+                ttipoa += ant:cant[tipos]
+            end
+        end
+        difctos = ttipo-ttipoa
+        if (vdisp[dia]-difctos)<0 and difctos>0 and (sfechatemp<gpo:feclle or sfechatemp>=gpo:fecsal)
+            okdisp = 1  ! NO DISPONIBLES EN UNA FECHA
+            tipond = sfechatemp
+            break
+        end
+    end
+    auxdisp += okdisp
+    okdisp = auxdisp
+    if okdisp=0 then
+        okdisp = 3  ! si hay disponibles
+    elsif okdisp=3
+        okdisp = 4  ! no hay disponibles en el total y tampoco en el tipo solicitado
+    end
+   !SavePreviousAvailability('CHECA_DISPMODIGPO')
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+IncFechaLog         FUNCTION(pfecha, bnew, codgpo,pResStatus)
+Binc            byte
+    CODE
+        Binc = 0
+        if not codgpo
+            !if opera=ALTA or opera=CANCELA
+            if pResStatus = 'Book' or pResStatus = 'Cancel'
+                binc = 1
+            ELSE
+                if not loc:camfectip ! no cambiaron fechas y tipo de cuarto simultaneamente
+                                 ! se aplica criterio normal
+                    if (pfecha>=loc:fecmodi and pfecha<loc:fecmodf) or (pfecha>=fecant_ini and pfecha<fecant_fin)
+                        binc = 1
+                    end
+                ELSE  ! cambio simultaneo de fechas y tipo de cuarto
+                    if bnew=1
+                        if (pfecha>=loc:fecmodi and pfecha<loc:fecmodf)
+                            binc = 1
+                        end
+                    ELSif bnew=0
+                        if (pfecha>=fecant_ini and pfecha<fecant_fin)
+                            binc = 1
+                        end
+                    else  ! tipo esta en reser orig. y en reser. con cambios
+                        if (pfecha>=loc:fecmodi and pfecha<loc:fecmodf) or (pfecha>=fecant_ini and pfecha<fecant_fin)
+                            binc = 1
+                        end
+                    END
+                END
+            END
+        ELSE
+            !if opera=ALTA or opera=CANCELA
+            if pResStatus = 'Book' or pResStatus = 'Cancel'
+                if pfecha<gpo:feclle or pfecha>=gpo:fecsal then binc = 1.
+            ELSE
+                if not loc:camfectip ! no cambiaron fechas y tipo de cuarto simultaneamente
+                                 ! se aplica criterio normal
+                    if (pfecha<gpo:feclle or pfecha>=gpo:fecsal) or (pfecha<gpo:antlle or pfecha>=gpo:antsal)
+                        binc = 1
+                    end
+                ELSE  ! cambio simultaneo de fechas y tipo de cuarto
+                    if bnew=1
+                        if (pfecha<gpo:feclle or pfecha>=gpo:fecsal)
+                            binc = 1
+                        end
+                    ELSif bnew=0
+                        if (pfecha<gpo:antlle or pfecha>=gpo:antsal)
+                            binc = 1
+                        end
+                    else  ! tipo esta en reser orig. y en reser. con cambios
+                        if (pfecha<gpo:feclle or pfecha>=gpo:fecsal) or (pfecha<gpo:antlle or pfecha>=gpo:antsal)
+                            binc = 1
+                        end
+                    END
+                END
+            END
+        end
+        return(binc)
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+ActualizaLogDisp    PROCEDURE  (string pResStatus)
+fecnow                  string(8)
+lfehoy                  long
+lclock                  long
+tipos                   short
+lfecha                  long
+subdis                  short
+isub                    short
+bexinewtip              byte
+vtipos                  queue, pre(vt)
+tipo                        string(6)
+esnew                       byte  ! si es tipo nuevo o no
+                        end
+
+CODE
+    !///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        !---fechaant_ini    = fecha inicial de la reserva antes de escribir los cambios, dato obligatorio para cambios.     ////
+        !---fechaant_fin    = fecha final de la reserva antes de escribir los cambios, dato obligatorio para cambios.       ////
+        !---ant:tipo        = vector para tipos de cuarto anteriores, dato obligatorio para cambios.                        ////
+        !---ant:cant        = vector para cantidad de cuartos anteriores, dato obligatorio para cambios.                    ////
+        !---loc:fecmodi     = fecha inicial de la reserva que llegóo de sitemander                                          ////
+        !---loc:fecmodf     = fecha final de la reserva que llegóo de sitemander                                            ////
+        !---rs:tar:tipo     = vector para tipos de cuarto que llegaron de sitemander.                                       ////
+        !///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        !if (not loc:verdisp and opera=CAMBIO and not rs:bloqcod)
+        !if (not loc:verdisp and GRVA:ResStatus = 'Modify' and not rs:bloqcod)
+        !  return
+        !end
+    UpdatePMSBIT('ActualizaLogDisp,StartCode','Request: '&pResStatus&|
+        ';Data Inventory:'&|
+        ';loc:fecmodi='&loc:fecmodi&|
+        ';loc:fecmodf='&loc:fecmodf&|
+        ';fecant_ini='&fecant_ini&|
+        ';fecant_fin='&fecant_fin&|
+        ';ant:tipo[1]='&ant:tipo[1]&|
+        ';ant:tipo[2]='&ant:tipo[2]&|
+        ';ant:tipo[3]='&ant:tipo[3]&|
+        ';ant:tipo[4]='&ant:tipo[4]&|
+        ';ant:tipo[5]='&ant:tipo[5]&|
+        ';ant:tipo[6]='&ant:tipo[6]&|
+        ';ant:tipo[7]='&ant:tipo[7]&|
+        ';ant:tipo[8]='&ant:tipo[8]&|
+        ';ant:tipo[9]='&ant:tipo[9]&|
+        ';ant:tipo[10]='&ant:tipo[10]&|
+        ';rs:tar:tipo[1]'&rs:tar:tipo[1]&|
+        ';rs:tar:tipo[2]'&rs:tar:tipo[2]&|
+        ';rs:tar:tipo[3]'&rs:tar:tipo[3]&|
+        ';rs:tar:tipo[4]'&rs:tar:tipo[4]&|
+        ';rs:tar:tipo[5]'&rs:tar:tipo[5]&|
+        ';rs:tar:tipo[6]'&rs:tar:tipo[6]&|
+        ';rs:tar:tipo[7]'&rs:tar:tipo[7]&|
+        ';rs:tar:tipo[8]'&rs:tar:tipo[8]&|
+        ';rs:tar:tipo[9]'&rs:tar:tipo[9]&|
+        ';rs:tar:tipo[10]'&rs:tar:tipo[10])
+    bexinewtip = 0
+    lfehoy = today()
+    fecnow = format(lfehoy, @D12)
+    IF pResStatus = 'Book' OR pResStatus = 'Cancel'
+        fecha_inicial = loc:fecmodi
+        lfecha = deformat(loc:fecmodf,@d12)-1
+        fecha_final = format(lfecha, @D12)
+        IF pResStatus = 'Cancel'
+            clear(loc:tipctoan)
+            loop tipos=1 to 10 by 1
+                if loc:tipctoan<>ant:tipo[tipos] and ant:tipo[tipos]
+                    vt:tipo = ant:tipo[tipos]
+                    loc:tipctoan = ant:tipo[tipos]
+                    vt:esnew = 0
+                    add(vtipos)
+                end
+            end
+        end
+    else  ! cambio
+        if fecant_ini<loc:fecmodi
+            fecha_inicial = fecant_ini
+        ELSE
+            fecha_inicial = loc:fecmodi
+        end
+        if fecant_fin>loc:fecmodf
+            fecha_final = fecant_fin
+        ELSE
+            fecha_final = loc:fecmodf
+        end
+        lfecha = deformat(fecha_final,@d12)-1
+        fecha_final = format(lfecha, @D12)
+        clear(loc:tipctoan)
+        loop tipos=1 to 10 by 1
+            if loc:tipctoan<>ant:tipo[tipos] and ant:tipo[tipos]
+                vt:tipo = ant:tipo[tipos]
+                vt:esnew = 0
+                loc:tipctoan = ant:tipo[tipos]
+                add(vtipos)
+            end
+        end
+        UpdatePMSBIT('ActualizaLogDisp,StartCode','Request: '&pResStatus&|
+            ';Data Inventory:'&|
+            ';loc:fecmodi='&loc:fecmodi&|
+            ';loc:fecmodf='&loc:fecmodf&|
+            ';ant:tipo[1]='&ant:tipo[1]&|
+            ';ant:tipo[2]='&ant:tipo[2]&|
+            ';ant:tipo[3]='&ant:tipo[3]&|
+            ';ant:tipo[4]='&ant:tipo[4]&|
+            ';ant:tipo[5]='&ant:tipo[5]&|
+            ';ant:tipo[6]='&ant:tipo[6]&|
+            ';ant:tipo[7]='&ant:tipo[7]&|
+            ';ant:tipo[8]='&ant:tipo[8]&|
+            ';ant:tipo[9]='&ant:tipo[9]&|
+            ';ant:tipo[10]='&ant:tipo[10]&|
+            ';vt:tipo[1]'&rs:tar:tipo[1]&|
+            ';vt:tipo[2]'&rs:tar:tipo[2]&|
+            ';vt:tipo[3]'&rs:tar:tipo[3]&|
+            ';vt:tipo[4]'&rs:tar:tipo[4]&|
+            ';vt:tipo[5]'&rs:tar:tipo[5]&|
+            ';vt:tipo[6]'&rs:tar:tipo[6]&|
+            ';vt:tipo[7]'&rs:tar:tipo[7]&|
+            ';vt:tipo[8]'&rs:tar:tipo[8]&|
+            ';vt:tipo[9]'&rs:tar:tipo[9]&|
+            ';vt:tipo[10]'&rs:tar:tipo[10])
+    end
+    IF pResStatus <> 'Cancel'
+        clear(loc:tipctoan)
+        loop tipos=1 to 10 by 1
+            if loc:tipctoan<>rs:tar:tipo[tipos] and rs:tar:tipo[tipos]
+                loc:tipctoan = rs:tar:tipo[tipos]
+                vt:tipo = rs:tar:tipo[tipos]
+                get(vtipos, vt:tipo)
+                if errorcode()
+                    vt:esnew = 1
+                    add(vtipos)
+                    bexinewtip = 1
+                ELSE
+                    vt:esnew = 2  ! tipo ya existía en reserv. original
+                    put(vtipos)
+                END
+            END
+        end
+        IF pResStatus = 'Modify'
+            ! prende switch de cambio en fechas y tipo
+            if (loc:fecmodi<>fecant_ini or loc:fecmodf<>fecant_fin) and bexinewtip
+                loc:camfectip = 1
+            ELSE
+                loc:camfectip = 0
+            end
+        end
+    end
+    lclock = clock()
+    if rs:bloqcod  ! se debe enviar el bloqueo del grupo ya actualizado por la reserva de integrante
+        logd:Linea='"'&CLIP(lclock)&'","MOD","'&clip(left(RS:RESGPO))&'","","","",""'
+        add(filelog)
+    end
+            !  checa cambio en fechas y tipo para integrante de grupo
+    if rs:bloqcod  ! es integrante de grupo
+        lfecha = deformat(gpo:fecsal,@d12)-1
+        gpo:fecsal = format(lfecha, @D12)
+        if not gpo:modinv
+            close(filelog)
+            free(vtipos)
+            return
+        END
+        if fecha_inicial>=gpo:feclle
+                    !fecha_inicial = HRES:sresfeclle
+            fecha_inicial = gpo:feclle
+        end
+        if fecha_final<=gpo:fecsal
+                    !fecha_final = HRES:sresfecsal
+            fecha_final = gpo:fecsal
+        end
+    end
+!    ActualizaLog('Act.Log Ocupación',0, ' ')
+    ! Calculo actual de cuartos vendidos
+    free(QDS)
+    do CargaTiposEnQDS
+    do TipCtoBloqFs
+    do LeeHPDRESE
+    do Allotment
+    lclock = clock()+1
+    loop tipos=1 to records(vtipos) by 1
+        get(vtipos, tipos)
+        if not errorcode()
+            Ds:TipCto=vt:tipo
+            get(QDs,Ds:TipCto)
+            if not errorcode()
+                subdis = deformat(fecha_final,@D12)-deformat(fecha_inicial,@D12)+1
+                if subdis>MAXDRES
+                    subdis = MAXDRES
+                end
+                lfecha = DEFORMAT(fecha_inicial,@D12)
+                LOOP isub=1 to subdis by 1
+                    fecnow = format(lfecha+isub-1,@D12)
+                    if IncFechaLog(fecnow, vt:esnew, rs:bloqcod,pResStatus)
+                        CLEAR(QLogDisp)
+                        QLD:tipo    = DS:TipCto
+                        QLD:fecha   = fecnow
+                        GET(QLogDisp,QLD:tipo,QLD:fecha)
+                        IF ERRORCODE() = 30
+                            QLD:tgrz    = DS:RealOcu[isub]+DS:tGrz[isub]
+                            QLD:tngrz   = DS:tNGr[isub]
+                            QLD:tfs     = DS:tFs[isub]
+                            add(QLogDisp)
+                            UpdatePMSBIT('ActualizaLogDisp,ADD(QLogDisp)','QLD:tipo='&FORMAT(QLD:tipo,@S6)&';QLD:fecha='&FORMAT(QLD:fecha,@S8)&';QLD:tgrz='&FORMAT(QLD:tgrz,@N_3)&';QLD:tngrz='&FORMAT(QLD:tngrz,@N_3)&';QLD:tfs='&FORMAT(QLD:tfs,@N_3))
+                        ELSIF NOT ERRORCODE()
+                            QLD:tgrz    = DS:RealOcu[isub]+DS:tGrz[isub]
+                            QLD:tngrz   = DS:tNGr[isub]
+                            QLD:tfs     = DS:tFs[isub]
+                            put(QLogDisp)
+                            UpdatePMSBIT('ActualizaLogDisp,PUT(QLogDisp)','QLD:tipo='&FORMAT(QLD:tipo,@S6)&';QLD:fecha='&FORMAT(QLD:fecha,@S8)&';QLD:tgrz='&FORMAT(QLD:tgrz,@N_3)&';QLD:tngrz='&FORMAT(QLD:tngrz,@N_3)&';QLD:tfs='&FORMAT(QLD:tfs,@N_3))
+                        ELSE
+                            UpdatePMSBIT('ActualizaLogDisp,GET(QLogDisp),Error','Error('&ERRORCODE()&') en cola;QLD:tipo='&QLD:tipo&';QLD:fecha='&QLD:fecha)
+                        END
+                    END
+                end
+            ELSE
+                MonitorSMDisplay('Tipo de cuarto '&vt:tipo&' no encontrado Error '&ERRORCODE())
+            end
+        end
+    end
+    close(filelog)
+    free(vtipos)
+    return
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+Get_DataProfile     PROCEDURE(string pStayId)
+profileFound            BYTE
+CODE
+    profileFound = FALSE
+    IF RECORDS(QRoomStays) = 1 !-- Solo viene un registro de estancia
+        LOOP iResGuests# = 1 TO RECORDS(QResGuests)
+            GET(QResGuests,iResGuests#)
+            IF iResGuests# = 1
+                GCU:NamePrefix = QResGuests.NamePrefix
+                GCU:GivenName = QResGuests.GivenName
+                GCU:MiddleName = QResGuests.MiddleName
+                GCU:Surname = QResGuests.Surname
+                GCU:Direc1 = QResGuests.AddressLine[1]
+                GCU:Direc3 = QResGuests.AddressLine[2]
+                GCU:Direc2 = CLIP(QResGuests.CityName)
+                IF QResGuests.CountryName
+                    GCU:Direc2 = CLIP(GCU:Direc2) &','& CLIP(QResGuests.CountryName)
+                END
+                GCU:PostalCode = QResGuests.PostalCode
+                GCU:Telefono = QResGuests.PhoneNumber[1]
+                GCU:email = QResGuests.Email
+                profileFound = TRUE
+            END
+            IF LOWER(QResGuests.PrimaryIndicator) = 'true'
+                GCU:NamePrefix = QResGuests.NamePrefix
+                GCU:GivenName = QResGuests.GivenName
+                GCU:MiddleName = QResGuests.MiddleName
+                GCU:Surname = QResGuests.Surname
+                GCU:Direc1 = QResGuests.AddressLine[1]
+                GCU:Direc3 = QResGuests.AddressLine[2]
+                GCU:Direc2 = CLIP(QResGuests.CityName)
+                IF QResGuests.CountryName
+                    GCU:Direc2 = CLIP(GCU:Direc2) &','& CLIP(QResGuests.CountryName)
+                END
+                GCU:PostalCode = QResGuests.PostalCode
+                GCU:Telefono = QResGuests.PhoneNumber[1]
+                GCU:email = QResGuests.Email
+                GCU:Contacto = 'Este es el huésped principal'
+                profileFound = TRUE
+                BREAK
+            END
+        END
+    ELSE
+        QResGuestRPH.StayId = pStayId
+        GET(QResGuestRPH,QResGuestRPH.StayId)
+        IF NOT ERRORCODE()
+            QResGuests.ResGuestRPH = QResGuestRPH.RPH
+            GET(QResGuests,QResGuests.ResGuestRPH)
+            IF NOT ERRORCODE()
+                GCU:NamePrefix = QResGuests.NamePrefix
+                GCU:GivenName = QResGuests.GivenName
+                GCU:MiddleName = QResGuests.MiddleName
+                GCU:Surname = QResGuests.Surname
+                GCU:Direc1 = QResGuests.AddressLine[1]
+                GCU:Direc3 = QResGuests.AddressLine[2]
+                GCU:Direc2 = CLIP(QResGuests.CityName)
+                IF QResGuests.CountryName
+                    GCU:Direc2 = CLIP(GCU:Direc2) &','& CLIP(QResGuests.CountryName)
+                END
+                GCU:PostalCode = QResGuests.PostalCode
+                GCU:Telefono = QResGuests.PhoneNumber[1]
+                GCU:email = QResGuests.Email
+                IF LOWER(QResGuests.PrimaryIndicator) = 'true'
+                    GCU:Contacto = 'Este es el huésped principal.'
+                END
+                profileFound = TRUE
+            END
+        END
+    END
+    IF profileFound = FALSE
+        GET(QResGlobalInfo,1)
+        IF NOT ERRORCODE()
+            GCU:NamePrefix = QResGlobalInfo.NamePrefix
+            GCU:GivenName = QResGlobalInfo.GivenName
+            GCU:MiddleName = QResGlobalInfo.MiddleName
+            GCU:Surname = QResGlobalInfo.Surname
+            GCU:Direc1 = QResGlobalInfo.AddressLine[1]
+            GCU:Direc3 = QResGlobalInfo.AddressLine[2]
+            GCU:Direc2 = CLIP(QResGlobalInfo.CityName)
+            IF QResGuests.CountryName
+                GCU:Direc2 = CLIP(GCU:Direc2) &','& CLIP(QResGuests.CountryName)
+            END
+            GCU:PostalCode = QResGlobalInfo.PostalCode
+            GCU:Telefono = QResGlobalInfo.PhoneNumber[1]
+            GCU:email = QResGlobalInfo.Email
+        ELSE
+            GCU:GivenName = 'NOT FOUND'
+            GCU:Surname = 'NOT FOUND'
+        END
+    END
+
+    Get_GpoCia() !--Obtiene datos de la agencia / compañia
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+Get_GuestCount      PROCEDURE(string pStayId)
+CODE
+    CLEAR(GCU:numAdu)
+    CLEAR(GCU:numNin)
+    CLEAR(QGuestCounts)
+    LOOP iGuestCounts# = 1 TO RECORDS(QGuestCounts)
+        GET(QGuestCounts,iGuestCounts#)
+        IF QGuestCounts.StayId <> pStayId THEN CYCLE.
+        IF QGuestCounts.AgeQualifyingCode = '10'   !--10 - Adult
+            GCU:numAdu = QGuestCounts.Count
+        END
+        IF QGuestCounts.AgeQualifyingCode = '7'    !--7 - Infant
+            GCU:numAdu += QGuestCounts.Count
+        END
+        IF QGuestCounts.AgeQualifyingCode = '8'    !--8 - Child
+            GCU:numNin = QGuestCounts.Count
+        END
+    END
+[END]
+EMBED %ProcedureRoutines
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+CargaTiposEnQDS     ROUTINE
+! ....... Definición de tipos de cuarto .......
+    FREE(QDs)
+    CLEAR(CVAR:Record)
+    CVAR:SVARTIPCAT = '1'
+    SET(CVAR:KEY_HCAVARI,CVAR:KEY_HCAVARI)
+    LOOP UNTIL Access:HCAVARI.Next() OR CVAR:SVARTIPCAT <> '1'
+        clear(QDS)
+        Ds:TipCto = UPPER(CVAR:SVARCODIGO)
+        add(QDs)
+    END
+    EXIT
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+TipCtoBloqFs        Routine
+Data
+ciclo       short
+dfecd       long
+idia        short
+Code
+ !.... Acumulado de cuartos rentables ....
+    lh = deformat(fecha_final,@D12)-deformat(fecha_inicial,@D12)+1
+    if lh>MAXDRES
+        lh = MAXDRES
+    end
+
+    Clear(CCTOS:SCTONUMCTO)
+    set(CCTOS:KEY_HCACTOS,CCTOS:KEY_HCACTOS)
+    loop
+        next(Hcactos)
+        if errorcode() then break.
+        if CCTOS:SCTONUMCTO ! existe el cuarto
+            CCTOS:SCTOTIPCTO=Upper(CCTOS:SCTOTIPCTO)
+            CCTOS:SCTOESTREC=Upper(CCTOS:SCTOESTREC)
+            if CCTOS:SCTODUMY='S' then Cycle. ! Ficticio
+            if CCTOS:SCTOESTREC[1]='V'  or|
+                CCTOS:SCTOESTREC[1]='O'  or|
+                CCTOS:SCTOESTREC='FS'
+          !Do LimVec
+                Ds:TipCto=CCTOS:SCTOTIPCTO
+                get(QDs,Ds:TipCto)
+                if not errorcode()
+                    ll=1
+                 !lh=28
+                    loop ciclo=1 to lh by 1
+                        ds:totcto[ciclo]+= 1
+                    end
+                    Dis:Ocu='D'
+                    SRd=1
+                    loc:caldisres = 0
+                    Do ModiDisOcu
+
+                 ! BLOQUEOS.............
+
+                    clear(bls:bloq)
+                    Bloq:Act=0
+                    HBLO:SBLQNUMCTO=CCTOS:SCTONUMCTO
+                    Clear(HBLO:SBLQFECINI)
+                    set(HBLO:KEY_HPDBLOQ,HBLO:KEY_HPDBLOQ)
+                    loop
+                        next(Hpdbloq)
+                        if errorcode() or HBLO:SBLQNUMCTO<>CCTOS:SCTONUMCTO
+                            break
+                        end
+                        HBLO:SBLQNUMRES=UPPER(HBLO:SBLQNUMRES)
+                        if HBLO:SBLQNUMRES[1:2]='FS'
+                            Fecha:Bloqueo=Deformat(fecha_inicial,@D12)
+                            ll=1
+                            if lh>=ll
+                                loop ll=1 to lh
+                                    if inrange(Format(Fecha:Bloqueo,@d12),HBLO:SBLQFECINI,HBLO:SBLQFECFIN) and Format(Fecha:Bloqueo,@d12)>=SIS:fecsis
+                                        Bls:Bloq[(ll)]=1
+                                        if Bloq:Act=0 then Bloq:Act=1.
+                                    end
+                                    Fecha:Bloqueo+=1
+                                end
+                            end
+                        end
+                    end
+                 !Afecta el bloqueo a la consulta...
+                    if Bloq:Act=1
+                        if CCTOS:SCTOESTREC[1]='O' ! El cuarto esta ocupado
+                            HHUE:SHUENUMCTO=CCTOS:SCTONUMCTO
+                            Clear(HHUE:SHUECVEFOL)
+                            set(HHUE:KEY_HPDHUES,HHUE:KEY_HPDHUES)
+                            next(HPDHUES)
+                            if not errorcode() and HHUE:SHUENUMCTO=CCTOS:SCTONUMCTO
+                                HRES:SRESNUMRES=HHUE:SHUENUMRES
+                                get(HPDRESE,HRES:KEY_HPDRESE)
+                                if not errorcode() and HRES:SRESESTRES='4'
+                                    Fecha:BloqIni=Deformat(HRES:SRESFECLLE,@d12)
+                                    Fecha:BloqFin=Deformat(HRES:SRESFECSAL,@d12)
+                                    Fecha:BloqFin-=1
+                                    if Fecha:BloqFin>=Fecha:BloqIni
+                                        Fecha:Bloqueo=Deformat(fecha_inicial,@d12)
+                                        ll=1
+                                        if lh>=ll
+                                            loop ll=1 to lh
+                                                if inrange(Fecha:Bloqueo,Fecha:BloqIni,Fecha:BloqFin)
+                                                    Bls:Bloq[(ll)]=0
+                                           !beep
+                                           !MESSAGE('Existe cruce en fechas de bloqueo y ocupación del cuarto # '&CCTOS:SCTONUMCTO )
+                                                    Break
+                                                end
+                                                Fecha:Bloqueo+=1
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                        loop ciclo=1 to lh by 1
+                            ds:disp[ciclo] -= bls:bloq[ciclo]
+                            ds:tfs[ciclo] += bls:bloq[ciclo]
+                        end
+                        put (QDs) ! Actualiza disponibilidad por bloqueo
+                    end
+                end
+            end
+        end
+    end
+
+ !------------------------------------------------------
+ !checa fechas cerradas
+    dfecd = deformat(fecha_inicial,@D12)
+    clear(vfechaclose)
+    idia = 1
+    LOOP
+        if format(dfecd,@D12)>fecha_final or idia>lh then break.
+        HDIS:SDISFECDIS = format(dfecd,@D12)
+        clear(HDIS:SDISTIPCTO)
+        set(HDIS:KEY_HPDDISP,HDIS:KEY_HPDDISP)
+        loop
+            next(hpddisp)
+            if errorcode() or HDIS:SDISFECDIS<>format(dfecd,@D12) then break.
+            if HDIS:SDISFECCER='*' then
+                vfechaclose[idia] = '*'
+            end
+        end
+        dfecd += 1
+        idia += 1
+    END
+    EXIT
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+Allotment           Routine
+Data
+code
+    if  giresall='S'
+        Clear(CALC:SALCCODAGE)
+        Clear(CALC:SALCTIPDEF)
+        set(CALC:KEY_HCAALCO,CALC:KEY_HCAALCO)
+        loop
+            next(Hcaalco)
+            if errorcode() then break.
+            if CALC:IALCCUTOFF>0
+                FechaAllot=Deformat(SIS:fecsis,@d12)+CALC:IALCCUTOFF
+                if Format(FechaAllot,@d12)>CALC:SALCFECINI
+                    CALC:SALCFECINI=Format(FechaAllot,@d12)
+                end
+            end
+            if CALC:SALCFECINI<=CALC:SALCFECFIN
+                FechaAllot1=Deformat(CALC:SALCFECINI,@d12)
+                FechaAllot2=Deformat(CALC:SALCFECFIN,@d12)
+                loop FechaAllot=FechaAllot1 to FechaAllot2
+                    if inrange(FechaAllot,Deformat(Fecha_Inicial,@D12),Deformat(Fecha_Final,@d12))
+                        Clear(All:Contrato)
+                        Clear (All:Ventas)
+                        CALC:SALCALLCOM=Upper(CALC:SALCALLCOM)
+                        All:TipCto  =CALC:SALCALLCOM
+                        All:FechAll =Format(FechaAllot,@d12)
+                        get(QAll,All:TipCto,All:FechAll)
+                        if errorcode()
+                            All:Contrato=CALC:IALCCTOCO
+                            add(QAll)
+                        else
+                            All:Contrato+=CALC:IALCCTOCO
+                            put(QAll)
+                        end
+                    end
+                end
+            end
+        end
+
+        Clear(HCAL:COACODAGE)
+        Clear(HCAL:COAFECHA)
+        Clear(HCAL:COATIPCTO)
+        set(HCAL:KEY_HCOALLO,HCAL:KEY_HCOALLO)
+        loop
+            next(Hcoallo)
+            if errorcode() Then break.
+            All:TipCto =HCAL:COATIPCTO
+            All:FechAll=HCAL:COAFECHA
+            get(QAll,All:TipCto,All:FechAll)
+            if not errorcode()
+                All:Contrato-=HCAL:COAALLCNF
+                put(QAll)
+            end
+        end
+        lh=records(QAll)
+        if lh>MAXDRES
+            lh = MAXDRES
+        end
+        if lh>0
+            if lh>=ll
+                loop ll=1 to lh
+                    get(Qall,ll)
+                    if not errorcode()
+                        Ds:TipCto=All:TipCto
+                        get(QDs,Ds:TipCto)
+                        if not errorcode()
+                     !if inrange(Deformat(All:FechAll,@d12),Deformat(Fecha_inicial,@d12),Deformat(Fecha_final,@d12))
+                     ! ..... Nueva condición ......
+                            if inrange(Deformat(All:FechAll,@d12),Deformat(Fecha_inicial,@d12),Deformat(Fecha_final,@d12)) and All:FechAll>=SIS:fecsis
+                                FechaAllot=Deformat(All:FechAll,@d12)-Deformat(Fecha_inicial,@d12)
+                                FechaAllot+=1
+                                Ds:Disp[(FechaAllot)]-=All:Contrato
+                                Ds:RealOcu[(FechaAllot)]+=All:Contrato
+                                Ds:tngr[(FechaAllot)]+=All:Contrato
+                                put(QDs)
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+    exit
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+LeeHPDRESE          Routine
+Data
+ContadorReg short
+lhaux       short
+code
+    ContadorReg=0
+    lhaux = deformat(fecha_final,@D12)-deformat(fecha_inicial,@D12)+1
+    if lhaux>MAXDRES
+        lhaux = MAXDRES
+    end
+    HRES:SRESFECSAL=Format(Deformat(fecha_inicial,@d12),@d12)
+    Clear(HRES:SRESNUMRES)
+    set(HRES:KEY_HPDSALI,HRES:KEY_HPDSALI)
+    loop
+        next(Hpdrese)
+        if errorcode()
+       !?Progress1{PROP:Progress}=30
+       !Display(?Progress1)
+            Break
+        end
+        !...Filtro....
+        if not HRES:SRESNUMRES Then Cycle.
+        if HRES:SRESESTRES<>'4' and |
+            HRES:SRESESTRES<>'1' and |
+            HRES:SRESESTRES<>'2'  Then cycle.
+        if HRES:SRESTIPFOL='3' Then cycle.
+        if HRES:SRESDUPLI<>''   Then cycle.
+    ! ... Nueva condición ...................
+    ! ... Para conteo de fechas pasadas .....
+    ! ... Ctos reservados ...................
+        if HRES:SRESFECSAL<=SIS:fecsis
+            if (HRES:SRESESTRES='1'  or|
+                HRES:SRESESTRES ='2')
+                cycle
+            end
+        end
+    ! ... Ctos que ya salieron  .............
+        if HRES:SRESESTRES='5'
+            if HRES:SRESFECSAL>SIS:fecsis or|
+                HRES:SRESFECSAL<fecha_inicial
+                cycle
+            end
+            if HRES:SRESCVEGPL<>'1'
+                cycle
+            end
+        end
+    ! .......................................
+        if HRES:SRESCVEGPL='1'  ! R e s e r v a c i ó n   I n d i v i d u a l
+            if HRES:SRESFECLLE=HRES:SRESFECSAL or |
+                HRES:SRESFECLLE>HRES:SRESFECSAL or |
+                not HRES:SRESFECLLE             or |
+                not HRES:SRESFECSAL             or |
+                HRES:SRESFECLLE > Fecha_Final Then cycle.
+       !  ¿ folio externo ?
+            if HRES:SRESNUMCTO
+                CCTOS:SCTONUMCTO=HRES:SRESNUMCTO
+                get(HCACTOS,CCTOS:KEY_HCACTOS)
+                if not errorcode()
+                    if CCTOS:SCTODUMY='S' then Cycle. ! Ficticio
+                end
+            end
+
+            ll=1
+            lh=lhaux
+            if HRES:SRESFECLLE>Fecha_inicial
+                ll=Deformat(HRES:SRESFECLLE,@D12)-Deformat(Fecha_inicial,@d12)
+                ll+=1
+            end
+
+            if HRES:SRESFECSAL<=Fecha_Final
+                lh=Deformat(HRES:SRESFECSAL,@D12)-Deformat(Fecha_Inicial,@d12)
+                if lh>MAXDRES
+                    lh = MAXDRES
+                end
+            end
+
+            Dis:Ocu='D'
+            SRd=(HRES:IRESCANCTO * -1)
+       ! Acumulado en disponibilidad
+            if SRd<>0  and lh>=ll
+                Ds:TipCto=HRES:SRESTIPCTO
+                get(QDs,Ds:TipCto)
+                if not errorcode()
+                    OcRe=1
+                    loc:caldisres = 1
+                    Do ModiDisOcu
+                    OcRe=0
+                end
+            end
+        elsif HRES:SRESCVEGPL='3'  ! R e s e r v a c i ó n   G r u p a l
+       ! RUTINA PARA ACT. DISP. POR GRUPOS SIN ROOMING LIST
+            HTPG:STPGCODGPO = HRES:SRESCODGPO
+            HTPG:STPGNUMRES = HRES:SRESNUMRES
+            set(HTPG:KEY_HPDTPGP, HTPG:KEY_HPDTPGP)
+            loop
+                next(HPDTPGP)
+                if errorcode() or HTPG:STPGCODGPO<>HRES:SRESCODGPO or |
+                    HTPG:STPGNUMRES<>HRES:SRESNUMRES
+                    break
+                end
+                if HTPG:STPGFECLLE=HTPG:STPGFECSAL or |
+                    HTPG:STPGFECLLE>HTPG:STPGFECSAL or |
+                    not HTPG:STPGFECLLE             or |
+                    not HTPG:STPGFECSAL             or |
+                    not HTPG:STPGFECLLE>=SIS:fecsis   or |
+                    HTPG:STPGFECLLE > Fecha_Final Then cycle.
+                if HTPG:ITPGCANCTO>0
+                    ll=1
+                    lh=lhaux
+                    if HTPG:STPGFECLLE>Fecha_inicial
+                        ll=Deformat(HTPG:STPGFECLLE,@D12)-Deformat(Fecha_inicial,@d12)
+                        ll+=1
+                    end
+                    if HTPG:STPGFECSAL<=Fecha_Final
+                        lh=Deformat(HTPG:STPGFECSAL,@D12)-Deformat(Fecha_Inicial,@d12)
+                        if lh>MAXDRES
+                            lh = MAXDRES
+                        end
+                    end
+                    Dis:Ocu='D'
+                    SRd=HTPG:ITPGCANCTO
+                    SRd*=(-1)
+              ! Acumulado en disponibilidad
+                    if SRd<>0  and lh>=ll
+                        Ds:TipCto=HTPG:STPGTIPCTO
+                        get(QDs,Ds:TipCto)
+                        if not errorcode()
+                            OcRe=1
+                            loc:caldisres = 1
+                            Do ModiDisOcu
+                            OcRe=0
+                        end
+                    end
+                end
+            end
+        end
+    end
+    exit
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+ModiDisOcu          Routine
+Data
+ll3 short
+Code
+    if instring('D',Dis:Ocu,1,1)
+        loop ll3=ll to lh
+            if  (ll2=0 and lh2=0) or|
+                (ll2>0 and lh2>0 and not inrange(ll3,ll2,lh2))
+                Ds:Disp[(ll3)]+=SRd
+               !if OcRe=1
+               !   Ds:RealOcu[(ll3)]+=(Abs(SRd))
+               !end
+                if loc:caldisres
+                    if HRES:sresestres='2'
+                        ds:tgrz[(ll3)]+=(Abs(SRd))
+                    ELSIF HRES:SRESESTRES='1'
+                        ds:tngr[(ll3)]+=(Abs(SRd))
+                    elsif HRES:SRESESTRES='4'
+                        Ds:RealOcu[(ll3)]+=(Abs(SRd))
+                    end
+                end
+            end
+        end
+    end
+    put(QDs)
+    exit
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+!ProcesaRequest      ROUTINE
+!    ! obtención de tarifas por tipo de cuarto
+!    LOOP RoomStays# = 1 TO RECORDS(QRoomStays)
+!        GET(QRoomStays,RoomStays#)
+!        IF NOT dateStart
+!            dateStart = DEFORMAT(QRoomStays.TimeSpanStart,@D10-)
+!        ELSE
+!            IF dateStart > DEFORMAT(QRoomStays.TimeSpanStart,@D10-)
+!                dateStart = DEFORMAT(QRoomStays.TimeSpanStart,@D10-)
+!            END
+!        END
+!        IF NOT dateEnd
+!            dateEnd = DEFORMAT(QRoomStays.TimeSpanEnd,@D10-)
+!        ELSE
+!            IF dateEnd < DEFORMAT(QRoomStays.TimeSpanEnd,@D10-)
+!                dateEnd = DEFORMAT(QRoomStays.TimeSpanEnd,@D10-)
+!            END
+!        END
+!        LOOP RoomRate# = 1 TO RECORDS(QRoomRates)
+!            GET(QRoomRates,RoomRate#)
+!            IF QRoomRates.StayId <> QRoomStays.StayId THEN CYCLE.
+!            RS:tar:tipo[RoomRate#]  = UPPER(QRoomRates.RoomRateRoomTypeCode)
+!            RS:tar:cant[RoomRate#]  = QRoomRates.RoomRateNumberOfUnits
+!            RS:tar:code[RoomRate#]  = UPPER(QRoomRates.RoomRateRatePlanCode)
+!            RS:tar:ini[RoomRate#] = QRoomStays.TimeSpanStart
+!            RS:tar:fin[RoomRate#] = QRoomStays.TimeSpanEnd
+!            GET(QSource,1)
+!            CASE QSource.CompanyNameCode
+!            OF 'AGO' OROF 'EXP' OROF 'BBN'
+!                Rs:tar:tot[RoomRate#] = QRoomRates.BaseAmountBeforeTax
+!                RS:tar:mon[RoomRate#] = QRoomRates.BaseCurrencyCode
+!            OF 'BDC' OROF 'TRG' OROF 'BST'
+!                Rs:tar:tot[RoomRate#] = QRoomRates.TotalAmountBeforeTax
+!                RS:tar:mon[RoomRate#] = QRoomRates.TotalCurrencyCode
+!            END
+!            iRoomRate += 1
+!        END
+!    END
+!    UpdatePMSBIT('ProcesaRequest','RS:tar:tipo='&RS:tar:tipo[1]&|
+!        'RS:tar:tipo='&RS:tar:tipo[2]&|
+!        'RS:tar:tipo='&RS:tar:tipo[3]&|
+!        'RS:tar:tipo='&RS:tar:tipo[4]&|
+!        'RS:tar:tipo='&RS:tar:tipo[5]&|
+!        'RS:tar:tipo='&RS:tar:tipo[6]&|
+!        'RS:tar:tipo='&RS:tar:tipo[7]&|
+!        'RS:tar:tipo='&RS:tar:tipo[8]&|
+!        'RS:tar:tipo='&RS:tar:tipo[9]&|
+!        'RS:tar:tipo='&RS:tar:tipo[10]&|
+!        'RS:tar:cant='&RS:tar:cant[1]&|
+!        'RS:tar:cant='&RS:tar:cant[2]&|
+!        'RS:tar:cant='&RS:tar:cant[3]&|
+!        'RS:tar:cant='&RS:tar:cant[4]&|
+!        'RS:tar:cant='&RS:tar:cant[5]&|
+!        'RS:tar:cant='&RS:tar:cant[6]&|
+!        'RS:tar:cant='&RS:tar:cant[7]&|
+!        'RS:tar:cant='&RS:tar:cant[8]&|
+!        'RS:tar:cant='&RS:tar:cant[9]&|
+!        'RS:tar:cant='&RS:tar:cant[10]&|
+!        'RS:tar:ini='&RS:tar:ini[1]&|
+!        'RS:tar:ini='&RS:tar:ini[2]&|
+!        'RS:tar:ini='&RS:tar:ini[3]&|
+!        'RS:tar:ini='&RS:tar:ini[4]&|
+!        'RS:tar:ini='&RS:tar:ini[5]&|
+!        'RS:tar:ini='&RS:tar:ini[6]&|
+!        'RS:tar:ini='&RS:tar:ini[7]&|
+!        'RS:tar:ini='&RS:tar:ini[8]&|
+!        'RS:tar:ini='&RS:tar:ini[9]&|
+!        'RS:tar:ini='&RS:tar:ini[10]&|
+!        'RS:tar:fin'&RS:tar:fin[1]&|
+!        'RS:tar:fin'&RS:tar:fin[2]&|
+!        'RS:tar:fin'&RS:tar:fin[3]&|
+!        'RS:tar:fin'&RS:tar:fin[4]&|
+!        'RS:tar:fin'&RS:tar:fin[5]&|
+!        'RS:tar:fin'&RS:tar:fin[6]&|
+!        'RS:tar:fin'&RS:tar:fin[7]&|
+!        'RS:tar:fin'&RS:tar:fin[8]&|
+!        'RS:tar:fin'&RS:tar:fin[9]&|
+!        'RS:tar:fin'&RS:tar:fin[10])
+!    EXIT
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 3600
+PROPERTY:END
+ProcesaRequest      ROUTINE
+    ! obtención de tarifas por tipo de cuarto
+    LOOP iRoomStays# = 1 TO RECORDS(QRoomStays)
+        GET(QRoomStays,iRoomStays#)
+        IF NOT dateStart
+            dateStart = DEFORMAT(QRoomStays.TimeSpanStart,@D10-)
+        ELSE
+            IF dateStart > DEFORMAT(QRoomStays.TimeSpanStart,@D10-)
+                dateStart = DEFORMAT(QRoomStays.TimeSpanStart,@D10-)
+            END
+        END
+        IF NOT dateEnd
+            dateEnd = DEFORMAT(QRoomStays.TimeSpanEnd,@D10-)
+        ELSE
+            IF dateEnd < DEFORMAT(QRoomStays.TimeSpanEnd,@D10-)
+                dateEnd = DEFORMAT(QRoomStays.TimeSpanEnd,@D10-)
+            END
+        END
+        QRoomRates.StayId = QRoomStays.StayId
+        GET(QRoomRates,QRoomRates.StayId)
+        IF NOT ERRORCODE()
+            RS:tar:tipo[iRoomStays#]  = UPPER(QRoomRates.RoomRateRoomTypeCode)
+            RS:tar:cant[iRoomStays#]  = QRoomRates.RoomRateNumberOfUnits
+            RS:tar:code[iRoomStays#]  = UPPER(QRoomRates.RoomRateRatePlanCode)
+        ELSE
+            UpdatePMSBIT('ProcesaRequest-Error','No fue posible obtener registro en Qroomrate, error: '&ERRORCODE())
+        END
+        RS:tar:ini[iRoomStays#] = QRoomStays.TimeSpanStart
+        RS:tar:fin[iRoomStays#] = QRoomStays.TimeSpanEnd
+    END
+    UpdatePMSBIT('ProcesaRequest','RS:tar:tipo='&RS:tar:tipo[1]&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[2])&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[3])&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[4])&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[5])&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[6])&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[7])&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[8])&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[9])&|
+        '<13,10>RS:tar:tipo='&CLIP(RS:tar:tipo[10])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[1])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[2])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[3])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[4])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[5])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[6])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[7])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[8])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[9])&|
+        '<13,10>RS:tar:cant='&CLIP(RS:tar:cant[10])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[1])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[2])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[3])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[4])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[5])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[6])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[7])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[8])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[9])&|
+        '<13,10>RS:tar:ini='&CLIP(RS:tar:ini[10])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[1])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[2])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[3])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[4])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[5])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[6])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[7])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[8])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[9])&|
+        '<13,10>RS:tar:fin='&CLIP(RS:tar:fin[10]))
+    EXIT
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[CALLS]
+AddCommentsInfo
+AddDetailPayments
+AddHPDTARRES
+AddNotifReportError
+AddNotifReportSuccess
+AddRecordsHMENSAJ
+AddRecordsHPDOTRN
+AddRecordsProfiles
+AddServices
+CheckChanges
+DeleteHPDTARRES
+DeleteRecordsHMENSAJ
+DeleteRecordsHPDBLOQ
+DeleteRecordsHPDOTRN
+Get_AmountRate
+Get_CurrencyCode
+Get_FecsisInhotel
+Get_Guarantee
+Get_Notas
+Get_numsig
+Get_RatePlanCode
+Get_UniqueID
+[END]

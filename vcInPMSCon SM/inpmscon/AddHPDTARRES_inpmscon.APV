@@ -1,0 +1,200 @@
+[MODULE]
+NAME 'AddHPDTARRES_inpmscon.clw'
+[COMMON]
+FROM ABC GENERATED
+[PROCEDURE]
+NAME AddHPDTARRES
+PROTOTYPE '(string pnumres,string pStayId),long'
+PARAMETERS '(string pnumres,string pStayId)'
+[COMMON]
+FROM ABC Source
+[DATA]
+[SCREENCONTROLS]
+! PROMPT('Time Span End:'),USE(?TimeSpanEnd:Prompt)
+! ENTRY(@n-14),USE(TimeSpanEnd),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(TimeSpanEnd),RIGHT(1)
+TimeSpanEnd              LONG
+!!> GUID('4e54cf1d-b86e-4f77-8075-f902169e3b49'),PROMPT('Time Span End:'),HEADER('Time Span End'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('Effective Date:'),USE(?EffectiveDate:Prompt)
+! ENTRY(@n-14),USE(EffectiveDate),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(EffectiveDate),RIGHT(1)
+EffectiveDate            LONG
+!!> GUID('38dc3d95-5f3f-4a6f-8fc1-36ed2f69436a'),PROMPT('Effective Date:'),HEADER('Effective Date'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('Expire Date:'),USE(?ExpireDate:Prompt)
+! ENTRY(@n-14),USE(ExpireDate),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(ExpireDate),RIGHT(1)
+ExpireDate               LONG
+!!> GUID('ed19c026-80ff-46cd-898a-7e8682214887'),PROMPT('Expire Date:'),HEADER('Expire Date'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('r Amount Rate:'),USE(?rAmountRate:Prompt)
+! ENTRY(@n-10.2),USE(rAmountRate),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(rAmountRate),DECIMAL(12)
+rAmountRate              DECIMAL(7,2)
+!!> GUID('9995442f-0b55-4324-8b9a-533ebd4305b4'),PROMPT('r Amount Rate:'),HEADER('r Amount Rate'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('Base Amount Before Tax:'),USE(?BaseAmountBeforeTax:Prompt)
+! ENTRY(@n-10.2),USE(BaseAmountBeforeTax),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(BaseAmountBeforeTax),DECIMAL(12)
+BaseAmountBeforeTax      DECIMAL(7,2)
+!!> GUID('0f9e6bfe-f4bc-4c1d-8493-cfa6c35915a8'),PROMPT('Base Amount Before Tax:'),HEADER('Base Amount Before Tax'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('Base Amount After Tax:'),USE(?BaseAmountAfterTax:Prompt)
+! ENTRY(@n-10.2),USE(BaseAmountAfterTax),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(BaseAmountAfterTax),DECIMAL(12)
+BaseAmountAfterTax       DECIMAL(7,2)
+!!> GUID('0b2f9a50-5350-4003-8fbe-9fced56592f0'),PROMPT('Base Amount After Tax:'),HEADER('Base Amount After Tax'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('Total Amount Before Tax:'),USE(?TotalAmountBeforeTax:Prompt)
+! ENTRY(@n-10.2),USE(TotalAmountBeforeTax),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(TotalAmountBeforeTax),DECIMAL(12)
+TotalAmountBeforeTax     DECIMAL(7,2)
+!!> GUID('87d37a4a-e488-4a3b-a294-afc872ff42ea'),PROMPT('Total Amount Before Tax:'),HEADER('Total Amount Before Tax'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('Total Amount After Tax:'),USE(?TotalAmountAfterTax:Prompt)
+! ENTRY(@n-10.2),USE(TotalAmountAfterTax),DECIMAL(12)
+[REPORTCONTROLS]
+! STRING(@n-10.2),USE(TotalAmountAfterTax),DECIMAL(12)
+TotalAmountAfterTax      DECIMAL(7,2)
+!!> GUID('adcf9f78-388c-4809-93a7-0e196197ecbc'),PROMPT('Total Amount After Tax:'),HEADER('Total Amount After Tax'),PICTURE(@n-10.2),TYPEMODE(INS),JUSTIFY(DECIMAL,12)
+[SCREENCONTROLS]
+! PROMPT('LERROR:'),USE(?LERROR:Prompt)
+! ENTRY(@n-14),USE(LERROR),RIGHT(1)
+[REPORTCONTROLS]
+! STRING(@n-14),USE(LERROR),RIGHT(1)
+LERROR                   LONG
+!!> GUID('5842e20a-8d95-4c42-92bc-7516133ef4a1'),PROMPT('LERROR:'),HEADER('LERROR'),PICTURE(@n-14),TYPEMODE(INS),JUSTIFY(RIGHT,1)
+[SCREENCONTROLS]
+! PROMPT('CERROR:'),USE(?CERROR:Prompt)
+! ENTRY(@s254),USE(CERROR)
+[REPORTCONTROLS]
+! STRING(@s254),USE(CERROR)
+CERROR                   CSTRING(255)
+!!> GUID('4b505b3d-0115-421b-b320-86af49c39a19'),PROMPT('CERROR:'),HEADER('CERROR'),PICTURE(@s254),TYPEMODE(INS)
+[FILES]
+[OTHERS]
+HPDTARRES
+[PROMPTS]
+%GenerateOpenClose LONG  (1)
+%GenerateSaveRestore LONG  (0)
+[EMBED]
+EMBED %ProcessedCode
+[DEFINITION]
+[SOURCE]
+PROPERTY:BEGIN
+PRIORITY 4000
+PROPERTY:END
+    QRoomStays.StayId = pStayId
+    GET(QRoomStays,QRoomStays.StayId)
+    IF NOT ERRORCODE()
+        TimeSpanEnd = DEFORMAT(QRoomStays.TimeSpanEnd,@D10-)
+    END
+    !---Excepciones en tarifas
+    DO OpenFiles
+    LOOP iRoomRates# = 1 TO RECORDS(QRoomRates)
+        GET(QRoomRates,iRoomRates#)
+        IF QRoomRates.StayId <> pStayId THEN CYCLE.
+        !UpdatePMSBIT('AddHPDTARRES','pStayId='&pStayId&'|QRoomRates.StayId='&QRoomRates.StayId)
+        rAmountRate = 0
+        EffectiveDate = DEFORMAT(QRoomRates.EffectiveDate,@D10-)
+        ExpireDate = DEFORMAT(QRoomRates.ExpireDate,@D10-)
+        ExpireDate -= 1
+        BaseAmountBeforeTax = QRoomRates.BaseAmountBeforeTax
+        BaseAmountAfterTax = QRoomRates.BaseAmountAfterTax
+        TotalAmountBeforeTax = QRoomRates.TotalAmountBeforeTax
+        TotalAmountAfterTax = QRoomRates.TotalAmountAfterTax
+        CASE SIS:METAPL
+        OF 'C'
+            IF BaseAmountAfterTax
+                rAmountRate = BaseAmountAfterTax
+                rAmountRate = rAmountRate / ((SIS:PORTAX/100)+1)
+            ELSIF BaseAmountBeforeTax
+                rAmountRate = BaseAmountBeforeTax
+            ELSIF TotalAmountAfterTax
+                rAmountRate = TotalAmountAfterTax
+                rAmountRate = rAmountRate / ((SIS:PORTAX/100)+1)
+            ELSIF TotalAmountBeforeTax
+                rAmountRate = TotalAmountBeforeTax
+            END
+        OF 'F'
+            IF BaseAmountAfterTax <> ''
+                rAmountRate = BaseAmountAfterTax
+            ELSIF BaseAmountBeforeTax
+                rAmountRate = BaseAmountBeforeTax
+                rAmountRate = rAmountRate * ((SIS:PORTAX/100)+1)
+            ELSIF TotalAmountAfterTax
+                rAmountRate = TotalAmountAfterTax
+            ELSIF TotalAmountBeforeTax
+                rAmountRate = TotalAmountBeforeTax
+                rAmountRate = rAmountRate * ((SIS:PORTAX/100)+1)
+            END
+        END
+        LOOP IDate# = EffectiveDate TO ExpireDate
+            IF IDate# = TimeSpanEnd THEN CYCLE.
+            CLEAR(TAR:Record)
+            TAR:STARNUMRES = pnumres
+            TAR:LTARFECHA = IDate#
+            TAR:STARCODTAR = QRoomRates.RoomRateRatePlanCode
+            TAR:RTARIMPTAR = rAmountRate
+            IF Access:HPDTARRES.TryInsert() = Level:Benign
+                UpdatePMSBIT('UpdateHPDTARRES','NUMRES:'&CLIP(pnumres) & ',Fecha:'&FORMAT(TAR:LTARFECHA,@D10-) & ',Importe:'&TAR:RTARIMPTAR)
+            ELSE
+                GlobalErrors.SetErrors()
+                LERROR = GlobalErrors.GetErrorcode()
+                CERROR = GlobalErrors.GetError()
+                UpdatePMSBIT('UpdateHPDTARRES','NUMRES:'&CLIP(pnumres) & 'Errorcode:'&CLIP(LERROR) & ',ErrorDescription:'&CERROR)
+                BREAK
+            END
+        END
+    END
+    DO CloseFiles
+    IF LERROR
+        RETURN(PmsErrorCode34)
+    ELSE
+        RETURN 0
+    END
+[END]
+[END]
+[ADDITION]
+NAME WinEvent WinEvent
+[INSTANCE]
+INSTANCE 1
+OWNER 3
+[PROMPTS]
+%DisableWinEvent LONG  (0)
+%CheckForCantCloseNowSetHere LONG  (1)
+%AutoDown LONG  (0)
+%NoAutoDown LONG  (0)
+%LocWindowsVisible DEFAULT  ('0')
+%WindowsVisibleAfterOpen LONG  (1)
+%AlertWinEventDebug LONG  (0)
+%DisplayCompileDate LONG  (0)
+%DisplayCompileDateFormat DEFAULT  ('@D6')
+%locNoHandleCloseDown LONG  (0)
+%locCloseDownWhenWindowCloses LONG  (0)
+%locCloseDownWhenWindowClosesCtrl DEFAULT  ('')
+%WinAlert MULTI LONG  ()
+%Mess DEPEND %WinAlert DEFAULT TIMES 0
+
+%Act1 DEPEND %WinAlert DEFAULT TIMES 0
+
+%act2 DEPEND %WinAlert DEFAULT TIMES 0
+
+%locCloseDownWhenWindowClosesSet LONG  (0)
+%SortListbox MULTI LONG  ()
+%ThisListbox DEPEND %SortListbox DEFAULT TIMES 0
+
+%ThisListboxHeader DEPEND %SortListbox MULTI DEFAULT TIMES 0
+
+%gloWinEventTesting LONG  (0)
+%gloWinEventTestingColor1 LONG  (15728618)
+%gloWinEventTestingColor2 LONG  (16777215)
+[END]
